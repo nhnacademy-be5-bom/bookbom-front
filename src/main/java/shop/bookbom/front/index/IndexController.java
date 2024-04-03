@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class IndexController {
-    @GetMapping(value = {"/index.html", "/"})
+    @GetMapping("/")
     public String index(HttpServletRequest request, Model model) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null) {
             ip = request.getRemoteAddr();
         }
         model.addAttribute("ip", ip);
-        return "bookbom-0.1/index";
+        return "page/main";
     }
 }

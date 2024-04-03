@@ -14,6 +14,6 @@ public class IndexController {
             ip = request.getRemoteAddr();
         }
         model.addAttribute("ip", ip);
-        return "index/index";
+        return "bookbom-0.1/index";
     }
 }

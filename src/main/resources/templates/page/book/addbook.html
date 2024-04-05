@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>책 등록 페이지</title>
+
+    <!-- CSS -->
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/book/addbook.css}">
+    </th:block>
+    <!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/book/addbook.js}"></script>
+    </th:block>
+</head>
+
+
+<div layout:fragment="content" class="container card-0 justify-content-center ">
+
+    <div class="col-md-6 offset-md-3 mt-5">
+
+        <h1>책 등록</h1>
+
+        <form accept-charset="UTF-8" action="/shop/book/update" method="PUT"
+              enctype="multipart/form-data" target="_blank">
+            <div class="form-group">
+                <label for="exampleInputName">Full Name</label>
+                <input type="text" name="fullname" class="form-control" id="exampleInputName"
+                       placeholder="Enter your name and surname" required="required">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1" required="required">Email address</label>
+                <input type="email" name="email" class="form-control" id="exampleInputEmail1"
+                       aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Favourite Platform</label>
+                <select class="form-control" id="exampleFormControlSelect1" name="platform" required="required">
+                    <option>Github</option>
+                    <option>Gitlab</option>
+                    <option>Bitbucket</option>
+                </select>
+            </div>
+            <hr>
+            <div class="form-group mt-3">
+                <label class="mr-2">Upload your CV:</label>
+                <input type="file" name="file">
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+</html>

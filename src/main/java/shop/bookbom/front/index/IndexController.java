@@ -14,6 +14,6 @@ public class IndexController {
             ip = request.getRemoteAddr();
         }
         model.addAttribute("ip", ip);
-        return "page/main";
+        return "page/book/addbook";
     }
 }

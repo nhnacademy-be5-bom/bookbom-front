@@ -1,11 +1,10 @@
 package shop.bookbom.front.domain.book.dto.request;
 
 import java.time.LocalDate;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 import shop.bookbom.front.domain.book.entity.BookStatus;
-import shop.bookbom.front.domain.bookauthor.entity.BookAuthor;
 import shop.bookbom.front.domain.pointrate.entity.PointRate;
 import shop.bookbom.front.domain.publisher.entity.Publisher;
 
@@ -17,7 +16,10 @@ public class BookAddRequest {
     private String title;
     private String description;
     private String index;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pubDate;
+
     private String isbn10;
     private String isbn13;
     private Integer cost;
@@ -27,7 +29,7 @@ public class BookAddRequest {
     private Integer stock;
     private Publisher publisher;
     private PointRate pointRate;
-    private List<BookAuthor> authors;
+    private String authors;
 
     @Builder
     public BookAddRequest(String title,
@@ -43,7 +45,7 @@ public class BookAddRequest {
                           Integer stock,
                           Publisher publisher,
                           PointRate pointRate,
-                          List<BookAuthor> authors) {
+                          String authors) {
 
         this.title = title;
         this.description = description;

@@ -1,5 +1,6 @@
 package shop.bookbom.front.domain.book.controller;
 
+import feign.Headers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ public class AddBookController {
     private final BookService bookService;
 
     @PutMapping("book/update")
+    @Headers("Content-Type: multipart/form-data")
     public CommonResponse<Void> putBook(@ModelAttribute("bookAddRequest") BookAddRequest bookAddRequest) {
         return bookService.putBook(bookAddRequest);
     }

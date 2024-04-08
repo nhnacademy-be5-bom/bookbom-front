@@ -1,12 +1,11 @@
 package shop.bookbom.front.domain.book.dto.request;
 
+import java.io.File;
 import java.time.LocalDate;
-import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 import shop.bookbom.front.domain.book.entity.BookStatus;
-import shop.bookbom.front.domain.bookauthor.entity.BookAuthor;
-import shop.bookbom.front.domain.pointrate.entity.PointRate;
 import shop.bookbom.front.domain.publisher.entity.Publisher;
 
 @Getter
@@ -14,10 +13,18 @@ public class BookUpdateRequest {
     // 관리자 책 수정에 사용하는 책 수정 요청 DTO
     // Book 의 필드 중 id, view 는 등록 페이지에서 사용하지 않으므로 제외
 
+    private File thumbnail;
     private String title;
+    private String categories;
+    private String tags;
+    private String authors;
+    private Publisher publisher;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate pubDate;
+
     private String description;
     private String index;
-    private LocalDate pubDate;
     private String isbn10;
     private String isbn13;
     private Integer cost;
@@ -25,12 +32,14 @@ public class BookUpdateRequest {
     private Boolean packagable;
     private BookStatus status;
     private Integer stock;
-    private Publisher publisher;
-    private PointRate pointRate;
-    private List<BookAuthor> authors;
 
     @Builder
-    public BookUpdateRequest(String title,
+
+    public BookUpdateRequest(File thumbnail,
+                             String title,
+                             String categories,
+                             String tags,
+                             String authors,
                              String description,
                              String index,
                              LocalDate pubDate,
@@ -41,11 +50,12 @@ public class BookUpdateRequest {
                              Boolean packagable,
                              BookStatus status,
                              Integer stock,
-                             Publisher publisher,
-                             PointRate pointRate,
-                             List<BookAuthor> authors) {
-
+                             Publisher publisher) {
+        this.thumbnail = thumbnail;
         this.title = title;
+        this.categories = categories;
+        this.tags = tags;
+        this.authors = authors;
         this.description = description;
         this.index = index;
         this.pubDate = pubDate;
@@ -57,7 +67,5 @@ public class BookUpdateRequest {
         this.status = status;
         this.stock = stock;
         this.publisher = publisher;
-        this.pointRate = pointRate;
-        this.authors = authors;
     }
 }

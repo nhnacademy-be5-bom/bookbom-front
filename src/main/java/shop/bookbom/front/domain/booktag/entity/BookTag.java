@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shop.bookbom.front.domain.book.entity.Book;
-import shop.bookbom.front.domain.tag.tag.entity.Tag;
+import shop.bookbom.front.domain.tag.entity.Tag;
 
 
 @Getter

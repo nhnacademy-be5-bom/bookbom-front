@@ -44,10 +44,37 @@
             <hr>
 
             <div class="form-group">
-                <label for="categories">카테고리</label>
-                <select class="form-control" id="categories" name="categories">
-                    <option>카테고리</option>
+
+                <label for="category_depth1">카테고리</label>
+                <select th:if="${!categories.isEmpty()}" class="form-control"
+                        id="category_depth1" name="category_depth1">
+                    <option value="none">카테고리 선택</option>
+                    <option th:each="category : ${categories}" th:if="${category.getChild() == null}"
+                            th:text="${category.name}" onclick="setChildCategory()"></option>
                 </select>
+
+                <select class="form-control" id="category_depth2" name="category_depth2">
+                    <option value="none">카테고리 선택</option>
+                </select>
+
+                <select class="form-control" id="category_depth3" name="category_depth3">
+                    <option value="none">카테고리 선택</option>
+                </select>
+
+                <script th:inline="javascript">
+                    const category_depth2 = document.getElementById('category_depth2');
+
+                    function setChildCategory() {
+                        //todo 실시간 출력하지 않고 전부 출력한 뒤 visibility 만 조정하도록 수정
+                        category_depth2.appendChild();
+                    }
+
+                    const category_depth3 = document.getElementById('category_depth3');
+
+                    function setLastCategory() {
+
+                    }
+                </script>
             </div>
 
             <hr>
@@ -112,7 +139,8 @@
 
             <div class="form-group">
                 <label for="description" style="display: none">설명</label>
-                <input type="hidden" id="description" name="description" class="form-control" required="required">
+                <input type="hidden" id="description" name="description" class="form-control" required="required"
+                       onsubmit="setDescription()">
             </div>
 
             <hr>

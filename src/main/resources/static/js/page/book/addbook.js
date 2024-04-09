@@ -38,3 +38,10 @@ function findDuplicateTag(inputValue) {
 function removeTag(tagElement) {
     tagElement.parentNode.remove();
 }
+
+function setDescription() {
+    const editor = document.getElementById('editor');
+    const description = document.getElementById('description');
+
+    description.value = editor.getHTML();
+}

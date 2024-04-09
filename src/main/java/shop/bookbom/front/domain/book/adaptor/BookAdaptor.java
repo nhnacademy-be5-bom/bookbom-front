@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 
-@FeignClient(value = "BOOKBOM-GATEWAY", path = "/shop", url = "${bookbom.gateway-url}")
+@FeignClient(value = "BOOKBOM-FRONT-BOOK", path = "/shop", url = "${bookbom.gateway-url}")
 public interface BookAdaptor {
     @PutMapping("/book/update")
     CommonResponse<Void> save(@RequestBody BookAddRequest bookAddRequest);

@@ -1,0 +1,123 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/wish.css}">
+    </th:block>
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/wish.js}"></script>
+    </th:block>
+    <title>찜</title>
+</head>
+<body>
+<div layout:fragment="content" class="container mt-5">
+    <h2 class="mb-5">찜 목록</h2>
+    <div class="d-flex justify-content-start mb-3">
+        <div class="custom-control custom-checkbox me-3">
+            <input class="custom-control-input" type="checkbox" value="" id="checkAll">
+            <label class="custom-control-label" for="checkAll">
+                전체 선택
+            </label>
+        </div>
+        <button type="button" class="btn btn-danger align-self-center">선택 삭제</button>
+    </div>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <td class="align-middle">
+                <div class="d-flex align-items-center">
+                    <div class="custom-control custom-checkbox me-2">
+                        <input class="custom-control-input" type="checkbox" value="" id="item1">
+                        <label class="custom-control-label" for="item1"></label>
+                    </div>
+                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책1">
+                    <div>
+                        <div>상품명 1</div>
+                        <div>출판사 1</div>
+                        <div>
+                            <span class="fw-bold">12,000원</span>
+                            <span class="text-muted original-price">15,000원</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/cart.png" alt="장바구니 추가 버튼">
+                </button>
+            </td>
+            <td class="align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/full_heart.png" alt="좋아요 해제 버튼">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td class="align-middle">
+                <div class="d-flex align-items-center">
+                    <div class="custom-control custom-checkbox me-2">
+                        <input class="custom-control-input" type="checkbox" value="" id="item2">
+                        <label class="custom-control-label" for="item2"></label>
+                    </div>
+                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책2">
+                    <div>
+                        <div>상품명 2</div>
+                        <div>출판사 2</div>
+                        <div>
+                            <span class="fw-bold">12,000원</span>
+                            <span class="text-muted original-price">15,000원</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/cart.png" alt="장바구니 추가 버튼">
+                </button>
+            </td>
+            <td class="align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/full_heart.png" alt="좋아요 해제 버튼">
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td class="align-middle">
+                <div class="d-flex align-items-center">
+                    <div class="custom-control custom-checkbox me-2">
+                        <input class="custom-control-input" type="checkbox" value="" id="item3">
+                        <label class="custom-control-label" for="item3"></label>
+                    </div>
+                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책3">
+                    <div>
+                        <div>상품명 3</div>
+                        <div>출판사 3</div>
+                        <div>
+                            <span class="fw-bold">12,000원</span>
+                            <span class="text-muted original-price">15,000원</span>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td class="text-center align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/cart.png" alt="장바구니 추가 버튼">
+                </button>
+            </td>
+            <td class="align-middle">
+                <button type="button" class="btn btn-general">
+                    <img src="/images/full_heart.png" alt="좋아요 해제 버튼">
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

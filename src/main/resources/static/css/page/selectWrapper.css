@@ -1,0 +1,59 @@
+.order-table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+td {
+    padding: 30px;
+}
+input[type="radio"] {
+    transform: scale(1.5);
+    margin-left: 60px;
+}
+input[type="number"] {
+    margin-left: 90px;
+}
+
+.main {
+    width: 60%;
+    display: inline-block;
+    vertical-align: top;
+}
+.side {
+    width: 30%;
+    margin: 4%;
+    border: 1px solid black;
+    padding: 10px;
+    display: inline-block;
+    vertical-align: top;
+}
+.pink-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    width: 90%;
+}
+
+
+.pink-button:hover {
+    background-color: #ff4f9f;
+}
+.wrapperList{
+    margin: 3%;
+}
+.wrapperImg{
+    margin: 1%;
+    text-align: center;
+
+}
+.wrapperName{
+    margin-left: 12%;
+    text-align: center;
+}

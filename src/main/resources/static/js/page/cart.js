@@ -75,4 +75,9 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     });
+
+
 });
+function redirectToURL(url) {
+    window.location.href = url; // 해당 URL로 이동
+}

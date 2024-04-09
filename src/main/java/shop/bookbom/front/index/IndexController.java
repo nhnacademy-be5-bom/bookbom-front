@@ -16,4 +16,14 @@ public class IndexController {
         model.addAttribute("ip", ip);
         return "page/main";
     }
+    @GetMapping("/cart")
+    public String showCartPage() {
+
+        return "page/cart/cart";
+    }
+    @GetMapping("/selectWrapper")
+    public String showSelectWrpper() {
+
+        return "page/order/selectWrapper";
+    }
 }

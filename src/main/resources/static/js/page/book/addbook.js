@@ -39,13 +39,6 @@ function removeTag(tagElement) {
     tagElement.parentNode.remove();
 }
 
-function setDescription() {
-    const editor = document.getElementById('editor');
-    const description = document.getElementById('description');
-
-    description.value = editor.getHTML();
-}
-
 async function setChildCategory(selectBox, categoryId) {
     const depth2 = document.getElementById('category_depth2');
     const depth3 = document.getElementById('category_depth3');
@@ -67,7 +60,7 @@ async function setChildCategory(selectBox, categoryId) {
             depth3.removeChild(depth3.lastChild);
         }
     }
-
+// #todo 주소 수정
     const response = await fetch(
         "http://127.0.0.1:8880/shop/category/get/" + categoryId,
         {

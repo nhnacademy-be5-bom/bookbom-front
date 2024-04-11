@@ -23,7 +23,7 @@ public class AddBookController {
     private final CategoryService categoryService;
 
     @GetMapping("/addbook")
-    public String index(HttpServletRequest request, Model model) {
+    public String addBookPage(HttpServletRequest request, Model model) {
         List<CategoryDTO> list_depth1 = categoryService.getDepthOneCategories();
 
         model.addAttribute("categories_depth1", list_depth1);
@@ -37,6 +37,8 @@ public class AddBookController {
                           Model model) {
 
         bookService.putBook(bookAddRequest);
+        //model.addAttribute("success", true);
+
         return "page/book/addbook";
     }
 

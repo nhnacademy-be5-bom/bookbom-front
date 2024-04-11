@@ -1,9 +1,12 @@
 package shop.bookbom.front.domain.category.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.category.adaptor.CategoryAdaptor;
+import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 
 @Service
@@ -17,15 +20,15 @@ public class CategoryService {
         return (CategoryDepthResponse) response.getResult();
     }
 
-    public CategoryDepthResponse getDepthOneCategories() {
-        CommonResponse<?> response = categoryAdaptor.getDepthOneCategories();
+    public List<CategoryDTO> getDepthOneCategories() {
+        CommonListResponse<?> response = categoryAdaptor.getDepthOneCategories();
         // null 없으므로 체크하지 않음
-        return (CategoryDepthResponse) response.getResult();
+        return (List<CategoryDTO>) response.getResult();
     }
 
-    public CategoryDepthResponse getChildCategoriesById(Long categoryId) {
-        CommonResponse<?> response = categoryAdaptor.getChildCategories(categoryId);
+    public List<CategoryDTO> getChildCategoriesById(Long categoryId) {
+        CommonListResponse<?> response = categoryAdaptor.getChildCategoriesOf(categoryId);
         // null 없으므로 체크하지 않음
-        return (CategoryDepthResponse) response.getResult();
+        return (List<CategoryDTO>) response.getResult();
     }
 }

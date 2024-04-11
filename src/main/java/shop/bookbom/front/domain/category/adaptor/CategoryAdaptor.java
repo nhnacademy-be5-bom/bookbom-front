@@ -3,7 +3,9 @@ package shop.bookbom.front.domain.category.adaptor;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 
 @FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-url}")
@@ -13,8 +15,9 @@ public interface CategoryAdaptor {
     CommonResponse<CategoryDepthResponse> getAllCategories();
 
     @GetMapping("/category/get/depth1")
-    CommonResponse<CategoryDepthResponse> getDepthOneCategories();
+    CommonListResponse<CategoryDTO> getDepthOneCategories();
 
     @GetMapping("/category/get/{parentId}")
-    CommonResponse<CategoryDepthResponse> getChildCategories(@PathVariable("parentId") Long parentId);
+    CommonListResponse<CategoryDTO> getChildCategoriesOf(@PathVariable("parentId") Long parentId);
+
 }

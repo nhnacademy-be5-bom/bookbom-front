@@ -7,11 +7,11 @@
 <head>
     <meta charset="UTF-8">
 </head>
- 메인 페이지 고유 CSS 추가
+<!-- 메인 페이지 고유 CSS 추가-->
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/page/selectWrapper.css}">
 </th:block>
- 메인 페이지 고유 스크립트 추가
+<!-- 메인 페이지 고유 스크립트 추가-->
 <th:block layout:fragment="script">
     <script th:src="@{/js/page/selectWrapper.js}"></script>
 </th:block>
@@ -25,7 +25,7 @@
             <button onclick="toggleTable()">보기</button>
         </div>
         <div>
-            <table class="order-table" style="display: none">
+            <table class="order-table" style="display: block">
                 <tbody>
                 <tr>
                     <td class="order-table-td"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791188331796.jpg"
@@ -67,13 +67,13 @@
             <span>선택 포장 총액</span><span style="margin-left: 110px">0원</span><br><br>
             <span>추가 결제액</span><span style="margin-left: 110px">0원</span><br><br>
 <!--            주문서 작성 단계로 넘어감-->
-            <button class="pink-button">다음</button><br><br><br>
+            <button type="button" class="pink-button" onclick="redirectToURL('/ordersheet')">다음</button><br><br><br>
         </div>
 <!--    포장지 리스트 보여줌-->
         <div class="wrapperList">
-            <img class="wrapperImg" src="https://previews.123rf.com/images/viaire/viaire1504/viaire150400025/39096768-%ED%8F%AC%EC%9E%A5%EC%A7%80%EC%97%90-%EB%B9%A8%EA%B0%84%EC%83%89-%ED%95%98%ED%8A%B8-%ED%8C%A8%ED%84%B4.jpg" alt="포장지 1" width="100px" height="100px">
-            <img class="wrapperImg" src="https://png.pngtree.com/element_our/png/20181130/christmas-cartoon-image-fresh-and-lovely-wrapping-paper-background-png_254829.jpg" alt="포장지 2" width="100px" height="100px">
-            <img class="wrapperImg" src="https://previews.123rf.com/images/vorotnikovartem/vorotnikovartem1610/vorotnikovartem161000026/67894273-%EB%B2%A1%ED%84%B0-%EC%9B%90%ED%99%9C%ED%95%9C-%ED%8C%A8%ED%84%B4-%EB%94%94%EC%9E%90%EC%9D%B8-doodling%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%A9%94%EB%A6%AC-%ED%81%AC%EB%A6%AC%EC%8A%A4%EB%A7%88%EC%8A%A4%EC%99%80-%ED%96%89%EB%B3%B5-%ED%95%9C-%EC%83%88-%ED%95%B4-%EB%B0%B0%EA%B2%BD%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%8F%AC%EC%9E%A5%EC%A7%80.jpg" alt="포장지 3" width="100px" height="100px">
+            <img class="wrapperImg" src="https://previews.123rf.com/images/viaire/viaire1504/viaire150400025/39096768-%ED%8F%AC%EC%9E%A5%EC%A7%80%EC%97%90-%EB%B9%A8%EA%B0%84%EC%83%89-%ED%95%98%ED%8A%B8-%ED%8C%A8%ED%84%B4.jpg" alt="포장지 1" width="90px" height="90px">
+            <img class="wrapperImg" src="https://png.pngtree.com/element_our/png/20181130/christmas-cartoon-image-fresh-and-lovely-wrapping-paper-background-png_254829.jpg" alt="포장지 2" width="90px" height="90px">
+            <img class="wrapperImg" src="https://previews.123rf.com/images/vorotnikovartem/vorotnikovartem1610/vorotnikovartem161000026/67894273-%EB%B2%A1%ED%84%B0-%EC%9B%90%ED%99%9C%ED%95%9C-%ED%8C%A8%ED%84%B4-%EB%94%94%EC%9E%90%EC%9D%B8-doodling%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%A9%94%EB%A6%AC-%ED%81%AC%EB%A6%AC%EC%8A%A4%EB%A7%88%EC%8A%A4%EC%99%80-%ED%96%89%EB%B3%B5-%ED%95%9C-%EC%83%88-%ED%95%B4-%EB%B0%B0%EA%B2%BD%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%8F%AC%EC%9E%A5%EC%A7%80.jpg" alt="포장지 3" width="90px" height="90px">
             <br>
             <span class="wrapperName">포장지 1</span>
             <span class="wrapperName">포장지 2</span>

@@ -44,4 +44,6 @@ function toggleTable() {
         table.style.display = 'none'; // 테이블을 숨기도록 설정
     }
 }
-
+function redirectToURL(url) {
+    window.location.href = url; // 해당 URL로 이동
+}

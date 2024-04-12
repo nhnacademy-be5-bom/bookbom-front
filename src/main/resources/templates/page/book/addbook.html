@@ -46,22 +46,14 @@
             <div class="form-group">
 
                 <label for="category_depth1">카테고리</label>
-                <select class="form-control" id="category_depth1" name="category_depth1"
+                <select class="form-control" id="category_depth1" name="categories"
                         onchange="setChildCategory(this, this.options[this.selectedIndex].className)">
-                    <option class="0" value="none">카테고리 선택</option>
+                    <option class="0" value="none" disabled selected>카테고리 선택</option>
                     <option th:each="category : ${categories_depth1}"
                             th:text="${category.name}"
                             th:class="${category.getId()}"></option>
                 </select>
 
-                <select class="form-control" id="category_depth2" name="category_depth2"
-                        onchange="setChildCategory(this, this.options[this.selectedIndex].className)">
-                    <option class="0" value="none">카테고리 선택</option>
-                </select>
-
-                <select class="form-control" id="category_depth3" name="category_depth3">
-                    <option class="0" value="none">카테고리 선택</option>
-                </select>
             </div>
 
             <hr>

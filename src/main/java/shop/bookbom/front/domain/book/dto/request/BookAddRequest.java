@@ -19,11 +19,7 @@ public class BookAddRequest {
     @JsonIgnore
     private MultipartFile thumbnail;
     private String title;
-
-    private String category_depth1;
-    private String category_depth2;
-    private String category_depth3;
-
+    private List<String> categories;
     private List<String> tags;
     private String authors;
     private Publisher publisher;
@@ -42,12 +38,9 @@ public class BookAddRequest {
     private Integer stock;
 
     @Builder
-
     public BookAddRequest(MultipartFile thumbnail,
                           String title,
-                          String category_depth1,
-                          String category_depth2,
-                          String category_depth3,
+                          List<String> categories,
                           List<String> tags,
                           String authors,
                           String description,
@@ -63,9 +56,7 @@ public class BookAddRequest {
                           Publisher publisher) {
         this.thumbnail = thumbnail;
         this.title = title;
-        this.category_depth1 = category_depth1;
-        this.category_depth2 = category_depth2;
-        this.category_depth3 = category_depth3;
+        this.categories = categories;
         this.tags = tags;
         this.authors = authors;
         this.description = description;

@@ -1,4 +1,5 @@
 function add() {
+    // 태그 컨트롤 자바스크립트
     const taginput = document.getElementById('taginput').value;
 
     if (taginput.length !== 0 && !findDuplicateTag(taginput)) {
@@ -39,28 +40,11 @@ function removeTag(tagElement) {
     tagElement.parentNode.remove();
 }
 
+
 async function setChildCategory(selectBox, categoryId) {
-    const depth2 = document.getElementById('category_depth2');
-    const depth3 = document.getElementById('category_depth3');
+    const currentDepth = Number(selectBox.id.slice(-1));
 
-    const target = selectBox.nextElementSibling;
-
-    if (target === depth2) { // 깊이1 카테고리를 선택한 경우
-        // 깊이 2,3 카테고리 초기화
-        while (depth2.children.length > 1) {
-            depth2.removeChild(depth2.lastChild);
-        }
-        while (depth3.children.length > 1) {
-            depth3.removeChild(depth3.lastChild);
-        }
-
-    } else if (target === depth3) { // 깊이2 카테고리를 선택한 경우
-        // 깊이3 카테고리 초기화
-        while (depth3.children.length > 1) {
-            depth3.removeChild(depth3.lastChild);
-        }
-    }
-// #todo 주소 수정
+    // #todo 주소 수정
     const response = await fetch(
         "http://127.0.0.1:8880/shop/category/get/" + categoryId,
         {
@@ -69,12 +53,40 @@ async function setChildCategory(selectBox, categoryId) {
 
     const childList = await response.json();
 
-    for (const child of childList.result) {
-
-        const newCategory = document.createElement('option');
-        newCategory.className = child.id;
-        newCategory.text = child.name;
-
-        target.appendChild(newCategory);
+    while (selectBox && selectBox.nextSibling) {
+        selectBox.parentNode.removeChild(selectBox.nextSibling)
     }
+
+    if (childList.result.length !== 0) {
+        const nextDepthSelectBox = createCategorySelectBox(currentDepth + 1);
+
+        for (const child of childList.result) {
+            const newCategory = document.createElement('option');
+            newCategory.className = child.id;
+            newCategory.text = child.name;
+
+            nextDepthSelectBox.appendChild(newCategory);
+        }
+        selectBox.parentNode.appendChild(nextDepthSelectBox);
+    }
+
+}
+
+function createCategorySelectBox(depth) {
+    const newSelect = document.createElement('select');
+    newSelect.className = 'form-control';
+    newSelect.id = 'category_depth' + depth;
+    newSelect.name = 'categories';
+    newSelect.setAttribute('onchange', 'setChildCategory(this, this.options[this.selectedIndex].className)');
+
+    const newCategory = document.createElement('option');
+    newCategory.className = '0';
+    newCategory.value = 'none';
+    newCategory.disabled = true;
+    newCategory.selected = true;
+    newCategory.text = '카테고리 선택';
+
+    newSelect.appendChild(newCategory);
+
+    return newSelect;
 }

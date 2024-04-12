@@ -3,8 +3,6 @@ package shop.bookbom.front.common;
 
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.http.HttpStatus;
-import shop.bookbom.front.common.exception.ErrorCode;
 
 @Data
 public class CommonResponse<T> {
@@ -18,31 +16,4 @@ public class CommonResponse<T> {
         this.result = result;
     }
 
-    public static CommonResponse<Void> success() {
-        return CommonResponse.<Void>builder()
-                .header(ResponseHeader.builder()
-                        .isSuccessful(true)
-                        .resultCode(HttpStatus.OK.value())
-                        .resultMessage(SUCCESS_MESSAGE).build())
-                .build();
-    }
-
-    public static <T> CommonResponse<T> successWithData(T data) {
-        return CommonResponse.<T>builder()
-                .header(ResponseHeader.builder()
-                        .isSuccessful(true)
-                        .resultCode(HttpStatus.OK.value())
-                        .resultMessage(SUCCESS_MESSAGE).build())
-                .result(data)
-                .build();
-    }
-
-    public static CommonResponse<Void> fail(ErrorCode errorCode) {
-        return CommonResponse.<Void>builder()
-                .header(ResponseHeader.builder()
-                        .isSuccessful(false)
-                        .resultCode(errorCode.getCode())
-                        .resultMessage(errorCode.getMessage()).build())
-                .build();
-    }
 }

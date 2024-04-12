@@ -1,13 +1,9 @@
 package shop.bookbom.front.domain.book.dto.response;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-import shop.bookbom.front.domain.bookauthor.entity.BookAuthor;
-import shop.bookbom.front.domain.bookcategory.entity.BookCategory;
-import shop.bookbom.front.domain.booktag.entity.BookTag;
 import shop.bookbom.front.domain.pointrate.entity.PointRate;
 import shop.bookbom.front.domain.publisher.entity.Publisher;
 
@@ -28,9 +24,9 @@ public class BookDetailResponse {
     private Integer stock;
     private Publisher publisher;
     private PointRate pointRate;
-    private List<BookAuthor> authors = new ArrayList<>();
-    private List<BookTag> tags = new ArrayList<>();
-    private List<BookCategory> categories = new ArrayList<>();
+    private List<String> authors;
+    private List<String> tags;
+    private List<String> categories;
 
     @Builder
     public BookDetailResponse(Long id,
@@ -46,10 +42,9 @@ public class BookDetailResponse {
                               Integer stock,
                               Publisher publisher,
                               PointRate pointRate,
-                              List<BookAuthor> authors,
-                              List<BookTag> tags,
-                              List<BookCategory> categories) {
-
+                              List<String> authors,
+                              List<String> tags,
+                              List<String> categories) {
         this.id = id;
         this.title = title;
         this.description = description;

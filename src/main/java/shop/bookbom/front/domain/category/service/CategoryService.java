@@ -21,9 +21,9 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getDepthOneCategories() {
-        CommonListResponse<?> response = categoryAdaptor.getDepthOneCategories();
+        CommonListResponse<CategoryDTO> response = categoryAdaptor.getDepthOneCategories();
         // null 없으므로 체크하지 않음
-        return (List<CategoryDTO>) response.getResult();
+        return response.getResult();
     }
 
     public List<CategoryDTO> getChildCategoriesById(Long categoryId) {

@@ -1,0 +1,79 @@
+/* 공통 스타일 */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+.custom-control-input {
+    margin-right: 0.5rem;
+}
+
+/* 테이블 스타일 */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+}
+
+.table td, .table th {
+    padding: .75rem;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+/* 가격 스타일 */
+.fw-bold {
+    font-weight: bold;
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.original-price {
+    text-decoration: line-through;
+}
+
+/* 버튼 스타일 */
+.btn {
+    display: inline-block;
+    font-weight: 400;
+    color: #fff3cd;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,
+    background-color .15s ease-in-out,
+    border-color .15s ease-in-out,
+    box-shadow .15s ease-in-out;
+}
+
+.btn-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-general{
+    color: #fff;
+    background-color: #fff;
+    border-color: #fff;
+}
+
+/* 버튼이 포함된 td 스타일 */
+.table td button {
+    width: auto; /* td의 너비를 버튼에 맞게 자동 조절 */
+    max-width: 100%; /* 버튼이 td를 넘어가지 않도록 설정 */
+}
+
+/* 버튼 이미지 크기 조절 */
+.btn img {
+    width: 2.5rem;
+    height: auto;
+}

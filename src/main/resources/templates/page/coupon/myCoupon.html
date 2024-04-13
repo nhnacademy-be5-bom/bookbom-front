@@ -1,0 +1,66 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/coupon.css}">
+    </th:block>
+    <title>내 쿠폰함</title>
+</head>
+<body>
+<div layout:fragment="content" class="content">
+    <div class="row justify-content-center">
+        <div class="col-md-2 leftContainer">
+            <h2>내 쿠폰함</h2>
+            <a href="myCoupon"><h4>보유 쿠폰</h4></a>
+            <a href="myCouponDetail"><h4>쿠폰 상세 내역</h4></a>
+        </div>
+        <div class="col-md-7 rightContainer">
+            <div class="couponTotalCount">쿠폰 수 : <span>3</span>장</div>
+            <div class="couponlistContainer">
+                <div class="couponContainer">
+                    <span class="couponDate">쿠폰 이름</span>
+                    <span class="couponDate">사용 가능 기간</span>
+                    <br/>
+                    <span class="couponUsable">사용 가능 카테고리/도서</span>
+                    <br/>
+                    <span class="couponMin">최소 주문 금액</span>
+                    <span class="couponMax">최대 할인 금액</span>
+                </div>
+                <div class="couponContainer">
+                    <span class="couponDate">쿠폰 이름</span>
+                    <span class="couponDate">사용 가능 기간</span>
+                    <br/>
+                    <span class="couponUsable">사용 가능 카테고리/도서</span>
+                    <br/>
+                    <span class="couponMin">최소 주문 금액</span>
+                    <span class="couponMax">최대 할인 금액</span>
+                </div>
+                <div class="couponContainer">
+                    <span class="couponDate">쿠폰 이름</span>
+                    <span class="couponDate">사용 가능 기간</span>
+                    <br/>
+                    <span class="couponUsable">사용 가능 카테고리/도서</span>
+                    <br/>
+                    <span class="couponMin">최소 주문 금액</span>
+                    <span class="couponMax">최대 할인 금액</span>
+                </div>
+                <div class="couponContainer">
+                    <span class="couponDate">쿠폰 이름</span>
+                    <span class="couponDate">사용 가능 기간</span>
+                    <br/>
+                    <span class="couponUsable">사용 가능 카테고리/도서</span>
+                    <br/>
+                    <span class="couponMin">최소 주문 금액</span>
+                    <span class="couponMax">최대 할인 금액</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

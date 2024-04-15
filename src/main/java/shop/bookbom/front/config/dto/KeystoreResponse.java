@@ -1,17 +1,17 @@
 package shop.bookbom.front.config.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class KeystoreResponse {
     private Header header;
     private Body body;
 
-    @Data
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Header {
@@ -20,11 +20,10 @@ public class KeystoreResponse {
         private boolean isSuccessful;
     }
 
-    @Data
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Body {
         private String secret;
     }
 }
-

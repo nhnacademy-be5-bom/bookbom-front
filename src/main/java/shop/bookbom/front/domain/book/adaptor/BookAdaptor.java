@@ -14,7 +14,7 @@ public interface BookAdaptor {
     @PutMapping("/book/update")
     CommonResponse<Void> save(@RequestBody BookAddRequest bookAddRequest);
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/book/detail/{id}")
     CommonResponse<BookDetailResponse> get(@PathVariable("id") Long bookId);
 
 

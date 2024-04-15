@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>책 등록 페이지</title>
+
+    <!-- CSS -->
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/book/addbook.css}">
+    </th:block>
+    <!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/book/addbook.js}"></script>
+    </th:block>
+
+</head>
+
+
+<div layout:fragment="content" class="container card-0 justify-content-center ">
+
+    <div class="col-md-6 offset-md-3 mt-5">
+
+        <h1>책 등록</h1>
+
+        <form accept-charset="UTF-8" th:object="${bookAddRequest}" th:action="@{/admin/addbook}" th:method="put"
+              enctype="multipart/form-data">
+
+            <div class="form-group mt-3">
+                <label for="thumbnail" class="mr-2">책 썸네일:</label>
+                <input type="file" id="thumbnail" name="thumbnail" th:value="${thumbnail}">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="title">책 제목</label>
+                <input type="text" id="title" name="title" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+
+                <label for="category_depth1">카테고리</label>
+                <select class="form-control" id="category_depth1" name="categories"
+                        onchange="setChildCategory(this, this.options[this.selectedIndex].className)">
+                    <option class="0" value="none" disabled selected>카테고리 선택</option>
+                    <option th:each="category : ${categories_depth1}"
+                            th:text="${category.name}"
+                            th:class="${category.getId()}"></option>
+                </select>
+
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="taggenerator">책 태그</label>
+                <div id="taggenerator">
+                    <input type="text" id="taginput" name="taginput" class="taginput" size="50"
+                           placeholder="태그 입력">
+                    <i class="add" onclick="add()">+</i>
+                </div>
+
+                <div id="generatedtags">
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="authors">작가</label>
+                <input type="text" id="authors" name="authors" th:value="${authors}" class="form-control"
+                       required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="publisher">출판사</label>
+                <input type="text" id="publisher" name="publisher" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="pubDate">출판일</label>
+                <input type="date" id="pubDate" name="pubDate" th:value="${pubDate}" class="form-control"
+                       required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="isbn10">10자리 ISBN</label>
+                <input type="text" id="isbn10" name="isbn10" class="form-control" required="required">
+            </div>
+
+            <div class="form-group">
+                <label for="isbn13">13자리 ISBN</label>
+                <input type="text" id="isbn13" name="isbn13" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="index">목차</label>
+                <input type="text" id="index" name="index" class="form-control" required="required">
+            </div>
+
+            <hr>
+            <label for="editor">설명</label>
+            <div id="editor" onsubmit="setDescription()"></div>
+
+            <div class="form-group">
+                <label for="description" style="display: none"></label>
+                <input type="hidden" id="description" name="description" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="cost">정가</label>
+                <input type="number" id="cost" name="cost" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="discountCost">판매가</label>
+                <input type="number" id="discountCost" name="discountCost" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <span>포장여부</span>
+
+                <input type="radio" id="packagablechoice1" name="packagable" value="true" checked/>
+                <label for="packagablechoice1">가능</label>
+
+                <input type="radio" id="packagablechoice2" name="packagable" value="false"/>
+                <label for="packagablechoice2">불가능</label>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="status">상태</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="" selected>선택하세요</option>
+                    <option value="FS">판매중</option>
+                    <option value="EOS">판매종료</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="stock">재고</label>
+                <input type="number" id="stock" name="stock" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="reset" class="btn btn-primary">취소</button>
+        </form>
+    </div>
+</div>
+
+</html>

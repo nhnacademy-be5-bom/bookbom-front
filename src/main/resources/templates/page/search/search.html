@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+<!-- 메인 페이지 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/search.css}">
+</th:block>
+<!-- 메인 페이지 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+</th:block>
+
+<!-- Content -->
+<div layout:fragment="content" class="container my-5">
+    <div class="row">
+        <!-- 검색 결과 건수 -->
+        <div class="col-md-12 mb-3 result">
+            <p>검색어에 대한 결과가 <span id="result-count">3</span>건 있습니다.</p>
+        </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <!-- Buttons added to the left of the form -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">인기도순</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">정확도순</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">신상품순</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">등록일순</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">최저가순</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">최고가순</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-outline-secondary">전체선택</button>
+                    <button type="button" class="btn btn-outline-secondary">장바구니</button>
+                    <button type="button" class="btn btn-outline-secondary">바로구매</button>
+                    <button type="button" class="btn btn-outline-secondary">좋아요</button>
+                </div>
+                <form class="d-flex">
+                    <select class="form-select me-2" aria-label="Default select example">
+                        <option selected>5개씩 보기</option>
+                        <option value="1">10개씩 보기</option>
+                        <option value="2">20개씩 보기</option>
+                    </select>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="row">
+        <!-- 검색 조건 -->
+        <div class="col-md-2 search-condition">
+            <h5>검색 조건</h5>
+            <div class="form-check">
+                <input class="form-check-input custom-checkbox" type="checkbox" id="bookTitleCheckbox" checked>
+                <label class="form-check-label" for="bookTitleCheckbox">도서명</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input custom-checkbox" type="checkbox" id="authorNameCheckbox" checked>
+                <label class="form-check-label" for="authorNameCheckbox">작가명</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input custom-checkbox" type="checkbox" id="publisherNameCheckbox" checked>
+                <label class="form-check-label" for="publisherNameCheckbox">출판사명</label>
+            </div>
+        </div>
+
+        <!-- 검색 결과 -->
+        <div class="col-md-10">
+            <div class="row flex-column ">
+                <!-- 검색 결과 카드 -->
+                <div class="col-md-12 mb-6 border-bottom">
+                    <div class="card">
+                        <!-- 카드 내용 -->
+                        <div class="row g-0">
+                            <div class="col-md-1">
+                                <label for="bookCheckbox1"></label><input type="checkbox" id="bookCheckbox1">
+                            </div>
+                            <!-- 이미지 -->
+                            <div class="col-md-3">
+                                <img src="https://via.placeholder.com/125x170"
+                                     class="card-img-top img-fluid rounded-start"
+                                     alt="...">
+                            </div>
+                            <!-- 도서 정보 -->
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들</h5>
+                                    <p class="card-text">김선영<span>(지은이)</span></p>
+                                    <p class="card-text">부키 * <span>2024. 04. 01</span></p>
+                                    <p class="card-text"><span class="fw-bold">12,000원</span><span
+                                            class="text-muted original-price">15,000원</span></p>
+                                    <p class="card-text"><span>4.8</span> / <span>리뷰(<span>123</span>)개</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 quantity-and-buttons">
+                                <div class="row">
+                                    <div class="col-6 col-md-12 quantity-input-group">
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-secondary  quantity-button" type="button">-
+                                            </button>
+                                            <input type="text" class="form-control quantity-input" placeholder=""
+                                                   value=1>
+                                            <button class="btn  btn-outline-secondary quantity-button" type="button">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 btn-div">
+                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        </button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-6 border-bottom">
+                    <div class="card">
+                        <!-- 카드 내용 -->
+                        <div class="row g-0">
+                            <div class="col-md-1 custom-checkbox">
+                                <label for="bookCheckbox1"></label><input type="checkbox" id="bookCheckbox1">
+                            </div>
+                            <!-- 이미지 -->
+                            <div class="col-md-3">
+                                <img src="https://via.placeholder.com/125x170"
+                                     class="card-img-top img-fluid rounded-start"
+                                     alt="...">
+                            </div>
+                            <!-- 도서 정보 -->
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들</h5>
+                                    <p class="card-text">김선영<span>(지은이)</span></p>
+                                    <p class="card-text">부키 * <span>2024. 04. 01</span></p>
+                                    <p class="card-text"><span class="fw-bold">12,000원</span><span
+                                            class="text-muted original-price">15,000원</span></p>
+                                    <p class="card-text"><span>4.8</span> / <span>리뷰(<span>123</span>)개</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 quantity-and-buttons">
+                                <div class="row">
+                                    <div class="col-6 col-md-12 quantity-input-group">
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-secondary  quantity-button" type="button">-
+                                            </button>
+                                            <input type="text" class="form-control quantity-input" placeholder=""
+                                                   value=1>
+                                            <button class="btn  btn-outline-secondary quantity-button" type="button">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 btn-div">
+                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        </button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-6 border-bottom">
+                    <div class="card">
+                        <!-- 카드 내용 -->
+                        <div class="row g-0">
+                            <div class="col-md-1">
+                                <label for="bookCheckbox1"></label><input type="checkbox" id="bookCheckbox1">
+                            </div>
+                            <!-- 이미지 -->
+                            <div class="col-md-3">
+                                <img src="https://via.placeholder.com/125x170"
+                                     class="card-img-top img-fluid rounded-start"
+                                     alt="...">
+                            </div>
+                            <!-- 도서 정보 -->
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들</h5>
+                                    <p class="card-text">김선영<span>(지은이)</span></p>
+                                    <p class="card-text">부키 * <span>2024. 04. 01</span></p>
+                                    <p class="card-text"><span class="fw-bold">12,000원</span><span
+                                            class="text-muted original-price">15,000원</span></p>
+                                    <p class="card-text"><span>4.8</span> / <span>리뷰(<span>123</span>)개</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 quantity-and-buttons">
+                                <div class="row">
+                                    <div class="col-6 col-md-12 quantity-input-group">
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-secondary  quantity-button" type="button">-
+                                            </button>
+                                            <input type="text" class="form-control quantity-input" placeholder=""
+                                                   value=1>
+                                            <button class="btn  btn-outline-secondary quantity-button" type="button">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 btn-div">
+                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        </button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-6 border-bottom">
+                    <div class="card">
+                        <!-- 카드 내용 -->
+                        <div class="row g-0">
+                            <div class="col-md-1">
+                                <label for="bookCheckbox1"></label><input type="checkbox" id="bookCheckbox1">
+                            </div>
+                            <!-- 이미지 -->
+                            <div class="col-md-3">
+                                <img src="https://via.placeholder.com/125x170"
+                                     class="card-img-top img-fluid rounded-start"
+                                     alt="...">
+                            </div>
+                            <!-- 도서 정보 -->
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들</h5>
+                                    <p class="card-text">김선영<span>(지은이)</span></p>
+                                    <p class="card-text">부키 * <span>2024. 04. 01</span></p>
+                                    <p class="card-text"><span class="fw-bold">12,000원</span><span
+                                            class="text-muted original-price">15,000원</span></p>
+                                    <p class="card-text"><span>4.8</span> / <span>리뷰(<span>123</span>)개</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 quantity-and-buttons">
+                                <div class="row">
+                                    <div class="col-6 col-md-12 quantity-input-group">
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-secondary  quantity-button" type="button">-
+                                            </button>
+                                            <input type="text" class="form-control quantity-input" placeholder=""
+                                                   value=1>
+                                            <button class="btn  btn-outline-secondary quantity-button" type="button">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 btn-div">
+                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        </button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mb-6 border-bottom">
+                    <div class="card">
+                        <!-- 카드 내용 -->
+                        <div class="row g-0">
+                            <div class="col-md-1">
+                                <label for="bookCheckbox1"></label><input type="checkbox" id="bookCheckbox1">
+                            </div>
+                            <!-- 이미지 -->
+                            <div class="col-md-3">
+                                <img src="https://via.placeholder.com/125x170"
+                                     class="card-img-top img-fluid rounded-start"
+                                     alt="...">
+                            </div>
+                            <!-- 도서 정보 -->
+                            <div class="col-md-6">
+                                <div class="card-body">
+                                    <h5 class="card-title">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들</h5>
+                                    <p class="card-text">김선영<span>(지은이)</span></p>
+                                    <p class="card-text">부키 * <span>2024. 04. 01</span></p>
+                                    <p class="card-text"><span class="fw-bold">12,000원</span><span
+                                            class="text-muted original-price">15,000원</span></p>
+                                    <p class="card-text"><span>4.8</span> / <span>리뷰(<span>123</span>)개</span></p>
+                                </div>
+                            </div>
+                            <div class="col-md-2 quantity-and-buttons">
+                                <div class="row">
+                                    <div class="col-6 col-md-12 quantity-input-group">
+                                        <div class="input-group mb-3">
+                                            <button class="btn btn-outline-secondary  quantity-button" type="button">-
+                                            </button>
+                                            <input type="text" class="form-control quantity-input" placeholder=""
+                                                   value=1>
+                                            <button class="btn  btn-outline-secondary quantity-button" type="button">+
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-md-12 btn-div">
+                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        </button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</html>

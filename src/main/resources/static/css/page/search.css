@@ -1,0 +1,178 @@
+
+.result {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+#result-count {
+    font-size: 2.4rem;
+}
+
+.card-title {
+    font-weight: 700;
+}
+
+.navbar {
+    margin-bottom: 50px;
+}
+
+.search-condition {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-condition h5 {
+    font-weight: 700;
+    font-size: 25px;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 18px;
+}
+
+.search-condition {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-check-input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 10px;
+}
+
+.form-check-label {
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-img-top {
+    margin-bottom: 20px;
+}
+
+.img-thumbnail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 상품 가격 */
+.original-price {
+    margin-left: 3px;
+    text-decoration: line-through;
+    color: grey;
+    margin-right: 10px;
+}
+
+.card-text {
+    margin-bottom: 2px;
+}
+
+.btn-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn-div button {
+    width: 70%;
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.quantity-and-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 수량 버튼 */
+
+.btn-div :first-child {
+    padding: 0;
+}
+
+.card input[type="checkbox"] {
+    transform: scale(1.5);
+    margin-top: 10px;
+}
+
+.btn-outline-secondary {
+    margin-left: 8px;
+}
+
+/*.custom-btn {*/
+/*    background-color: #f5f5f5; !* Light gray *!*/
+/*    border: 1px solid rgba(204, 204, 204, 0.36); !* Light gray border *!*/
+/*    transition: background-color 0.3s, border-color 0.3s;*/
+/*}*/
+
+/*.custom-btn:hover {*/
+/*    background-color: #e0e0e0; !* Slightly darker gray *!*/
+/*    border-color: #bfbfbf; !* Dark gray border *!*/
+/*}*/
+.g-0 {
+    justify-content: center;
+    align-items: center;
+}
+
+.border-bottom {
+    margin-bottom: 20px;
+}
+
+.quantity-button {
+    border: 1px solid #ced4da; /* 테두리 추가 */
+    border-radius: 5px; /* 모서리를 둥글게 */
+}
+
+.quantity-input {
+    max-width: 55px;
+    text-align: left; /* 텍스트 가운데 정렬 */
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    margin-left: 0px;
+    padding-right: 10px;
+}
+
+.me-2 {
+    margin-left: 10px;
+}
+
+.form-check {
+    display: flex;
+}
+
+.search-condition {
+    border-right: 1px solid #dee2e6; /* 오른쪽 구분선 추가 */
+    padding-right: 15px; /* 오른쪽 패딩 추가 */
+}
+
+.search-condition h5 {
+    margin-bottom: 15px; /* 제목과 아래 간격 추가 */
+}
+
+.custom-checkbox {
+    display: flex;
+    padding-top: 10px;
+}
+
+.form-check-label {
+    margin-bottom: 5px;
+}

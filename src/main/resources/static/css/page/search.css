@@ -141,6 +141,7 @@
 
 .quantity-input {
     max-width: 55px;
+    max-height: 25px;
     text-align: left; /* 텍스트 가운데 정렬 */
 }
 

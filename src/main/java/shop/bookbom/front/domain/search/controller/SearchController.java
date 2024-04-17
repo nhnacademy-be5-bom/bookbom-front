@@ -1,7 +1,6 @@
 package shop.bookbom.front.domain.search.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -15,7 +14,6 @@ import shop.bookbom.front.domain.search.dto.SearchCondition;
 import shop.bookbom.front.domain.search.dto.SearchSort;
 import shop.bookbom.front.domain.search.service.SearchService;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class SearchController {
@@ -33,10 +31,6 @@ public class SearchController {
         String searchCondition = getSearchCondition(search);
         Page<BookSearchResponse> responses =
                 searchService.searchBook(keyword, searchCondition, sortCondition, pageable);
-
-        responses.getContent().forEach(
-                response -> log.info("bookId: {}", response.getId())
-        );
         model.addAttribute("books", responses.getContent());
         model.addAttribute("currentPage", responses.getNumber());
         model.addAttribute("totalPages", responses.getTotalPages());
@@ -59,7 +53,7 @@ public class SearchController {
 
     private static String getSearchCondition(String search) {
         if (StringUtils.hasText(search)) {
-            return SearchSort.valueOf(search.toUpperCase()).name();
+            return SearchCondition.valueOf(search.toUpperCase()).name();
         }
         return SearchCondition.NONE.name();
     }

@@ -33,6 +33,7 @@ public class SearchController {
                 searchService.searchBook(keyword, searchCondition, sortCondition, pageable);
         model.addAttribute("books", responses.getContent());
         model.addAttribute("currentPage", responses.getNumber());
+        model.addAttribute("pageSize", responses.getPageable().getPageSize());
         model.addAttribute("totalPages", responses.getTotalPages());
         model.addAttribute("totalItems", responses.getTotalElements());
         model.addAttribute("size", responses.getSize());

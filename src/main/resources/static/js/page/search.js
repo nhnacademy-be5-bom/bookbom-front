@@ -1,9 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     let queryParams = new URLSearchParams(window.location.search);
     let searchCondition = queryParams.get('search');
-
     let checkboxes = document.querySelectorAll('.search-check');
-
     checkboxes.forEach(function (checkbox) {
         if (searchCondition === checkbox.id) {
             checkbox.checked = true;
@@ -11,10 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 체크박스 체크했을 때
         checkbox.addEventListener('change', function (event) {
             const keyword = queryParams.get('keyword');
-            console.log(keyword);
             let newUrl = window.location.pathname + '?keyword=' + keyword;
-            console.log("path = " + window.location.pathname);
-            console.log("newUrl = " + newUrl);
             // 체크했다면 검색 조건 붙여서 요청
             if (event.target.checked) {
                 // 다른 박스 체크 해제
@@ -105,8 +100,26 @@ document.addEventListener('DOMContentLoaded', function () {
         condition.addEventListener('click', function () {
             let sortCondition = this.id.trim();
             let currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.delete("page");
             currentUrl.searchParams.set('sorted', sortCondition);
             window.location.href = currentUrl.toString();
         });
+    });
+
+    // 페이지 크기 선택
+    let pageSizeParam = new URLSearchParams(window.location.search).get('size');
+    let pageSizeSelect = document.querySelector('.page-size');
+    if (!pageSizeParam) {
+        pageSizeSelect.value = "5";
+    } else {
+        pageSizeSelect.value = pageSizeParam;
+    }
+    pageSizeSelect.addEventListener('change', function () {
+        let selectedPageSize = this.value;
+        let currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.delete("sorted");
+        currentUrl.searchParams.delete("page");
+        currentUrl.searchParams.set('size', selectedPageSize);
+        window.location.replace(currentUrl.toString());
     });
 });

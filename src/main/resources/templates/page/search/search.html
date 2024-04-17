@@ -59,10 +59,10 @@
                     <button type="button" class="btn btn-outline-secondary">좋아요</button>
                 </div>
                 <form class="d-flex">
-                    <select class="form-select me-2" aria-label="Default select example">
-                        <option selected>5개씩 보기</option>
-                        <option value="1">10개씩 보기</option>
-                        <option value="2">20개씩 보기</option>
+                    <select class="form-select me-2 page-size" aria-label="page size select">
+                        <option value="5">5개씩 보기</option>
+                        <option value="10">10개씩 보기</option>
+                        <option value="20">20개씩 보기</option>
                     </select>
                 </form>
             </div>
@@ -74,8 +74,8 @@
         <div class="col-md-2 search-condition">
             <h5>검색 조건</h5>
             <div class="form-check">
-                <input class="form-check-input custom-checkbox search-check" type="checkbox" id="title">
-                <label class="form-check-label" for="title">도서명</label>
+                <input class="form-check-input custom-checkbox search-check" type="checkbox" id="book_title">
+                <label class="form-check-label" for="book_title">도서명</label>
             </div>
             <div class="form-check">
                 <input class="form-check-input custom-checkbox search-check" type="checkbox" id="author">
@@ -155,11 +155,11 @@
                     </div>
                 </div>
             </div>
-            <nav aria-label="Page navigation">
+            <nav aria-label="Page navigation" th:if="${totalItems > 0}">
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${currentPage - 1}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/search(keyword=${keyword}, page=${currentPage - 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -167,18 +167,19 @@
                     <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${pageNum == currentPage} ? 'active'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${pageNum}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/search(keyword=${keyword}, page=${pageNum}, size=${pageSize}, search=${search}, sorted=${sorted})}"
                            th:text="${pageNum + 1}"></a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${currentPage + 1}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/search(keyword=${keyword}, page=${currentPage + 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                 </ul>
             </nav>
+
         </div>
     </div>
 </div>

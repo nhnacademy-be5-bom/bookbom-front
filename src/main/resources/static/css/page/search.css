@@ -43,6 +43,9 @@
     width: 1.25rem;
     height: 1.25rem;
     margin-right: 10px;
+    border: 2px solid rgba(62, 65, 68, 0.02); /* 원하는 색상으로 변경하세요 */
+    border-radius: 4px; /* 테두리 모서리를 부드럽게 만들기 위해 추가 */
+    padding: 8px; /* 텍스트와 테두리 사이의 간격을 조정 */
 }
 
 .form-check-label {
@@ -148,7 +151,7 @@
 .input-group {
     display: flex;
     justify-content: center;
-    margin-left: 0px;
+    margin-left: 0;
     padding-right: 10px;
 }
 

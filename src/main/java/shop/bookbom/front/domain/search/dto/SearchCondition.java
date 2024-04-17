@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum SearchCondition {
-    TITLE("도서명"),
+    BOOK_TITLE("도서명"),
     AUTHOR("작가명"),
     PUBLISHER("출판사"),
     NONE("없음"),

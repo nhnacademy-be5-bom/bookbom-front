@@ -8,7 +8,7 @@ public enum SearchSort {
     LATEST("최신순"),
     LOWEST_PRICE("낮은가격순"),
     HIGHEST_PRICE("높은가격순"),
-    NAME("상품명순"),
+    OLDEST("상품명순"),
     NONE("없음"),
     ;
 

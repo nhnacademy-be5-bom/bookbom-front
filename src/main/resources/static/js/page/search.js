@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // 전체 선택
     let selectAllButton = document.querySelector('.select-all');
     let bookCheckboxes = document.querySelectorAll('.book-checkbox');
 
@@ -96,6 +97,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
         bookCheckboxes.forEach(function (checkbox) {
             checkbox.checked = !allChecked;
+        });
+    });
+
+    // 검색 결과 정렬
+    document.querySelectorAll('.sort-condition').forEach(condition => {
+        condition.addEventListener('click', function () {
+            let sortCondition = this.id.trim();
+            let currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('sorted', sortCondition);
+            window.location.href = currentUrl.toString();
         });
     });
 });

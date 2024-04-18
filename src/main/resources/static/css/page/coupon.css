@@ -1,0 +1,70 @@
+/* Coupon 페이지 공통 css */
+.couponContainer {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    margin: 10px;
+    padding: 10px 20px;
+}
+
+.leftContainer, .rightContainer {
+    margin: 10px; /* 화면 양 옆에 10px의 여백 추가 */
+}
+
+.leftContainer h4:hover,
+.rightContainer h4:hover {
+    color: #DEAD6F;
+}
+
+.leftContainer h2 {
+    margin-bottom: 20px;
+}
+
+.thisPage {
+    color: #DEAD6F;
+    font-weight: 600;
+}
+
+/* myCoupon 페이지 css */
+.couponContainer > * {
+    margin-bottom: 5px; /* 내부 요소들 간의 아래쪽 여백 추가 */
+    display: inline-block;
+}
+
+.couponContainer > *:not(:last-child) {
+    margin: 0px 30px; /* 내부 요소들 사이의 오른쪽 여백 추가 */
+}
+
+.couponTotalCount {
+    margin: 0px 10px;
+}
+
+/* myCoupon_detail 페이지 css */
+.couponDetailTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.couponDetailHead th {
+    padding: 8px;
+    text-align: center;
+    background-color: #f2f2f2; /* 헤더 배경색 */
+    border-bottom: 1px solid #ddd; /* 헤더 아래 테두리 */
+}
+
+.couponDetailBody td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* 각 행의 아래 테두리 */
+}
+
+.couponDetailRow:first-child td {
+    border-top: 1px solid #ddd; /* 첫 번째 행의 위 테두리 */
+}
+
+.couponDetailRow:last-child td {
+    border-bottom: none; /* 마지막 행의 아래 테두리 제거 */
+}
+
+.couponDetailRow:hover {
+    background-color: #f9f9f9; /* 마우스를 올렸을 때 배경색 */
+}

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-import shop.bookbom.front.domain.pointrate.entity.PointRate;
+import shop.bookbom.front.domain.pointrate.dto.PointRate;
 import shop.bookbom.front.domain.publisher.entity.Publisher;
 
 @Getter

@@ -12,6 +12,7 @@
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
+    <script th:src="@{/js/page/admin/point_rate.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -26,51 +27,16 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Iterate over policies -->
-        <tr th:each="policy : ${policies}">
+        <tr th:each="policy : ${policies}" th:attr="data-id=${policy.id}">
             <td th:text="${policy.name}"></td>
-            <td th:text="${policy.earnType.value}"></td>
-            <td th:text="${policy.earnType.value eq '비율' ? policy.earnPoint + '%' : policy.earnPoint + ' 포인트'}"></td>
+            <td class="earnType" th:text="${policy.earnType.value}"></td>
+            <td class="earnPoint"
+                th:text="${policy.earnType.value eq '비율' ? policy.earnPoint + '%' : policy.earnPoint + ' 포인트'}"></td>
             <td>
-                <button type="button" class="btn btn-primary" onclick="editRow()">수정</button>
+                <button type="button" class="btn btn-primary">수정</button>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <!--    <script>-->
-    <!--        function editRow(rowId) {-->
-    <!--            const row = document.getElementById(`row${rowId}`);-->
-    <!--            const columns = row.getElementsByTagName('td');-->
-
-    <!--            // 수정 가능한 입력 필드로 교체-->
-    <!--            columns[1].innerHTML = `<select class="form-select">-->
-    <!--            <option value="RATE" ${columns[1].textContent.trim() === 'RATE' ? 'selected' : ''}>RATE</option>-->
-    <!--            <option value="POINT" ${columns[1].textContent.trim() === 'POINT' ? 'selected' : ''}>POINT</option>-->
-    <!--        </select>`;-->
-    <!--            columns[2].innerHTML = `<input type="text" class="form-control" value="${columns[2].textContent.trim()}"/>`;-->
-
-    <!--            // 수정 버튼을 확인 버튼으로 변경-->
-    <!--            const editButton = row.querySelector('.btn-primary');-->
-    <!--            editButton.textContent = '확인';-->
-    <!--            editButton.classList.replace('btn-primary', 'btn-success');-->
-    <!--            editButton.setAttribute('onclick', `confirmEdit(${rowId})`);-->
-    <!--        }-->
-
-    <!--        function confirmEdit(rowId) {-->
-    <!--            const row = document.getElementById(`row${rowId}`);-->
-    <!--            const columns = row.getElementsByTagName('td');-->
-
-    <!--            // 수정된 값으로 업데이트-->
-    <!--            columns[1].textContent = columns[1].querySelector('select').value;-->
-    <!--            columns[2].textContent = columns[2].querySelector('input').value;-->
-
-    <!--            // 확인 버튼을 수정 버튼으로 변경-->
-    <!--            const confirmButton = row.querySelector('.btn-success');-->
-    <!--            confirmButton.textContent = '수정';-->
-    <!--            confirmButton.classList.replace('btn-success', 'btn-primary');-->
-    <!--            confirmButton.setAttribute('onclick', `editRow(${rowId})`);-->
-    <!--        }-->
-    <!--    </script>-->
 </div>
 </html>

@@ -1,6 +1,5 @@
 package shop.bookbom.front.domain.pointrate.dto;
 
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,5 +10,4 @@ public class PointRate {
     private String name;
     private EarnPointType earnType;
     private int earnPoint;
-    private LocalDateTime createdAt;
 }

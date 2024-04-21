@@ -14,20 +14,24 @@ import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.pointrate.adapter.PointRateAdapter;
 import shop.bookbom.front.domain.pointrate.dto.PointRate;
+import shop.bookbom.front.domain.pointrate.dto.request.PointRateUpdateRequest;
 
 @Component
 @RequiredArgsConstructor
 public class PointRateAdapterImpl implements PointRateAdapter {
     private final RestTemplate restTemplate;
     private static final ParameterizedTypeReference<CommonResponse<List<PointRate>>>
+            POINT_RATE_LIST_RESPONSE = new ParameterizedTypeReference<>() {
+    };
+    private static final ParameterizedTypeReference<CommonResponse<PointRate>>
             POINT_RATE_RESPONSE = new ParameterizedTypeReference<>() {
     };
 
     @Value("${bookbom.gateway-url}")
-    String gatewayUrl;
+    private String gatewayUrl;
 
     @Override
-    public List<PointRate> getPointPoilicies() {
+    public List<PointRate> getPointPolicies() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
@@ -36,7 +40,27 @@ public class PointRateAdapterImpl implements PointRateAdapter {
                 .toUriString();
 
         CommonResponse<List<PointRate>> response =
-                restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_RATE_RESPONSE).getBody();
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_RATE_LIST_RESPONSE).getBody();
+        if (response == null || response.getHeader().isSuccessful()) {
+            // todo 예외처리
+            throw new RuntimeException();
+        }
+        return response.getResult();
+    }
+
+    @Override
+    public PointRate updatePolicy(Long id, PointRateUpdateRequest request) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<PointRateUpdateRequest> requestEntity = new HttpEntity<>(request, httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/point-rate/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+
+        CommonResponse<PointRate> response =
+                restTemplate.exchange(url, HttpMethod.PUT, requestEntity, POINT_RATE_RESPONSE).getBody();
+
         if (response == null || response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();

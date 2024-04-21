@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-    document.querySelectorAll('.btn-primary').forEach((button) => {
+    document.querySelectorAll('.edit-policy').forEach((button) => {
+        // 버튼 클릭
         button.addEventListener('click', function () {
             const row = this.closest("tr");
             const earnType = row.querySelector(".earnType").textContent;
@@ -23,23 +24,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
             let inputBox = document.createElement("input");
             inputBox.className = "form-control";
             inputBox.type = "number";
-            inputBox.value = earnPoint;
+            inputBox.value = earnPoint.split(" ")[0];
             row.querySelector(".earnPoint").innerHTML = '';
             row.querySelector(".earnPoint").appendChild(inputBox);
 
             this.textContent = '수정 완료';
             this.removeEventListener('click', arguments.callee);
+            // 수정 완료 버튼 클릭
             this.addEventListener('click', function () {
                 let updatedEarnType = row.querySelector(".earnType select").value;
                 let updatedEarnPoint = row.querySelector(".earnPoint input").value;
 
-                // Validate input
+                // 유효성 검사
                 if (isNaN(updatedEarnPoint) || updatedEarnPoint <= 0) {
                     alert("포인트 적립률은 0보다 커야 합니다.");
                     return;
                 }
 
-                // Send fetch request to server
+                // 수정
                 fetch(`/point-rate/${id}`, {
                     method: 'PUT',
                     headers: {
@@ -52,11 +54,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Success:', data);
                         window.location.href = '/admin/point-rate';
                     })
                     .catch((error) => {
                         console.error('Error:', error);
+                        alert("에러가 발생했습니다.");
+                        window.location.href = '/admin/point-rate';
                     });
             });
         });

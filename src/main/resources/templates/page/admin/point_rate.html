@@ -9,6 +9,7 @@
 </head>
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin/point_rate.css}">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
@@ -22,18 +23,18 @@
         <tr>
             <th>포인트 적립 정책</th>
             <th>적립 방식</th>
-            <th>포인트 적립율</th>
-            <th>수정</th>
+            <th>포인트 적립률</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="policy : ${policies}" th:attr="data-id=${policy.id}">
-            <td th:text="${policy.name}"></td>
+            <td class="policy-name" th:text="${policy.name}"></td>
             <td class="earnType" th:text="${policy.earnType.value}"></td>
             <td class="earnPoint"
-                th:text="${policy.earnType.value eq '비율' ? policy.earnPoint + '%' : policy.earnPoint + ' 포인트'}"></td>
+                th:text="${policy.earnType.value eq '비율' ? policy.earnPoint + ' %' : policy.earnPoint + ' 포인트'}"></td>
             <td>
-                <button type="button" class="btn btn-primary">수정</button>
+                <button type="button" class="btn btn-primary edit-policy">수정</button>
             </td>
         </tr>
         </tbody>

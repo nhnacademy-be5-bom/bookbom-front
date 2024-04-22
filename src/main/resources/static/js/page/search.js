@@ -122,4 +122,57 @@ document.addEventListener('DOMContentLoaded', function () {
         currentUrl.searchParams.set('size', selectedPageSize);
         window.location.replace(currentUrl.toString());
     });
+
+    // 장바구니 버튼 클릭
+    document.querySelectorAll('.cart-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            // 수량 입력 필드를 찾아서 값을 가져옴
+            const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value);
+
+            // 책 ID를 가져옴
+            const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
+
+            console.log('bookId:', bookId);
+            console.log('quantity:', quantity);
+            // 요청 데이터 생성
+            const requestData = [
+                {
+                    bookId: parseInt(bookId),
+                    quantity: quantity
+                }
+            ];
+
+            // AJAX를 사용하여 POST 요청 전송
+            fetch('/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                        keyboard: false
+                    });
+                    myModal.show();
+
+                    // Redirect to cart if the user clicks "Yes"
+                    document.getElementById('goToCart').addEventListener('click', () => {
+                        window.location.href = '/cart'; // Adjust the URL to your cart page
+                    });
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // 오류 처리
+                });
+        });
+    });
 });

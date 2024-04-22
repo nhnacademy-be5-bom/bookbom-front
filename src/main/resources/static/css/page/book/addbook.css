@@ -1,0 +1,24 @@
+h1 {
+    font-size: 20px;
+    margin-top: 24px;
+    margin-bottom: 24px;
+}
+
+img {
+    height: 60px;
+}
+
+.taggenerator {
+    position: relative;
+}
+
+.taggenerator i {
+    position: absolute;
+    width: 90px;
+    height: 40px;
+    top: 0;
+    bottom: 0;
+    right: 5px;
+    margin: auto 0;
+    border-radius: 3px;
+}

@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.book.controller;
+package shop.bookbom.front.index;
 
 import feign.Headers;
 import java.util.List;
@@ -18,9 +18,15 @@ import shop.bookbom.front.domain.category.service.CategoryService;
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-public class AddBookController {
+public class AdminController {
     private final BookService bookService;
     private final CategoryService categoryService;
+
+    @GetMapping("")
+    public String showAdminMainPage() {
+
+        return "page/admin/adminMain";
+    }
 
     @GetMapping("/addbook")
     public String addBookPage(HttpServletRequest request, Model model) {

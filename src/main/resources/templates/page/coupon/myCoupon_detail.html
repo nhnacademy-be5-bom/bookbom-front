@@ -1,0 +1,63 @@
+<!DOCTYPE html >
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/coupon.css}">
+    </th:block>
+    <title>내 쿠폰함</title>
+</head>
+<body>
+<div layout:fragment="content" class="content">
+    <div class="row justify-content-center">
+        <div class="col-md-2 leftContainer">
+            <h2>내 쿠폰함</h2>
+            <a href="myCoupon"><h4>보유 쿠폰</h4></a>
+            <a href="myCouponDetail"><h4 class="thisPage">쿠폰 상세 내역</h4></a>
+        </div>
+        <div class="col-md-7 rightContainer">
+            <table class="couponDetailTable">
+                <thead class="couponDetailHead">
+                <tr class="couponDetailRow">
+                    <th>쿠폰 이름</th>
+                    <th>이용 구분</th>
+                    <th>발급/사용/만료 일자</th>
+                    <th>이용 내용</th>
+                </tr>
+                </thead>
+                <tbody class="couponDetailBody">
+                <tr class="couponDetailRow">
+                    <td>생일 쿠폰</td>
+                    <td>발급</td>
+                    <td>2024-04-01</td>
+                    <td>생일 회원 쿠폰 발급</td>
+                </tr>
+                <tr class="couponDetailRow">
+                    <td>생일 쿠폰</td>
+                    <td>발급</td>
+                    <td>2024-04-01</td>
+                    <td>생일 회원 쿠폰 발급</td>
+                </tr>
+                <tr class="couponDetailRow">
+                    <td>생일 쿠폰</td>
+                    <td>발급</td>
+                    <td>2024-04-01</td>
+                    <td>생일 회원 쿠폰 발급</td>
+                </tr>
+                <tr class="couponDetailRow">
+                    <td>생일 쿠폰</td>
+                    <td>발급</td>
+                    <td>2024-04-01</td>
+                    <td>생일 회원 쿠폰 발급</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

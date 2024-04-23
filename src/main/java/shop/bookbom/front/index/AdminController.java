@@ -14,6 +14,8 @@ import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.service.BookService;
 import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.service.CategoryService;
+import shop.bookbom.front.domain.pointrate.dto.PointRate;
+import shop.bookbom.front.domain.pointrate.service.PointRateService;
 
 @Controller
 @RequestMapping("/admin")
@@ -21,6 +23,7 @@ import shop.bookbom.front.domain.category.service.CategoryService;
 public class AdminController {
     private final BookService bookService;
     private final CategoryService categoryService;
+    private final PointRateService pointRateService;
 
     @GetMapping("")
     public String showAdminMainPage() {
@@ -48,4 +51,10 @@ public class AdminController {
         return "page/book/addbook";
     }
 
+    @GetMapping("/point-rate")
+    public String showPointPolicy(Model model) {
+        List<PointRate> pointPolicies = pointRateService.getPointPolicies();
+        model.addAttribute("policies", pointPolicies);
+        return "page/admin/point_rate";
+    }
 }

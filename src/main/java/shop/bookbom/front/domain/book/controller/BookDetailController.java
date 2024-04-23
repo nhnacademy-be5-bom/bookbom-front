@@ -24,4 +24,9 @@ public class BookDetailController {
         return "page/book/bookdetail";
     }
 
+    @GetMapping("/test")
+    public String test() {
+
+        return "page/book/bookdetail";
+    }
 }

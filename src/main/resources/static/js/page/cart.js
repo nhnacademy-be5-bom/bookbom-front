@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue -= 1;
             }
             input.value = currentValue;
+            updateCartSummaryIfChecked(this);
         });
     });
 
@@ -30,6 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             input.value = currentValue;
+            updateCartSummaryIfChecked(this);
         });
     });
 
@@ -43,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = Math.min(99, currentValue); // 최대값 99로 제한
                 this.value = currentValue;
             }
+            updateCartSummaryIfChecked(this);
         });
         // 입력 값 포커스가 해제될 때
         input.addEventListener('blur', function () {
@@ -51,9 +54,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = 0; // currentValue가 비어있거나 NaN인 경우 0으로 설정
             }
             this.value = currentValue;
+            updateCartSummaryIfChecked(this);
         });
     });
 
+    function updateCartSummaryIfChecked(element) {
+        const itemCheckbox = element.closest('tr').querySelector('.custom-control-input');
+        if (itemCheckbox.checked) {
+            updateCartSummary();
+        }
+    }
 
     // 체크박스
     const checkAllCheckbox = document.getElementById('checkAll');
@@ -64,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
         itemCheckboxes.forEach(function (checkbox) {
             checkbox.checked = checkAllCheckbox.checked;
         });
+        updateCartSummary();
     });
 
     // 개별 상품 체크박스를 클릭했을 때의 동작
@@ -74,10 +85,39 @@ document.addEventListener("DOMContentLoaded", function () {
                 return checkbox.checked;
             });
         });
+        updateCartSummary();
     });
 
+    function updateCartSummary() {
+        let totalAmount = 0;
+        let totalDiscount = 0;
+        let shippingFee = 3000;
 
+        itemCheckboxes.forEach(function (checkbox) {
+            if (checkbox.checked) {
+                const itemRow = checkbox.closest('tr');
+                const price = parseInt(itemRow.querySelector('.book-cost').textContent.replace('원', ''));
+                const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', ''));
+                const quantity = parseInt(itemRow.querySelector('.quantity-input').value);
+
+                totalAmount += discountPrice * quantity;
+                totalDiscount += (price - discountPrice) * quantity;
+            }
+        });
+
+        if (totalAmount >= 30000 || totalAmount === 0) {
+            shippingFee = 0;
+        }
+
+        const paymentDue = totalAmount - totalDiscount + shippingFee;
+
+        document.getElementById('totalAmount').textContent = totalAmount + '원';
+        document.getElementById('shippingFee').textContent = shippingFee + '원';
+        document.getElementById('productDiscount').textContent = totalDiscount + '원';
+        document.getElementById('paymentDue').textContent = paymentDue + '원';
+    }
 });
+
 function redirectToURL(url) {
     window.location.href = url; // 해당 URL로 이동
 }

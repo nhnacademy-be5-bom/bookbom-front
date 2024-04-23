@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.cart.dto.CartAddRequest;
+import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
 import shop.bookbom.front.domain.cart.service.CartService;
 
 @RestController

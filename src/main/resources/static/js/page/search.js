@@ -133,12 +133,20 @@ document.addEventListener('DOMContentLoaded', function () {
             // 책 ID를 가져옴
             const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
 
-            console.log('bookId:', bookId);
-            console.log('quantity:', quantity);
+            // 책 정보를 가져옴
+            const thumbnail = this.closest('.border-bottom').querySelector('.book-thumbnail').src;
+            const title = this.closest('.border-bottom').querySelector('.book-title').textContent;
+            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost').textContent.replace('원', ''));
+            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost').textContent.replace('원', ''));
+
             // 요청 데이터 생성
             const requestData = [
                 {
                     bookId: parseInt(bookId),
+                    thumbnail: thumbnail,
+                    title: title,
+                    price: price,
+                    discountPrice: discountPrice,
                     quantity: quantity
                 }
             ];
@@ -153,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error('네트워크 에러가 발생했습니다.');
                     }
                     return response.json();
                 })
@@ -163,15 +171,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     });
                     myModal.show();
 
-                    // Redirect to cart if the user clicks "Yes"
                     document.getElementById('goToCart').addEventListener('click', () => {
-                        window.location.href = '/cart'; // Adjust the URL to your cart page
+                        window.location.href = '/cart';
                     });
 
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    // 오류 처리
                 });
         });
     });

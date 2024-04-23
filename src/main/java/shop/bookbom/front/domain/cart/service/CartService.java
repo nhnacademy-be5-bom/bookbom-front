@@ -1,7 +1,9 @@
 package shop.bookbom.front.domain.cart.service;
 
 import java.util.List;
-import shop.bookbom.front.domain.cart.dto.CartAddRequest;
+import shop.bookbom.front.domain.cart.dto.CartItemDto;
+import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
+import shop.bookbom.front.domain.cart.dto.response.CartInfoResponse;
 
 public interface CartService {
     /**
@@ -12,4 +14,12 @@ public interface CartService {
      * @param isLoggedIn 로그인 여부
      */
     void addToCart(String id, List<CartAddRequest> requests, boolean isLoggedIn);
+
+    /**
+     * 장바구니 상품을 조회하는 메서드입니다.
+     *
+     * @param id 회원 ID(비회원인 경우는 UUID)
+     * @return CartResponse
+     */
+    List<CartItemDto> getCart(String id);
 }

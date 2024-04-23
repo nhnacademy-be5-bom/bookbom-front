@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.common.exception.ErrorCode;
@@ -36,11 +35,12 @@ public class CartRestController {
     @PostMapping("/cart")
     public CommonResponse<Void> addToCart(
             @CookieValue(name = "cart", required = false) String cartCookie,
-            @RequestParam(value = "userId", required = false) String userId,
             @RequestBody List<CartAddRequest> requests,
             HttpServletResponse response
     ) {
-        boolean isLoggedIn = userId != null;
+        // todo 로그인 처리
+        boolean isLoggedIn = false;
+        String userId = null;
         if (isLoggedIn) {
             addCartCookie(response, userId, 30);
         } else {
@@ -60,16 +60,16 @@ public class CartRestController {
      * 장바구니 상품 삭제 메서드입니다.
      *
      * @param cartCookie 장바구니 쿠키
-     * @param userId     사용자 ID
      * @param itemId     상품 ID
      */
     @DeleteMapping("/cart/items/{id}")
     public CommonResponse<Void> deleteFromCart(
             @CookieValue(name = "cart", required = false) String cartCookie,
-            @RequestParam(value = "userId", required = false) String userId,
             @PathVariable(value = "id") Long itemId
     ) {
-        boolean isLoggedIn = userId != null;
+        // todo 로그인 처리
+        boolean isLoggedIn = false;
+        String userId = null;
         if (cartCookie != null) {
             userId = cartCookie;
         }
@@ -80,15 +80,16 @@ public class CartRestController {
     @PutMapping("/cart/items/{id}")
     public CommonResponse<Void> updateItem(
             @CookieValue(name = "cart", required = false) String cartCookie,
-            @RequestParam(value = "userId", required = false) String userId,
             @PathVariable(value = "id") Long itemId,
             @RequestBody CartUpdateRequest request
     ) {
+        // todo 로그인 처리
+        boolean isLoggedIn = false;
+        String userId = null;
         int quantity = request.getQuantity();
         if (quantity < 1) {
             return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
         }
-        boolean isLoggedIn = userId != null;
         if (cartCookie != null) {
             userId = cartCookie;
         }

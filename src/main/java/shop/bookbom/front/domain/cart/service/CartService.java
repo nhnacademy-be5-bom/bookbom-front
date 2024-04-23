@@ -20,7 +20,7 @@ public interface CartService {
      * @param id 회원 ID(비회원인 경우는 UUID)
      * @return CartResponse
      */
-    List<CartItemDto> getCart(String id);
+    List<CartItemDto> getCart(String id, boolean isLoggedIn);
 
     /**
      * 장바구니 상품을 삭제하는 메서드입니다.
@@ -31,5 +31,13 @@ public interface CartService {
      */
     void deleteItem(String userId, Long itemId, boolean isLoggedIn);
 
+    /**
+     * 장바구니 상품을 수정하는 메서드입니다.
+     *
+     * @param userId     회원 ID(비회원인 경우는 UUID)
+     * @param itemId     상품 ID
+     * @param quantity   상품 수량
+     * @param isLoggedIn 로그인 여부
+     */
     void updateItem(String userId, Long itemId, int quantity, boolean isLoggedIn);
 }

@@ -155,45 +155,47 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: 'DELETE',
             })
                 .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`에러가 발생했습니다.`);
-                    }
                     return response.json();
                 })
                 .then(data => {
-                    console.log('아이템이 성공적으로 삭제되었습니다.');
-                    itemRow.remove();
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+                    if (data.header.resultMessage === "SUCCESS") {
+                        console.log("상품 삭제 성공");
+                        itemRow.remove();
+                    } else {
+                        console.error("상품 삭제 실패: " + data.header.resultMessage);
+                        alert("장바구니 상품 삭제에 실패하였습니다. 나중에 다시 시도해주세요.")
+                    }
                 });
         });
+
+        // 장바구니 수량 수정
+        function updateQuantity(id, updateQuantity, previousQuantity) {
+            fetch(`/cart/items/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({quantity: updateQuantity})
+            })
+                .then(response => {
+                    console.log("업데이트 요청");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.header.resultMessage === "SUCCESS") {
+                        console.log("수량 업데이트 성공");
+                    } else {
+                        console.error("수량 업데이트 실패: " + data.header.resultMessage);
+                        // 실패한 경우 이전 수량으로 복원
+                        const input = document.querySelector(`.quantity-input[data-item="${id}"]`);
+                        input.value = previousQuantity;
+                    }
+                })
+        }
     });
-
-    // 장바구니 수량 수정
-    function updateQuantity(id, updateQuantity) {
-        fetch(`/cart/items/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({quantity: updateQuantity})
-        })
-            .then(response => {
-                console.log("업데이트 요청");
-                return response.json();
-            })
-            .then(data => {
-                if (data.header.resultMessage === "SUCCESS") {
-                    console.log("수량 업데이트 성공");
-                } else {
-                    console.error("수량 업데이트 실패: " + data.header.resultMessage);
-                }
-            })
-    }
 });
-
 
 function redirectToURL(url) {
     window.location.href = url; // 해당 URL로 이동
 }
+

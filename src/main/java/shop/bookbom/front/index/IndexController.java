@@ -22,10 +22,7 @@ public class IndexController {
         return "page/cart/cart";
     }
 
-    @GetMapping("/selectWrapper")
-    public String showSelectWrpperPage() {
-        return "page/order/selectWrapper";
-    }
+
 
     @GetMapping("/ordersheet")
     public String showOrderPage() {

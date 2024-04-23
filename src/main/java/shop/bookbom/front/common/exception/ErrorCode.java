@@ -20,7 +20,9 @@ public enum ErrorCode {
     CART_ITEM_NOT_FOUND(400, "해당 장바구니 상품이 존재하지 않습니다."),
     CART_ITEM_INVALID_QUANTITY(400, "장바구니 상품 수량이 올바르지 않습니다."),
     // member
-    MEMBER_NOT_FOUND(400, "해당 회원이 존재하지 않습니다.");
+    MEMBER_NOT_FOUND(400, "해당 회원이 존재하지 않습니다."),
+    //order
+    BEFORE_ORDER_IS_FAILED(400, "주문 전, 책정보를 불러오지 못했습니다. 다시 시도해주세요.");
     private final int code;
     private final String message;
 }

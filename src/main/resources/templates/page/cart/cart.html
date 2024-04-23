@@ -37,9 +37,9 @@
             <td class="align-middle">
                 <div class="d-flex align-items-center">
                     <div class="custom-control custom-checkbox me-2">
-                        <input class="custom-control-input item-check" type="checkbox" th:id="'item' + ${item.bookId}"
+                        <input class="custom-control-input item-check" type="checkbox" th:id="${item.bookId}"
                                th:value="${item.bookId}">
-                        <label class="custom-control-label" th:for="'item' + ${item.bookId}"></label>
+                        <label class="custom-control-label" th:for="${item.bookId}"></label>
                     </div>
                     <img th:src="${item.thumbnail}" class="img-thumbnail me-3" th:alt="${item.title}">
                     <div>
@@ -59,13 +59,13 @@
                     <!--  수량 버튼 -->
                     <div class="quantity-input-group">
                         <button class="btn btn-outline-secondary quantity-decrease" type="button"
-                                th:data-item="'item' + ${item.bookId}">-
+                                th:data-item="${item.bookId}">-
                         </button>
                         <input type="number" min="1" max="99" class="form-control quantity-input"
                                th:value="${item.quantity}"
-                               th:data-item="'item' + ${item.bookId}">
+                               th:data-item="${item.bookId}">
                         <button class="btn btn-outline-secondary quantity-increase" type="button"
-                                th:data-item="'item' + ${item.bookId}">+
+                                th:data-item="${item.bookId}">+
                         </button>
                     </div>
                 </div>

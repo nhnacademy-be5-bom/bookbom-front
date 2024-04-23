@@ -10,14 +10,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const input = document.querySelector(`.quantity-input[data-item="${itemID}"]`);
             // 10진수 숫자로 변환
             let currentValue = parseInt(input.value, 10);
-            if (isNaN(currentValue)) {
-                currentValue = 1; // currentValue가 비어있거나 NaN인 경우 1로 설정
-            } else if (currentValue > 1) {
-                currentValue -= 1;
+            let newValue = currentValue;
+            if (isNaN(currentValue) || currentValue <= 1) {
+                newValue = 1;
+            } else {
+                newValue -= 1;
             }
-            input.value = currentValue;
-            updateItemTotal(this);
-            updateCartSummaryIfChecked(this);
+            input.value = newValue;
+            if (newValue !== currentValue) { // 변경된 값과 이전 값이 다를 때만 업데이트
+                updateQuantity(itemID, newValue);
+                updateItemTotal(this);
+                updateCartSummaryIfChecked(this);
+            }
         });
     });
 
@@ -27,17 +31,18 @@ document.addEventListener("DOMContentLoaded", function () {
             const itemID = this.getAttribute('data-item');
             const input = document.querySelector(`.quantity-input[data-item="${itemID}"]`);
             let currentValue = parseInt(input.value, 10);
+            let newValue = currentValue;
             if (isNaN(currentValue)) {
-                currentValue = 1;
-            } else {
-                currentValue += 1;
-                if (currentValue > 99) {
-                    currentValue = 99;
-                }
+                newValue = 1;
+            } else if (currentValue < 99) {
+                newValue += 1;
             }
-            input.value = currentValue;
-            updateItemTotal(this);
-            updateCartSummaryIfChecked(this);
+            input.value = newValue;
+            if (newValue !== currentValue) { // 변경된 값과 이전 값이 다를 때만 업데이트
+                updateItemTotal(this);
+                updateCartSummaryIfChecked(this);
+                updateQuantity(itemID, newValue);
+            }
         });
     });
 
@@ -47,20 +52,27 @@ document.addEventListener("DOMContentLoaded", function () {
         input.addEventListener('input', function () {
             let currentValue = parseInt(this.value, 10);
             if (!isNaN(currentValue)) {
-                currentValue = Math.max(0, currentValue);
+                currentValue = Math.max(1, currentValue);
                 currentValue = Math.min(99, currentValue); // 최대값 99로 제한
                 this.value = currentValue;
             }
         });
         // 입력 값 포커스가 해제될 때
         input.addEventListener('blur', function () {
+            let id = this.getAttribute('data-item');
+            let previousValue = parseInt(this.getAttribute('data-previous-value'), 10) || 1;
             let currentValue = parseInt(this.value, 10);
             if (isNaN(currentValue)) {
-                currentValue = 0; // currentValue가 비어있거나 NaN인 경우 0으로 설정
+                currentValue = 1; // currentValue가 비어있거나 NaN인 경우 0으로 설정
             }
             this.value = currentValue;
-            updateItemTotal(this);
-            updateCartSummaryIfChecked(this);
+            if (currentValue !== previousValue) { // 변경된 값과 이전 값이 다를 때만 업데이트
+                updateItemTotal(this);
+                updateCartSummaryIfChecked(this);
+                updateQuantity(id, currentValue);
+            }
+            // 이전 값 업데이트
+            this.setAttribute('data-previous-value', currentValue);
         });
     });
 
@@ -149,7 +161,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Item successfully deleted');
+                    console.log('아이템이 성공적으로 삭제되었습니다.');
                     itemRow.remove();
                 })
                 .catch(error => {
@@ -157,6 +169,28 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
         });
     });
+
+    // 장바구니 수량 수정
+    function updateQuantity(id, updateQuantity) {
+        fetch(`/cart/items/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({quantity: updateQuantity})
+        })
+            .then(response => {
+                console.log("업데이트 요청");
+                return response.json();
+            })
+            .then(data => {
+                if (data.header.resultMessage === "SUCCESS") {
+                    console.log("수량 업데이트 성공");
+                } else {
+                    console.error("수량 업데이트 실패: " + data.header.resultMessage);
+                }
+            })
+    }
 });
 
 

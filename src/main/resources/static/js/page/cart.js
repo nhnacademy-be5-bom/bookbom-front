@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // 체크박스
+    const checkAllCheckbox = document.getElementById('checkAll');
+    const itemCheckboxes = document.querySelectorAll('.custom-control-input');
+
     // 수량 감소 버튼 클릭
     document.querySelectorAll('.quantity-decrease').forEach(button => {
         button.addEventListener('click', function () {
@@ -12,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue -= 1;
             }
             input.value = currentValue;
+            updateItemTotal(this);
             updateCartSummaryIfChecked(this);
         });
     });
@@ -31,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             }
             input.value = currentValue;
+            updateItemTotal(this);
             updateCartSummaryIfChecked(this);
         });
     });
@@ -45,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = Math.min(99, currentValue); // 최대값 99로 제한
                 this.value = currentValue;
             }
-            updateCartSummaryIfChecked(this);
         });
         // 입력 값 포커스가 해제될 때
         input.addEventListener('blur', function () {
@@ -54,20 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentValue = 0; // currentValue가 비어있거나 NaN인 경우 0으로 설정
             }
             this.value = currentValue;
+            updateItemTotal(this);
             updateCartSummaryIfChecked(this);
         });
     });
 
-    function updateCartSummaryIfChecked(element) {
-        const itemCheckbox = element.closest('tr').querySelector('.custom-control-input');
-        if (itemCheckbox.checked) {
-            updateCartSummary();
-        }
-    }
-
-    // 체크박스
-    const checkAllCheckbox = document.getElementById('checkAll');
-    const itemCheckboxes = document.querySelectorAll('.custom-control-input');
 
     // 전체 선택 체크박스를 클릭했을 때
     checkAllCheckbox.addEventListener('change', function () {
@@ -84,9 +80,19 @@ document.addEventListener("DOMContentLoaded", function () {
             checkAllCheckbox.checked = Array.from(itemCheckboxes).every(function (checkbox) {
                 return checkbox.checked;
             });
+            updateCartSummary();
         });
-        updateCartSummary();
     });
+
+    function updateCartSummaryIfChecked(element) {
+        const itemRow = element.closest('tr');
+        if (itemRow) {
+            const itemCheckbox = itemRow.querySelector('.item-check');
+            if (itemCheckbox && itemCheckbox.checked) {
+                updateCartSummary();
+            }
+        }
+    }
 
     function updateCartSummary() {
         let totalAmount = 0;
@@ -94,14 +100,16 @@ document.addEventListener("DOMContentLoaded", function () {
         let shippingFee = 3000;
 
         itemCheckboxes.forEach(function (checkbox) {
-            if (checkbox.checked) {
-                const itemRow = checkbox.closest('tr');
+            const itemRow = checkbox.closest('tr');
+            if (itemRow) {
                 const price = parseInt(itemRow.querySelector('.book-cost').textContent.replace('원', ''));
                 const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', ''));
                 const quantity = parseInt(itemRow.querySelector('.quantity-input').value);
 
-                totalAmount += discountPrice * quantity;
-                totalDiscount += (price - discountPrice) * quantity;
+                if (checkbox.checked) {
+                    totalAmount += price * quantity;
+                    totalDiscount += discountPrice * quantity;
+                }
             }
         });
 
@@ -109,14 +117,48 @@ document.addEventListener("DOMContentLoaded", function () {
             shippingFee = 0;
         }
 
-        const paymentDue = totalAmount - totalDiscount + shippingFee;
+        const paymentDue = totalAmount - (totalAmount - totalDiscount) + shippingFee;
 
         document.getElementById('totalAmount').textContent = totalAmount + '원';
         document.getElementById('shippingFee').textContent = shippingFee + '원';
-        document.getElementById('productDiscount').textContent = totalDiscount + '원';
+        document.getElementById('productDiscount').textContent = totalAmount - totalDiscount + '원';
         document.getElementById('paymentDue').textContent = paymentDue + '원';
     }
+
+    function updateItemTotal(element) {
+        const itemRow = element.closest('tr');
+        const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', ''));
+        const quantity = parseInt(itemRow.querySelector('.quantity-input').value);
+        const itemTotal = itemRow.querySelector('#item-total');
+
+        itemTotal.textContent = (discountPrice * quantity) + '원';
+    }
+
+    // 장바구니 상품 삭제
+    document.querySelectorAll('.item-delete').forEach(button => {
+        button.addEventListener('click', function () {
+            const itemRow = this.closest('tr');
+            const itemID = this.closest('tr').querySelector('.item-check').value;
+            fetch(`/cart/items/${itemID}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`에러가 발생했습니다.`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Item successfully deleted');
+                    itemRow.remove();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    });
 });
+
 
 function redirectToURL(url) {
     window.location.href = url; // 해당 URL로 이동

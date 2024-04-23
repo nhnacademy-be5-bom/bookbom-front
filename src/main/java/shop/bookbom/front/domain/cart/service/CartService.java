@@ -3,7 +3,6 @@ package shop.bookbom.front.domain.cart.service;
 import java.util.List;
 import shop.bookbom.front.domain.cart.dto.CartItemDto;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
-import shop.bookbom.front.domain.cart.dto.response.CartInfoResponse;
 
 public interface CartService {
     /**
@@ -22,4 +21,15 @@ public interface CartService {
      * @return CartResponse
      */
     List<CartItemDto> getCart(String id);
+
+    /**
+     * 장바구니 상품을 삭제하는 메서드입니다.
+     *
+     * @param userId     회원 ID(비회원인 경우는 UUID)
+     * @param itemId     상품 ID
+     * @param isLoggedIn 로그인 여부
+     */
+    void deleteItem(String userId, Long itemId, boolean isLoggedIn);
+
+    void updateItem(String userId, Long itemId, int quantity, boolean isLoggedIn);
 }

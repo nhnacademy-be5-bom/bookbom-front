@@ -55,7 +55,7 @@ public class CartItemDto implements Serializable {
                 .build();
     }
 
-    public void addQuantity(int quantity) {
-        this.quantity += quantity;
+    public void updateQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

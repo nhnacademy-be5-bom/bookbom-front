@@ -1,8 +1,8 @@
 package shop.bookbom.front.domain.cart.service.impl;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
@@ -33,7 +33,7 @@ public class CartServiceImpl implements CartService {
             String bookIdKey = String.valueOf(req.getBookId());
             CartItemDto cartItemDto = (CartItemDto) redisHash.get(key, bookIdKey);
             if (cartItemDto != null) {
-                cartItemDto.addQuantity(cartItemDto.getQuantity() + req.getQuantity());
+                cartItemDto.updateQuantity(cartItemDto.getQuantity() + req.getQuantity());
                 redisHash.put(key, bookIdKey, cartItemDto);
                 return;
             }
@@ -46,6 +46,10 @@ public class CartServiceImpl implements CartService {
                     req.getDiscountPrice(),
                     req.getQuantity());
             redisHash.put(key, bookIdKey, cartItemDto);
+            // 만료기간 3일
+            if (!isLoggedIn) {
+                redisTemplate.expire(key, 3, TimeUnit.DAYS);
+            }
         });
     }
 
@@ -56,5 +60,23 @@ public class CartServiceImpl implements CartService {
         return entries.values().stream()
                 .map(CartItemDto.class::cast)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteItem(String userId, Long itemId, boolean isLoggedIn) {
+        String key = "cart:" + userId;
+        redisHash.delete(key, String.valueOf(itemId));
+    }
+
+    @Override
+    public void updateItem(String userId, Long itemId, int quantity, boolean isLoggedIn) {
+        String key = "cart:" + userId;
+        String bookIdKey = String.valueOf(itemId);
+        CartItemDto cartItemDto = (CartItemDto) redisHash.get(key, bookIdKey);
+        if (cartItemDto == null) {
+            return;
+        }
+        cartItemDto.updateQuantity(quantity);
+        redisHash.put(key, bookIdKey, cartItemDto);
     }
 }

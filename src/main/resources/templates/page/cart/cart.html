@@ -37,15 +37,16 @@
             <td class="align-middle">
                 <div class="d-flex align-items-center">
                     <div class="custom-control custom-checkbox me-2">
-                        <input class="custom-control-input" type="checkbox" th:id="'item' + ${item.bookId}" th:value="${item.bookId}">
+                        <input class="custom-control-input item-check" type="checkbox" th:id="'item' + ${item.bookId}"
+                               th:value="${item.bookId}">
                         <label class="custom-control-label" th:for="'item' + ${item.bookId}"></label>
                     </div>
                     <img th:src="${item.thumbnail}" class="img-thumbnail me-3" th:alt="${item.title}">
                     <div>
                         <div th:text="${item.title}"></div>
                         <div>
-                            <span class="fw-bold" th:text="${item.discountPrice} + '원'"></span>
-                            <span class="text-muted original-price" th:text="${item.price} + '원'"></span>
+                            <span class="fw-bold book-discount-cost" th:text="${item.discountPrice} + '원'"></span>
+                            <span class="text-muted original-price book-cost" th:text="${item.price} + '원'"></span>
                         </div>
                     </div>
                 </div>
@@ -53,18 +54,25 @@
             <td class="text-center align-middle">
                 <div class="d-flex flex-column align-items-center">
                     <!-- 상품 가격 -->
-                    <span class="fw-bold mb-2" th:text="${item.discountPrice} + '원'"></span>
+                    <span class="fw-bold mb-2" id="item-total"
+                          th:text="${item.discountPrice} * ${item.quantity}+ '원'"></span>
                     <!--  수량 버튼 -->
                     <div class="quantity-input-group">
-                        <button class="btn btn-outline-secondary quantity-decrease" type="button" th:data-item="'item' + ${item.bookId}">-</button>
-                        <input type="text" class="form-control quantity-input" th:value="${item.quantity}" th:data-item="'item' + ${item.bookId}">
-                        <button class="btn btn-outline-secondary quantity-increase" type="button" th:data-item="'item' + ${item.bookId}">+</button>
+                        <button class="btn btn-outline-secondary quantity-decrease" type="button"
+                                th:data-item="'item' + ${item.bookId}">-
+                        </button>
+                        <input type="number" min="1" max="99" class="form-control quantity-input"
+                               th:value="${item.quantity}"
+                               th:data-item="'item' + ${item.bookId}">
+                        <button class="btn btn-outline-secondary quantity-increase" type="button"
+                                th:data-item="'item' + ${item.bookId}">+
+                        </button>
                     </div>
                 </div>
             </td>
             <!--  상품 삭제 -->
             <td class="align-middle">
-                <button type="button" class="btn btn-danger">삭제</button>
+                <button type="button" class="btn btn-danger item-delete">삭제</button>
             </td>
         </tr>
         </tbody>

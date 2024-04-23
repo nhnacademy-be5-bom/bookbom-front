@@ -6,6 +6,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +41,20 @@ public class CartRestController {
         }
 
         cartService.addToCart(userId, requests, isLoggedIn);
+        return CommonResponse.success();
+    }
+
+    @DeleteMapping("/cart/items/{id}")
+    public CommonResponse<Void> deleteFromCart(
+            @CookieValue(name = "cart", required = false) String cartCookie,
+            @RequestParam(value = "userId", required = false) String userId,
+            @PathVariable(value = "id") Long itemId
+    ) {
+        boolean isLoggedIn = userId != null;
+        if (cartCookie != null) {
+            userId = cartCookie;
+        }
+        cartService.deleteItem(userId, itemId, isLoggedIn);
         return CommonResponse.success();
     }
 

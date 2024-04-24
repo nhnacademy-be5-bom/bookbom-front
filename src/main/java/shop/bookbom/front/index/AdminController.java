@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.book.controller;
+package shop.bookbom.front.index;
 
 import feign.Headers;
 import java.util.List;
@@ -14,13 +14,22 @@ import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.service.BookService;
 import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.service.CategoryService;
+import shop.bookbom.front.domain.pointrate.dto.PointRate;
+import shop.bookbom.front.domain.pointrate.service.PointRateService;
 
 @Controller
 @RequestMapping("/admin")
 @RequiredArgsConstructor
-public class AddBookController {
+public class AdminController {
     private final BookService bookService;
     private final CategoryService categoryService;
+    private final PointRateService pointRateService;
+
+    @GetMapping("")
+    public String showAdminMainPage() {
+
+        return "page/admin/adminMain";
+    }
 
     @GetMapping("/addbook")
     public String addBookPage(HttpServletRequest request, Model model) {
@@ -42,4 +51,10 @@ public class AddBookController {
         return "page/book/addbook";
     }
 
+    @GetMapping("/point-rate")
+    public String showPointPolicy(Model model) {
+        List<PointRate> pointPolicies = pointRateService.getPointPolicies();
+        model.addAttribute("policies", pointPolicies);
+        return "page/admin/point_rate";
+    }
 }

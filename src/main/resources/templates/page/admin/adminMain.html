@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>북봄 관리자 페이지</title>
+    <link rel="stylesheet" href="../../../css/page/adminMain.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="sidebar">
+        <h2>메뉴</h2>
+        <ul>
+            <li class="admin-menu"><a href="#book-management">도서관리 <i class="fas fa-chevron-right" style="transform: rotate(90deg);"></i> </a>
+                <ul class="sub-menu">
+                    <li><a href="/admin/addbook">책 등록</a></li>
+                    <li><a href="#book-modification">책 수정</a></li>
+                </ul>
+            </li>
+            <li class="admin-menu"><a href="#order-management">주문 관리</a></li>
+            <li class="admin-menu"><a href="#coupon-management">쿠폰 관리 <i class="fas fa-chevron-right" style="transform: rotate(90deg);"></i> </a>
+                <ul class="sub-menu">
+                    <li><a href="#coupon-policy">쿠폰 정책</a></li>
+                    <li><a href="#coupon-issuance">쿠폰 발급</a></li>
+                </ul>
+            </li>
+            <li class="admin-menu"><a href="#point-management">포인트 관리 <i class="fas fa-chevron-right" style="transform: rotate(90deg);"></i></a>
+                <ul class="sub-menu">
+                    <li><a href="#point-policy">포인트 정책</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="main-content">
+        <!-- 검색 기능 추가 -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="검색어를 입력하세요..." style="width: 1000px">
+            <button onclick="searchContent()">검색</button>
+        </div>
+        <div>
+            <label style="font-size: 50px">관리자 페이지 입니다</label>
+        </div>
+
+
+    </div>
+</div>
+
+<script src="../../../js/page/AdminMain.js"></script>
+</body>
+</html>

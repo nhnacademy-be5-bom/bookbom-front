@@ -16,7 +16,9 @@ import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.cart.adapter.CartAdapter;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
+import shop.bookbom.front.domain.cart.dto.request.CartUpdateRequest;
 import shop.bookbom.front.domain.cart.dto.response.CartInfoResponse;
+import shop.bookbom.front.domain.cart.dto.response.CartUpdateResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +27,12 @@ public class CartAdapterImpl implements CartAdapter {
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonListResponse<Long>> CART_ITEM_IDS_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<CartUpdateResponse>> CART_UPDATE_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
     private final RestTemplate restTemplate;
@@ -64,18 +72,61 @@ public class CartAdapterImpl implements CartAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
 
-        CommonResponse<CartInfoResponse> response =
-                restTemplate.exchange(
-                                url,
-                                HttpMethod.GET,
-                                requestEntity,
-                                CART_INFO_RESPONSE)
-                        .getBody();
+        CommonResponse<CartInfoResponse> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestEntity,
+                        CART_INFO_RESPONSE)
+                .getBody();
 
         if (response == null || response.getHeader().getIsSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
         return response.getResult();
+    }
+
+    @Override
+    public CartUpdateResponse updateCart(Long id, int quantity) {
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts/items/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<CartUpdateRequest> requestEntity = new HttpEntity<>(new CartUpdateRequest(quantity), httpHeaders);
+
+        CommonResponse<CartUpdateResponse> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestEntity,
+                        CART_UPDATE_RESPONSE)
+                .getBody();
+
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            // todo 예외처리
+            throw new RuntimeException();
+        }
+        return response.getResult();
+    }
+
+    @Override
+    public void deleteCart(Long id) {
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts/items/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        CommonResponse<Void> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestEntity,
+                        COMMON_RESPONSE)
+                .getBody();
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            // todo 예외처리
+            throw new RuntimeException();
+        }
     }
 }

@@ -2,7 +2,9 @@ package shop.bookbom.front.domain.cart.adapter;
 
 import java.util.List;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
+import shop.bookbom.front.domain.cart.dto.request.CartUpdateRequest;
 import shop.bookbom.front.domain.cart.dto.response.CartInfoResponse;
+import shop.bookbom.front.domain.cart.dto.response.CartUpdateResponse;
 
 public interface CartAdapter {
     /**
@@ -19,4 +21,18 @@ public interface CartAdapter {
      * @return CartInfoResponse 장바구니 상품 ID, 수량
      */
     CartInfoResponse getCart(Long userId);
+
+    /**
+     * 장바구니에서 상품 수량을 변경하는 메서드입니다.
+     * @param id 장바구니 상품 ID
+     * @param quantity 상품 수량
+     * @return CartUpdateResponse
+     */
+    CartUpdateResponse updateCart(Long id, int quantity);
+
+    /**
+     * 장바구니에서 상품을 삭제하는 메서드입니다.
+     * @param id 장바구니 상품 ID
+     */
+    void deleteCart(Long id);
 }

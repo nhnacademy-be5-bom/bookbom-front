@@ -63,6 +63,12 @@ public class CartServiceImpl implements CartService {
     public void deleteItem(String userId, Long itemId, boolean isLoggedIn) {
         String key = "cart:" + userId;
         redisHash.delete(key, String.valueOf(itemId));
+        if (isLoggedIn) {
+            cartAdapter.deleteCart(itemId);
+            redisTemplate.expire(key, 30, TimeUnit.DAYS);
+        } else {
+            redisTemplate.expire(key, 3, TimeUnit.DAYS);
+        }
     }
 
     @Override
@@ -75,6 +81,12 @@ public class CartServiceImpl implements CartService {
         }
         cartItemDto.updateQuantity(quantity);
         redisHash.put(key, bookIdKey, cartItemDto);
+        if (isLoggedIn) {
+            cartAdapter.updateCart(itemId, quantity);
+            redisTemplate.expire(key, 30, TimeUnit.DAYS);
+        } else {
+            redisTemplate.expire(key, 3, TimeUnit.DAYS);
+        }
     }
 
     /**

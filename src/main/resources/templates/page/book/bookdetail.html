@@ -61,7 +61,7 @@
                                 </span>
                             </div>
 
-                            <span class="text-success ms-2" style="color: #198754 !important"
+                            <span id="bookStock" class="text-success ms-2" style="color: #198754 !important"
                                   th:text="|${bookDetail.getStock()}권 남음|"></span>
                         </div>
 
@@ -98,9 +98,13 @@
                                             id="button-addon1" data-mdb-ripple-color="dark">
                                         <i class="fas fa-minus"></i>
                                     </button>
+
                                     <input type="text" class="form-control text-center border border-secondary"
-                                           placeholder="1" aria-label="Example text with button addon"
+                                           id="bookQuantity" name="bookQuantity" value="0" placeholder="0"
+                                           aria-label="수량"
                                            aria-describedby="button-addon1"/>
+                                    <input type="hidden" name="bookId" th:value="${bookDetail.getId()}"/>
+
                                     <button class="btn btn-white border border-secondary px-3" type="button"
                                             id="button-addon2" data-mdb-ripple-color="dark">
                                         <i class="fas fa-plus"></i>
@@ -108,10 +112,15 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-warning shadow-0"> 즉시구매 </a>
-                        <a href="#" class="btn btn-primary shadow-0" style="padding: 0.375rem 0.75rem !important;">
+
+                        <!-- 책 수량=@RequestParam "bookQuantity"/ 책 id=@RequestParam "bookId" -->
+                        <a th:href="@{/shop/주문페이지}" class="btn btn-warning shadow-0"> 즉시구매 </a>
+
+                        <a th:href="@{/shop/장바구니페이지}" class="btn btn-primary shadow-0"
+                           style="padding: 0.375rem 0.75rem !important;">
                             <i class="me-1 fa fa-shopping-basket"></i>장바구니
                         </a>
+
                         <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
                                 class="me-1 fa fa-heart fa-lg"></i></a>
                     </div>

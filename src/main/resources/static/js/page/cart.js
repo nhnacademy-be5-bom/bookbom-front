@@ -193,9 +193,41 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
         }
     });
-});
 
-function redirectToURL(url) {
-    window.location.href = url; // 해당 URL로 이동
-}
+    // 주문 폼 생성
+    document.querySelector('.order-btn').addEventListener('click', function () {
+        const checkedItems = document.querySelectorAll('.item-check:checked');
+
+        if (checkedItems.length === 0) {
+            alert("주문하실 상품을 선택해주세요.");
+            return;
+        }
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/selectWrapper';
+
+        checkedItems.forEach((item, index) => {
+            const bookId = item.value;
+            const quantityInput = document.querySelector(`.quantity-input[data-item='${bookId}']`);
+            const quantity = quantityInput.value;
+
+
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `beforeOrderRequests[${index}].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
+
+
+            const quantityInputHidden = document.createElement('input');
+            quantityInputHidden.type = 'hidden';
+            quantityInputHidden.name = `beforeOrderRequests[${index}].quantity`;
+            quantityInputHidden.value = quantity;
+            form.appendChild(quantityInputHidden);
+        });
+        document.body.appendChild(form);
+        form.submit();
+    });
+});
 

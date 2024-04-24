@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const form = document.createElement('form');
         form.method = 'post';
-        form.action = '/selectWrapper';
+        form.action = '/order/wrapper';
 
         checkedItems.forEach((item, index) => {
             const bookId = item.value;

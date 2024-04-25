@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.book.dto.response.BookMediumResponse;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
+import shop.bookbom.front.domain.review.dto.response.ReviewDTO;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 import shop.bookbom.front.index.service.IndexService;
 
@@ -38,12 +39,11 @@ public class IndexServiceImpl implements IndexService {
      * @return 변환된 BookSearchResponse
      */
     private BookSearchResponse getBookSearchResponse(BookMediumResponse book) {
-        double averageReviewRate = 0;
-        int totalReviewCount = 0;
-        if (!book.getReviews().isEmpty() && book.getReviewStatistics() != null){
-            averageReviewRate = book.getReviewStatistics().getAverageReviewRate();
-            totalReviewCount = book.getReviewStatistics().getTotalReviewCount();
-        }
+        double averageReviewRate = book.getReviews().stream()
+                .mapToDouble(ReviewDTO::getRate)
+                .average().orElse(0);
+        averageReviewRate = Math.round(averageReviewRate * 10.0) / 10.0;
+        int totalReviewCount = book.getReviews().size();
         return BookSearchResponse.builder()
                 .id(book.getId())
                 .thumbnail(Objects.requireNonNull(

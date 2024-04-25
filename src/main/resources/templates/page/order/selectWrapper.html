@@ -46,10 +46,11 @@
         </div>
 
 
-        <div class="wrappers" style="margin: 10px" th:each="bookResponse : ${beforeOrderBookResponseList}">
-            <b style="margin-right: 70%" th:text="${bookResponse.title}"></b>
-            <span>수량</span><br>
-            <div class="select" style="margin: 10px">
+        <div class="wrappers" style="margin: 10px; white-space: nowrap;"
+             th:each="bookResponse : ${beforeOrderBookResponseList}">
+            <b th:text="${bookResponse.title}"></b>
+            <span style="margin-right: 30%">수량</span><br>
+            <div class="select" style="margin: 10px; display: inline-block">
                 <input type="text" class="number" name="number" value="1" readonly
                        style="width: 20px; text-align: center">
                 <div th:each="wrapper : ${wrapperList}">

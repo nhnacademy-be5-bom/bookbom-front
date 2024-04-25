@@ -1,11 +1,12 @@
 package shop.bookbom.front.domain.order.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
+@Setter
 public class WrapperDto {
     private Long id;
     private String name;

@@ -55,7 +55,8 @@ function addWrapper() {
 
     newWrapper.innerHTML = wrapperContent;
     newWrapper.appendChild(quantityInput); // 수량 입력 필드 추가
-    wrappers.appendChild(newWrapper);
+    var firstWrapper = document.querySelector('.wrappers');
+    firstWrapper.appendChild(newWrapper);
 
     // + 버튼을 누르면 입력 필드를 비활성화
     quantityInput.disabled = true;

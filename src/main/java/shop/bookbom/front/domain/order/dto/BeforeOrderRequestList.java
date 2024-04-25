@@ -7,5 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BeforeOrderRequestList {
-    private List<BeforeOrderRequest> beforeOrderRequestList;
+    private List<BeforeOrderRequest> beforeOrderRequests;
 }

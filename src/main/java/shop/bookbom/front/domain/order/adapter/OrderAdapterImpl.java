@@ -37,7 +37,7 @@ public class OrderAdapterImpl implements OrderAdapter {
                 new HttpEntity<>(beforeOrderRequestList, httpHeaders);
 
 
-        CommonResponse<BeforeOrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/orders/wrapper"
+        CommonResponse<BeforeOrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/orders/before-order"
                 , HttpMethod.POST, requestEntity, BEFORE_ORDER_RESPONSE).getBody();
         if (response == null || response.getHeader().getIsSuccessful()) {
             throw new BeforeOrderException();

@@ -109,9 +109,10 @@
                             <!-- 이미지 -->
                             <div class="col-md-3">
                                 <a th:href="@{'/book/detail/' + ${book.id}}">
-                                    <img th:src="${book.thumbnail != null} ? ${book.thumbnail} : '/images/no-image.jpg'"
-                                         class="card-img-top img-fluid rounded-start book-thumbnail"
-                                         alt="...">
+                                    <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}"
+                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
+                                    <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="@{/images/no-image.jpg}"
+                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
                                 </a>
                             </div>
                             <!-- 도서 정보 -->
@@ -133,9 +134,11 @@
                                        th:text="${book.publisherName} + ' · ' + ${#temporals.format(book.pubDate, 'yyyy. MM. dd')}">
                                         부키 · <span>2024. 04. 01</span>
                                     </p>
-                                    <p class="card-text"><span class="fw-bold book-discount-cost" data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">12,000</span>
+                                    <p class="card-text"><span class="fw-bold book-discount-cost"
+                                                               data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">12,000</span>
                                         <span class="text-muted original-price book-cost"
-                                              data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">15,000</span></p>
+                                              data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">15,000</span>
+                                    </p>
                                     <p class="card-text">
                                         <th:block th:each="star : ${#numbers.sequence(1, 5)}">
                                             <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"

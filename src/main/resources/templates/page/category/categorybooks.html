@@ -2,14 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/default_layout}"
+      lang="ko">
 
-<head>
-    <meta charset="UTF-8">
-</head>
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/page/search.css}">
+    <link rel="stylesheet" th:href="@{/css/page/category/categorybooks.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
@@ -21,8 +20,15 @@
     <div class="row">
         <!-- 검색 결과 건수 -->
         <div class="col-md-12 mb-3 result">
-            <p><span class="search-result" th:text="${keyword}">검색어</span>에 대한 결과가
-                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.</p>
+            <p th:unless="${category eq null}">
+                <span class="search-result" th:text="${category.getName()}">카테고리 이름</span>에 속한 도서가
+                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.
+            </p>
+
+            <p th:if="${category eq null}">
+                <span class="search-result">ERROR</span>에 속한 도서가
+                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.
+            </p>
         </div>
     </div>
 
@@ -73,11 +79,59 @@
         <!-- 사이드바 -->
         <div class="col-md-2 search-condition">
             <h5>상세 카테고리</h5>
-            <div class="form-check">
-                <input class="custom-checkbox form-check-input search-check"
-                       style="justify-content: center; border: 1px solid rgba(62, 65, 68, 0.52);margin-top: 9px"
-                       type="radio" id="book_title">
-                <label class="form-check-label" for="book_title">도서명</label>
+            <div class="form-check flex-shrink-0 p-3" style="margin-left: 0; padding-left: 0 !important;">
+
+                <th:block th:fragment="fragment_node(category)"
+                          th:unless="${#lists.isEmpty(category.getChildren())}">
+
+                    <ul class="list-unstyled ps-0">
+                        <li class="d-inline-flex text-decoration-none rounded"
+                            th:each="child : ${category.getChildren()}" th:inline="text">
+
+                            <th:block th:if="${#lists.size(category.getChildren()) > 0}">
+                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
+                                        data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false"
+                                        style="margin-left: 0; padding-left: 0 !important;"
+                                        th:text="${child.getName()}">
+                                </button>
+
+                                <div class="collapse" id="home-collapse"
+                                     style="margin-left: 0; padding-left: 0 !important;">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                        <li>
+                                            <a th:href="@{/category/{categoryId}(categoryId=${category.getId()})}"
+                                               class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                                <th:block th:replace="this::fragment_node(${child})"></th:block>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </th:block>
+
+                            <th:block th:if="${#lists.size(category.getChildren()) eq 0}">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li>
+                                        <a th:href="@{/category/{categoryId}(categoryId=${category.getId()})}"
+                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded">
+                                            [[${child.getName()}]]
+                                            <th:block th:replace="this::fragment_node(${child})"></th:block>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </th:block>
+
+                        </li>
+                    </ul>
+
+                </th:block>
+
+
+                <ul class="mb-1" th:if="${#lists.size(category.getChildren()) eq 0}">
+                    <li class="d-inline-flex text-decoration-none rounded">
+                        하위 카테고리 없음
+                    </li>
+                </ul>
+
             </div>
         </div>
 

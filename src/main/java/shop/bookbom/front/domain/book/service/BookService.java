@@ -2,9 +2,9 @@ package shop.bookbom.front.domain.book.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.adaptor.BookAdaptor;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
@@ -24,10 +24,10 @@ public class BookService {
         return bookAdaptor.get(bookId);
     }
 
-    public CommonResponse<Page<BookSearchResponse>> getBooksByCategoryId(Long categoryId,
-                                                                         String sortCondition,
-                                                                         Pageable pageable) {
-        return bookAdaptor.getByCategoryId(categoryId, sortCondition, pageable);
+    public CommonResponse<CommonPage<BookSearchResponse>> getBooksByCategoryId(Long categoryId,
+                                                                               Pageable pageable,
+                                                                               String sortCondition) {
+        return bookAdaptor.getByCategoryId(categoryId, pageable, sortCondition);
     }
 
 }

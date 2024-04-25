@@ -9,31 +9,40 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.domain.book.service.BookService;
+import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildResponse;
+import shop.bookbom.front.domain.category.service.CategoryService;
 
 @Controller
 @RequiredArgsConstructor
 public class CategoryBooksController {
     private final BookService bookService;
+    private final CategoryService categoryService;
 
-    @GetMapping("/category")
-    public String index(Model model,
+    @GetMapping("/category/{id}")
+    public String index(@PathVariable(value = "id") Long categoryId,
                         @PageableDefault(size = 5) Pageable pageable,
-                        @RequestParam(value = "id") Long bookId,
-                        @RequestParam(required = false) String sorted) {
+                        @RequestParam(required = false) String sorted,
+                        Model model) {
         String sortCondition = getSortCondition(sorted);
 
-        Page<BookSearchResponse> response =
-                bookService.getBooksByCategoryId(bookId, sortCondition, pageable).getResult();
+        Page<BookSearchResponse> bookResponse =
+                bookService.getBooksByCategoryId(categoryId, pageable, sortCondition).getResult();
 
-        model.addAttribute("books", response.getContent());
-        model.addAttribute("currentPage", response.getNumber());
-        model.addAttribute("pageSize", response.getPageable().getPageSize());
-        model.addAttribute("totalPages", response.getTotalPages());
-        model.addAttribute("totalItems", response.getTotalElements());
-        model.addAttribute("size", response.getSize());
+        CategoryNameAndChildResponse categoryResponse =
+                categoryService.getCategoryNameAndChildCategoriesByCategoryId(categoryId);
+
+        model.addAttribute("category", categoryResponse);
+
+        model.addAttribute("books", bookResponse.getContent());
+        model.addAttribute("currentPage", bookResponse.getNumber());
+        model.addAttribute("pageSize", bookResponse.getPageable().getPageSize());
+        model.addAttribute("totalPages", bookResponse.getTotalPages());
+        model.addAttribute("totalItems", bookResponse.getTotalElements());
+        model.addAttribute("size", bookResponse.getSize());
         model.addAttribute("sorted", sorted);
 
         return "page/category/categorybooks";

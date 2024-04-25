@@ -1,13 +1,14 @@
 package shop.bookbom.front.domain.book.adaptor;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.dto.request.BookUpdateRequest;
@@ -36,8 +37,8 @@ public interface BookAdaptor {
 //    CommonResponse<Page<BookMediumResponse>> getAll(Pageable pageable);
 
     @GetMapping("/books/category/{categoryId}")
-    CommonResponse<Page<BookSearchResponse>> getByCategoryId(
+    CommonResponse<CommonPage<BookSearchResponse>> getByCategoryId(
             @PathVariable("categoryId") Long categoryId,
-            String sortCondition,
-            Pageable pageable);
+            Pageable pageable,
+            @RequestParam String sortCondition);
 }

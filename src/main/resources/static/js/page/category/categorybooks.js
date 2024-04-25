@@ -1,30 +1,14 @@
+/* global bootstrap: false */
+(() => {
+    'use strict'
+    const tooltipTriggerList = Array.from(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    tooltipTriggerList.forEach(tooltipTriggerEl => {
+        new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})()
+
 document.addEventListener('DOMContentLoaded', function () {
     let queryParams = new URLSearchParams(window.location.search);
-    let searchCondition = queryParams.get('search');
-    let checkboxes = document.querySelectorAll('.search-check');
-    checkboxes.forEach(function (checkbox) {
-        if (searchCondition === checkbox.id) {
-            checkbox.checked = true;
-        }
-        // 체크박스 체크했을 때
-        checkbox.addEventListener('change', function (event) {
-            const keyword = queryParams.get('keyword');
-            let newUrl = window.location.pathname + '?keyword=' + keyword;
-            // 체크했다면 검색 조건 붙여서 요청
-            if (event.target.checked) {
-                // 다른 박스 체크 해제
-                let searchCondition = event.target.id;
-                newUrl += '&search=' + searchCondition;
-                checkboxes.forEach(function (box) {
-                    if (box !== event.target) {
-                        box.checked = false;
-                    }
-                });
-            }
-
-            window.location.href = newUrl;
-        });
-    });
 
     // 수량 감소 버튼 클릭
     document.querySelectorAll('.quantity-decrease').forEach(button => {

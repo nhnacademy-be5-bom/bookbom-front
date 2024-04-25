@@ -11,10 +11,10 @@ import shop.bookbom.front.domain.book.dto.response.BookDetailResponse;
 
 @FeignClient(value = "BOOKBOM-FRONT-BOOK", path = "/shop", url = "${bookbom.gateway-url}")
 public interface BookAdaptor {
-    @PutMapping("/book/update/new")
+    @PutMapping("/book/update")
     CommonResponse<Void> save(@RequestBody BookAddRequest bookAddRequest);
 
-    @GetMapping("/book/detail/{id}")
+    @GetMapping("/book/{id}")
     CommonResponse<BookDetailResponse> get(@PathVariable("id") Long bookId);
 
 

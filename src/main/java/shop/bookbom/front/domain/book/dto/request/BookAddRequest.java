@@ -5,14 +5,12 @@ import java.time.LocalDate;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
-import shop.bookbom.front.domain.author.dto.AuthorSimpleInfo;
 import shop.bookbom.front.domain.book.entity.BookStatus;
+import shop.bookbom.front.domain.publisher.entity.Publisher;
 
 @Getter
-@NoArgsConstructor
 public class BookAddRequest {
     // 관리자 책 등록에 사용하는 책 등록 요청 DTO
     // Book 의 필드 중 id, view 는 등록 페이지에서 사용하지 않으므로 제외
@@ -23,8 +21,8 @@ public class BookAddRequest {
     private String title;
     private List<String> categories;
     private List<String> tags;
-    private List<AuthorSimpleInfo> authors;
-    private String publisher;
+    private String authors;
+    private Publisher publisher;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate pubDate;
@@ -44,8 +42,7 @@ public class BookAddRequest {
                           String title,
                           List<String> categories,
                           List<String> tags,
-                          List<AuthorSimpleInfo> authors,
-                          String publisher,
+                          String authors,
                           String description,
                           String index,
                           LocalDate pubDate,
@@ -55,13 +52,13 @@ public class BookAddRequest {
                           Integer discountCost,
                           Boolean packagable,
                           BookStatus status,
-                          Integer stock) {
+                          Integer stock,
+                          Publisher publisher) {
         this.thumbnail = thumbnail;
         this.title = title;
         this.categories = categories;
         this.tags = tags;
         this.authors = authors;
-        this.publisher = publisher;
         this.description = description;
         this.index = index;
         this.pubDate = pubDate;
@@ -72,5 +69,6 @@ public class BookAddRequest {
         this.packagable = packagable;
         this.status = status;
         this.stock = stock;
+        this.publisher = publisher;
     }
 }

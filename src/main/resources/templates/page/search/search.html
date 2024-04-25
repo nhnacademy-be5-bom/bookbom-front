@@ -102,19 +102,19 @@
                         <!-- 카드 내용 -->
                         <div class="row g-0">
                             <div class="col-md-1 custom-checkbox">
-                                <label th:for="${'bookCheckbox' + book.id}"></label>
-                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + book.id}">
+                                <label th:for="${'bookCheckbox' + bookStat.index}"></label>
+                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + bookStat.index}">
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">
                                 <img th:src="${book.thumbnail != null} ? ${book.thumbnail} : '/images/no-image.jpg'"
-                                     class="card-img-top img-fluid rounded-start book-thumbnail"
+                                     class="card-img-top img-fluid rounded-start"
                                      alt="...">
                             </div>
                             <!-- 도서 정보 -->
                             <div class="col-md-6">
                                 <div class="card-body">
-                                    <h5 class="card-title book-title" th:text="${book.title}">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을
+                                    <h5 class="card-title" th:text="${book.title}">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을
                                         바꾸는 매일의 작은 습관들</h5>
                                     <p class="card-text">
                                         <span th:each="author : ${book.author}">
@@ -127,8 +127,8 @@
                                        th:text="${book.publisherName} + ' · ' + ${#temporals.format(book.pubDate, 'yyyy. MM. dd')}">
                                         부키 · <span>2024. 04. 01</span>
                                     </p>
-                                    <p class="card-text"><span class="fw-bold book-discount-cost" th:text="${book.discountPrice} + '원'">12,000</span>
-                                        <span class="text-muted original-price book-cost"
+                                    <p class="card-text"><span class="fw-bold" th:text="${book.discountPrice} + '원'">12,000</span>
+                                        <span class="text-muted original-price"
                                               th:text="${book.price} + '원'">15,000</span></p>
                                     <p class="card-text"><span th:text="${book.reviewRating}">4.8</span> /
                                         <span>리뷰(<span th:text="${book.reviewCount}">123</span>)개</span></p>
@@ -152,7 +152,7 @@
                                     <div class="col-6 col-md-12 btn-div">
                                         <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
                                         </button>
-                                        <button type="button" class="btn btn-success custom-btn cart-btn">장바구니</button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
                                         <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
                                     </div>
                                 </div>
@@ -186,23 +186,6 @@
                 </ul>
             </nav>
 
-        </div>
-    </div>
-
-    <div class="modal" tabindex="-1" id="successModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-                    <button type="button" class="btn btn-success" id="goToCart">예</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

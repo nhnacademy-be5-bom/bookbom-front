@@ -31,14 +31,14 @@
 
             <div class="form-group mt-3">
                 <label for="thumbnail" class="mr-2">책 썸네일:</label>
-                <input type="file" id="thumbnail" name="thumbnail" autofocus th:value="${thumbnail}">
+                <input type="file" id="thumbnail" name="thumbnail" th:value="${thumbnail}">
             </div>
 
             <hr>
 
             <div class="form-group">
                 <label for="title">책 제목</label>
-                <input autofocus type="text" id="title" name="title" class="form-control" required="required">
+                <input type="text" id="title" name="title" class="form-control" required="required">
             </div>
 
             <hr>
@@ -172,10 +172,5 @@
         </form>
     </div>
 </div>
-
-<link id="gateWayURL" th:data-contextPath="${@environment.getProperty('bookbom.gateway-url')}"/>
-<script>
-    const GATEWAY_URL = document.querySelector("#gateWayURL").getAttribute("data-contextPath");
-</script>
 
 </html>

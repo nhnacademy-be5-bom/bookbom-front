@@ -41,7 +41,7 @@ public class PointRateAdapterImpl implements PointRateAdapter {
 
         CommonResponse<List<PointRate>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_RATE_LIST_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -61,7 +61,7 @@ public class PointRateAdapterImpl implements PointRateAdapter {
         CommonResponse<PointRate> response =
                 restTemplate.exchange(url, HttpMethod.PUT, requestEntity, POINT_RATE_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

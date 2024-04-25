@@ -173,4 +173,9 @@
     </div>
 </div>
 
+<link id="gateWayURL" th:data-contextPath="${@environment.getProperty('bookbom.gateway-url')}"/>
+<script>
+    const GATEWAY_URL = document.querySelector("#gateWayURL").getAttribute("data-contextPath");
+</script>
+
 </html>

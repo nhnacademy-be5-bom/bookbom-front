@@ -10,11 +10,15 @@
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
-    <script th:src="@{/js/page/home.js}"></script>
+    <script th:src="@{/js/page/mainPage.js}"></script>
+    <script src="https://kit.fontawesome.com/95f398b1ca.js" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 </th:block>
 
 <!-- Content -->
 <div layout:fragment="content">
+    <!-- 배너 -->
     <section id="banner" style="background: #F9F3EC;">
         <div class="container">
             <div class="swiper main-swiper">
@@ -22,13 +26,31 @@
                     <div class="swiper-slide py-5">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img th:src="@{/images/no-image.jpg}"  class="img-fluid">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class=" text-primary text-uppercase mb-4 fw-bold"></div>
+                                <h2 class="banner-title display-1 fw-bold">Best destination for <span
+                                        class="text-primary">your Books</span>
+                                </h2>
+                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1"
+                                   style="margin-top: 20px;">
+                                    shop now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
                                 <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                                 <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">your
-                    pets</span>
+                                        class="text-primary">your pets</span>
                                 </h2>
                                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                                     shop now
@@ -41,46 +63,22 @@
                     <div class="swiper-slide py-5">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img src="images//banner-img3.png" class="img-fluid">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
                                 <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                                 <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">your
-                    pets</span>
+                                        class="text-primary">your pets</span>
                                 </h2>
                                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                                     shop now
                                     <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>
-
-                        </div>
-                    </div>
-                    <div class="swiper-slide py-5">
-                        <div class="row banner-content align-items-center">
-                            <div class="img-wrapper col-md-5">
-                                <img src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/banner-img4.png"
-                                     class="img-fluid">
-                            </div>
-                            <div class="content-wrapper col-md-7 p-5 mb-5">
-                                <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
-                                <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">your
-                    pets</span>
-                                </h2>
-                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                                    shop now
-                                    <i class="fa-solid fa-arrow-right"></i>
-                                </a>
-                            </div>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="swiper-pagination mb-5"></div>
-
             </div>
         </div>
     </section>
@@ -110,7 +108,6 @@
                                     <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
                                 </a>
                                 <div class="card-text">
-                                    <!-- 별점 표시 부분은 그대로 유지 -->
                                     <span class="rating ">
                                         <th:block th:each="star : ${#numbers.sequence(1, 5)}">
                                             <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"
@@ -123,7 +120,6 @@
                                         </th:block>
                                         <span th:text="${book.reviewRating}"></span>
                                     </span>
-                                    <!-- 가격 표시 부분은 그대로 유지 -->
                                     <div class="price d-flex">
                                         <h3 class=" text-primary book-discount-cost fw-bold"
                                             data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">
@@ -132,9 +128,8 @@
                                             data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">
                                             $18.00 </h3>
                                     </div>
-                                    <!-- 버튼 부분은 그대로 유지 -->
                                     <div class="d-flex flex-wrap mt-3 book-btn">
-                                        <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
+                                        <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3" th:data-book-id="${book.id}">
                                             <h5 class="text-uppercase m-0 fw-bold">장바구니</h5>
                                         </a>
                                         <a href="#" class="btn-wishlist px-4 pt-3 ">
@@ -147,9 +142,6 @@
                     </div>
                 </div>
             </div>
-            <!-- / products-carousel -->
-
-
         </div>
     </section>
 
@@ -208,6 +200,7 @@
         </div>
     </section>
 
+    <!--  신상 -->
     <section id="latest" class="my-5">
         <div class="container my-5 py-5">
             <div class="section-header d-md-flex justify-content-between align-items-center">
@@ -266,8 +259,21 @@
         </div>
     </section>
 
-    <script src="https://kit.fontawesome.com/95f398b1ca.js" crossorigin="anonymous"></script>
-    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <div class="modal" tabindex="-1" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+                    <button type="button" class="btn btn-success" id="goToCart">예</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </html>

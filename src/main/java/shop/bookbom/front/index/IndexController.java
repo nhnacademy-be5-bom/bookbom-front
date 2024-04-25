@@ -17,11 +17,6 @@ public class IndexController {
         return "page/main";
     }
 
-    @GetMapping("/cart")
-    public String showCartPage() {
-        return "page/cart/cart";
-    }
-
     @GetMapping("/selectWrapper")
     public String showSelectWrpperPage() {
         return "page/order/selectWrapper";

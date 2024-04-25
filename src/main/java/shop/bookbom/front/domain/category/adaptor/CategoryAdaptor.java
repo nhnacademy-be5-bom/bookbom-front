@@ -11,13 +11,13 @@ import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 @FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-url}")
 public interface CategoryAdaptor {
 
-    @GetMapping("/category/get/all")
+    @GetMapping("/category/all")
     CommonResponse<CategoryDepthResponse> getAllCategories();
 
-    @GetMapping("/category/get/depth1")
+    @GetMapping("/category/depth1")
     CommonListResponse<CategoryDTO> getDepthOneCategories();
 
-    @GetMapping("/category/get/{parentId}")
+    @GetMapping("/category/{parentId}")
     CommonListResponse<CategoryDTO> getChildCategoriesOf(@PathVariable("parentId") Long parentId);
 
 }

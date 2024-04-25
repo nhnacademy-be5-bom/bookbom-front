@@ -48,7 +48,7 @@ public class SearchAdapterImpl implements SearchAdapter {
 
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_SEARCH_RESPONSE).getBody();
-        if (response == null || response.getHeader().isSuccessful()) {
+        if (response == null || response.getHeader().getIsSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

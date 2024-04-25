@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.pointrate.entity;
+package shop.bookbom.front.domain.pointrate.dto;
 
 import lombok.Getter;
 

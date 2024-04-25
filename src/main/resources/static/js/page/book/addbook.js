@@ -46,7 +46,7 @@ async function setChildCategory(selectBox, categoryId) {
 
     // #todo 주소 수정
     const response = await fetch(
-        "http://127.0.0.1:8880/shop/category/get/" + categoryId,
+        GATEWAY_URL + "/shop/category/" + categoryId,
         {
             method: "GET"
         });

@@ -136,8 +136,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // 책 정보를 가져옴
             const thumbnail = this.closest('.border-bottom').querySelector('.book-thumbnail').src;
             const title = this.closest('.border-bottom').querySelector('.book-title').textContent;
-            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost').textContent.replace('원', ''));
-            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost').textContent.replace('원', ''));
+            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost')
+                .textContent.replace(',', '').replace('원', ''));
+            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost')
+                .textContent.replace(',', '').replace('원', ''));
 
             // 요청 데이터 생성
             const requestData = [

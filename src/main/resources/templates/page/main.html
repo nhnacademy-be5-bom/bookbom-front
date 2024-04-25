@@ -22,13 +22,13 @@
                     <div class="swiper-slide py-5">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/banner-img.png"
-                                     class="img-fluid">
+                                <img th:src="@{/images/no-image.jpg}"  class="img-fluid">
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
                                 <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
                                 <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">yourpets</span>
+                                        class="text-primary">your
+                    pets</span>
                                 </h2>
                                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                                     shop now
@@ -89,10 +89,10 @@
     <section id="best" class="my-5 overflow-hidden">
         <div class="container pb-5">
             <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
-                <h2 class="display-3 fw-normal">베스트셀러</h2>
+                <h2 class="display-2 fw-bold">급상승! 많이 보고 있는 상품</h2>
                 <div>
-                    <a href="/best" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                        shop now
+                    <a href="/best" class="btn btn-outline-dark btn-lg fw-bold fs-6 rounded-1">
+                        더보기
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
@@ -102,11 +102,11 @@
                 <div class="swiper-wrapper">
                     <div th:each="book : ${bestBooks}" class="swiper-slide">
                         <div class="card position-relative">
-                            <a th:href="@{'/single-product/' + ${book.id}}" class="book-link">
+                            <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
                                 <img th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
                             </a>
                             <div class="card-body p-0">
-                                <a th:href="@{'/single-product/' + ${book.id}}" class="h-100">
+                                <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
                                     <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
                                 </a>
                                 <div class="card-text">
@@ -125,16 +125,17 @@
                                     </span>
                                     <!-- 가격 표시 부분은 그대로 유지 -->
                                     <div class="price d-flex">
-                                        <h3 class=" text-primary book-discount-cost"
-                                            th:text="${book.discountPrice} + '원'"> $15.00 </h3>
+                                        <h3 class=" text-primary book-discount-cost fw-bold"
+                                            data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">
+                                            $15.00 </h3>
                                         <h3 th:if="${book.discountPrice} != ${book.price}" class=" original-price"
-                                            th:text="${book.price} + '원'">
+                                            data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">
                                             $18.00 </h3>
                                     </div>
                                     <!-- 버튼 부분은 그대로 유지 -->
-                                    <div class="d-flex flex-wrap mt-3">
+                                    <div class="d-flex flex-wrap mt-3 book-btn">
                                         <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                            <h5 class="text-uppercase m-0">ADD TO CART</h5>
+                                            <h5 class="text-uppercase m-0 fw-bold">장바구니</h5>
                                         </a>
                                         <a href="#" class="btn-wishlist px-4 pt-3 ">
                                             <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
@@ -166,11 +167,9 @@
                                                       class="quote-icon text-primary"></iconify-icon>
                                     </div>
                                     <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
-                                        <p class="testimonial-content fs-2">At the core of our practice is the idea that
-                                            cities are the
-                                            incubators of our
-                                            greatest achievements, and the best hope for a sustainable future.</p>
-                                        <p class="text-black">- Joshima Lin</p>
+                                        <p class="testimonial-content fs-2">남의 책을 많이 읽어라. 남이 고생하여 얻은 지식을 아주 쉽게 내것으로 만들 수
+                                            있고, 그것으로 자기 발전을 이룰 수 있다.</p>
+                                        <p class="text-black">- 소크라테스</p>
                                     </div>
                                 </div>
                             </div>
@@ -181,11 +180,9 @@
                                                       class="quote-icon text-primary"></iconify-icon>
                                     </div>
                                     <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
-                                        <p class="testimonial-content fs-2">At the core of our practice is the idea that
-                                            cities are the
-                                            incubators of our
-                                            greatest achievements, and the best hope for a sustainable future.</p>
-                                        <p class="text-black">- Joshima Lin</p>
+                                        <p class="testimonial-content fs-2">좋은 책을 읽는 것은 지난 몇 세기에 걸쳐 가장 훌륭한 사람들과 대화하는 것과
+                                            같다.</p>
+                                        <p class="text-black">- 데카르트</p>
                                     </div>
                                 </div>
                             </div>
@@ -196,11 +193,10 @@
                                                       class="quote-icon text-primary"></iconify-icon>
                                     </div>
                                     <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
-                                        <p class="testimonial-content fs-2">At the core of our practice is the idea that
-                                            cities are the
-                                            incubators of our
-                                            greatest achievements, and the best hope for a sustainable future.</p>
-                                        <p class="text-black">- Joshima Lin</p>
+                                        <p class="testimonial-content fs-2">오늘의 나를 있게 한 것은 우리 마을의 도서관이었다.
+
+                                            하버드 졸업장보다 소중한 것은 독서하는 습관이다.</p>
+                                        <p class="text-black">- 빌 게이츠</p>
                                     </div>
                                 </div>
                             </div>
@@ -211,258 +207,52 @@
             </div>
         </div>
     </section>
-    <section id="foodies" class="my-5">
-        <div class="container my-5 py-5">
 
+    <section id="latest" class="my-5">
+        <div class="container my-5 py-5">
             <div class="section-header d-md-flex justify-content-between align-items-center">
-                <h2 class="display-3 fw-normal">Pet Foodies</h2>
-                <div class="mb-4 mb-md-0">
-                    <p class="m-0">
-                        <button class="filter-button me-4  active" data-filter="*">ALL</button>
-                        <button class="filter-button me-4 " data-filter=".cat">CAT</button>
-                        <button class="filter-button me-4 " data-filter=".dog">DOG</button>
-                        <button class="filter-button me-4 " data-filter=".bird">BIRD</button>
-                    </p>
-                </div>
+                <h2 class="display-2 fw-bold">화제의 신상</h2>
                 <div>
-                    <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                        shop now
-                        <svg width="24" height="24" viewBox="0 0 24 24" class="mb-1">
-                            <use xlink:href="#arrow-right"></use>
-                        </svg>
+                    <a href="#" class="btn btn-outline-dark btn-lg fw-bold text-uppercase fs-6 rounded-1">
+                        더보기
+                        <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
             <div class="isotope-container row">
-
-                <div class="item cat col-md-4 col-lg-3 my-4">
-                    <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                      New
-                    </div> -->
+                <div th:each="book : ${latestBooks}" class="item cat col-md-4 col-lg-3 my-4">
                     <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item9.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
+                        <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
+                            <img th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
+                        </a>
                         <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
+                            <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
+                                <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
                             </a>
-
                             <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
+                            <span class="rating ">
+                                <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                    <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"
+                                       class="fas fa-star text-primary"></i>
+                                    <i th:if="${star == T(java.lang.Math).ceil(book.reviewRating) and (book.reviewRating % 1) != 0}"
+                                       class="fas fa-star-half-alt text-primary"></i>
+                                    <i th:if="${star > T(java.lang.Math).ceil(book.reviewRating)}"
+                                       class="far fa-star text-primary"></i>
+                                </th:block>
+                                <span th:text="${book.reviewRating}"></span>
+                            </span>
+                                <div class="price d-flex">
+                                    <h3 class=" text-primary book-discount-cost fw-bold"
+                                        data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">
+                                        $15.00 </h3>
+                                    <h3 th:if="${book.discountPrice} != ${book.price}" class=" original-price"
+                                        data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">
+                                        $18.00 </h3>
                                 </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item dog col-md-4 col-lg-3 my-4">
-                    <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                        New
-                    </div>
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item10.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
                                 <div class="d-flex flex-wrap mt-3">
                                     <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item dog col-md-4 col-lg-3 my-4">
-                    <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                      New
-                    </div> -->
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item11.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item cat col-md-4 col-lg-3 my-4">
-                    <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                        Sold
-                    </div>
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item12.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item bird col-md-4 col-lg-3 my-4">
-                    <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                      New
-                    </div> -->
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item13.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item bird col-md-4 col-lg-3 my-4">
-                    <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                      New
-                    </div> -->
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item14.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
+                                        <h5 class="text-uppercase m-0 fw-bold">장바구니</h5>
                                     </a>
                                     <a href="#" class="btn-wishlist px-4 pt-3 ">
                                         <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
@@ -472,95 +262,12 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="item dog col-md-4 col-lg-3 my-4">
-                    <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                        Sale
-                    </div>
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item15.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="item cat col-md-4 col-lg-3 my-4">
-                    <!-- <div class="z-1 position-absolute rounded-3 m-3 px-3 border border-dark-subtle">
-                      New
-                    </div> -->
-                    <div class="card position-relative">
-                        <a href="single-product.html"><img
-                                src="../../../../../../../../../Users/a9879/Downloads/waGGy-1.0.0%20(2)/waGGy-1.0.0/images/item16.jpg"
-                                class="img-fluid rounded-4" alt="image"></a>
-                        <div class="card-body p-0">
-                            <a href="single-product.html">
-                                <h3 class="card-title pt-4 m-0">Grey hoodie</h3>
-                            </a>
-
-                            <div class="card-text">
-                <span class="rating ">
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  <iconify-icon icon="clarity:star-solid" class="text-primary"></iconify-icon>
-                  5.0</span>
-
-                                <h3 class=" text-primary">$18.00</h3>
-
-                                <div class="d-flex flex-wrap mt-3">
-                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
-                                        <h5 class="text-uppercase m-0">Add to Cart</h5>
-                                    </a>
-                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
-                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
-                                    </a>
-                                </div>
-
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-
             </div>
-
-
         </div>
     </section>
 
     <script src="https://kit.fontawesome.com/95f398b1ca.js" crossorigin="anonymous"></script>
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 </div>
 </html>

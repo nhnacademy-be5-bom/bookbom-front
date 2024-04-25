@@ -1,44 +1,19 @@
 .book-discount-cost,
 .original-price {
-    margin-right: 10px; /* Adjust as needed for spacing */
+    margin-right: 10px;
 }
 
-/* Apply line-through to the original price */
 .original-price {
     text-decoration: line-through;
     color: rgba(158, 104, 11, 0.5);
 }
 
-.star-half-solid {
-    position: relative;
-    display: inline-block;
-    font-size: 1.5em; /* 아이콘 크기 조절 */
-}
-
-.star-half-solid::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    height: 50%;
-    background-color: #ccc; /* 아래 반절을 회색으로 채움 */
-    transform: rotate(180deg); /* 아이콘을 뒤집음 */
-}
-
-.star-half-solid svg {
-    position: relative;
-    z-index: 1;
-}
 
 .book-link {
     display: flex;
-    justify-content: center;
-    align-items: center;
     width: 300px;
     height: 400px;
     text-align: center;
-    overflow: hidden;
 }
 
 .book-thumbnail {
@@ -54,4 +29,17 @@
 .card-title {
     height: 100px;
     overflow: hidden;
+}
+
+section {
+    margin-bottom: 100px;
+}
+
+#best .display-2,
+#latest .display-2 {
+    font-size: 3rem;
+}
+
+.text-black {
+    font-size: 1.2rem;
 }

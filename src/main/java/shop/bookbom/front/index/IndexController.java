@@ -12,19 +12,14 @@ import shop.bookbom.front.index.service.IndexService;
 @Controller
 @RequiredArgsConstructor
 public class IndexController {
-    private static final int MAIN_BOOK_SIZE = 4;
+    private static final int MAIN_BEST_BOOK_SIZE = 8;
+    private static final int MAIN_LATEST_BOOK_SIZE = 8;
     private final IndexService indexService;
 
     @GetMapping("/")
-    public String mainPage(HttpServletRequest request, Model model) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null) {
-            ip = request.getRemoteAddr();
-        }
-        model.addAttribute("ip", ip);
-
-        List<BookSearchResponse> latestBooks = indexService.mainLatestBooks(MAIN_BOOK_SIZE);
-        List<BookSearchResponse> bestBooks = indexService.mainBestBooks(MAIN_BOOK_SIZE);
+    public String mainPage(Model model) {
+        List<BookSearchResponse> latestBooks = indexService.mainLatestBooks(MAIN_LATEST_BOOK_SIZE);
+        List<BookSearchResponse> bestBooks = indexService.mainBestBooks(MAIN_BEST_BOOK_SIZE);
         model.addAttribute("bestBooks", bestBooks);
         model.addAttribute("latestBooks", latestBooks);
         return "page/main";
@@ -64,6 +59,4 @@ public class IndexController {
     public String showtosspay_success() {
         return "page/payment/tosssuccess";
     }
-
-
 }

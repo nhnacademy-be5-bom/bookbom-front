@@ -33,10 +33,17 @@ public class IndexServiceImpl implements IndexService {
 
     /**
      * BookMediumResponse를 BookSearchResponse로 변환합니다.
+     *
      * @param book 변환할 BookMediumResponse
      * @return 변환된 BookSearchResponse
      */
     private BookSearchResponse getBookSearchResponse(BookMediumResponse book) {
+        double averageReviewRate = 0;
+        int totalReviewCount = 0;
+        if (!book.getReviews().isEmpty() && book.getReviewStatistics() != null){
+            averageReviewRate = book.getReviewStatistics().getAverageReviewRate();
+            totalReviewCount = book.getReviewStatistics().getTotalReviewCount();
+        }
         return BookSearchResponse.builder()
                 .id(book.getId())
                 .thumbnail(Objects.requireNonNull(
@@ -48,8 +55,8 @@ public class IndexServiceImpl implements IndexService {
                 .pubDate(book.getPubDate())
                 .price(book.getCost())
                 .discountPrice(book.getDiscountCost())
-                .reviewRating(book.getReviewStatistics().getAverageReviewRate())
-                .reviewCount(book.getReviewStatistics().getTotalReviewCount())
+                .reviewRating(averageReviewRate)
+                .reviewCount(totalReviewCount)
                 .build();
     }
 }

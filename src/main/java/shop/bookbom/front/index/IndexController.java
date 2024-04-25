@@ -22,10 +22,11 @@ public class IndexController {
             ip = request.getRemoteAddr();
         }
         model.addAttribute("ip", ip);
+
         List<BookSearchResponse> latestBooks = indexService.mainLatestBooks(MAIN_BOOK_SIZE);
         List<BookSearchResponse> bestBooks = indexService.mainBestBooks(MAIN_BOOK_SIZE);
-        model.addAttribute("latestBooks", latestBooks);
         model.addAttribute("bestBooks", bestBooks);
+        model.addAttribute("latestBooks", latestBooks);
         return "page/main";
     }
 

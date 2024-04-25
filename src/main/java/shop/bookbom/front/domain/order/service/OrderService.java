@@ -5,5 +5,5 @@ import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
 
 public interface OrderService {
 
-    BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList);
+    BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequests);
 }

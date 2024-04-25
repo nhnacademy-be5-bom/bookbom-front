@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.order.adaptor;
+package shop.bookbom.front.domain.order.adapter;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import shop.bookbom.front.domain.order.exception.BeforeOrderException;
 
 @Component
 @RequiredArgsConstructor
-public class OrderAdaptorImpl implements OrderAdaptor {
+public class OrderAdapterImpl implements OrderAdapter {
     private final RestTemplate restTemplate;
 
     private static final ParameterizedTypeReference<CommonResponse<BeforeOrderResponse>>
@@ -30,6 +30,7 @@ public class OrderAdaptorImpl implements OrderAdaptor {
 
     @Override
     public BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
+
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 

@@ -6,16 +6,275 @@
 
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-    <!--    <link rel="stylesheet" th:href="@{/css/page/home.css}" >-->
+    <link rel="stylesheet" th:href="@{/css/page/main.css}">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
-    <!--    <script th:src="@{/js/page/home.js}"></script>-->
+    <script th:src="@{/js/page/mainPage.js}"></script>
+    <script src="https://kit.fontawesome.com/95f398b1ca.js" crossorigin="anonymous"></script>
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 </th:block>
 
 <!-- Content -->
 <div layout:fragment="content">
-    <h2 style="text-align: center">[[${ip}]]</h2>
-    <h2 style="text-align: center">메인 페이지입니다.</h2>
+    <!-- 배너 -->
+    <section id="banner" style="background: #F9F3EC;">
+        <div class="container">
+            <div class="swiper main-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class=" text-primary text-uppercase mb-4 fw-bold"></div>
+                                <h2 class="banner-title display-1 fw-bold">Best destination for <span
+                                        class="text-primary">your Books</span>
+                                </h2>
+                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1"
+                                   style="margin-top: 20px;">
+                                    shop now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
+                                <h2 class="banner-title display-1 fw-normal">Best destination for <span
+                                        class="text-primary">your pets</span>
+                                </h2>
+                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                                    shop now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="swiper-slide py-5">
+                        <div class="row banner-content align-items-center">
+                            <div class="img-wrapper col-md-5">
+                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                            </div>
+                            <div class="content-wrapper col-md-7 p-5 mb-5">
+                                <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
+                                <h2 class="banner-title display-1 fw-normal">Best destination for <span
+                                        class="text-primary">your pets</span>
+                                </h2>
+                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                                    shop now
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination mb-5"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 인기 상품 -->
+    <section id="best" class="my-5 overflow-hidden">
+        <div class="container pb-5">
+            <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
+                <h2 class="display-2 fw-bold">급상승! 많이 보고 있는 상품</h2>
+                <div>
+                    <a href="/best" class="btn btn-outline-dark btn-lg fw-bold fs-6 rounded-1">
+                        더보기
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="products-carousel swiper">
+                <div class="swiper-wrapper">
+                    <div th:each="book : ${bestBooks}" class="swiper-slide">
+                        <div class="card position-relative">
+                            <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
+                                <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
+                                <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="@{/images/no-image.jpg}" class="rounded-4 book-thumbnail" alt="image">
+                            </a>
+                            <div class="card-body p-0">
+                                <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
+                                    <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
+                                </a>
+                                <div class="card-text">
+                                    <span class="rating ">
+                                        <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                            <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"
+                                               class="fas fa-star text-primary"></i>
+
+                                            <i th:if="${star == T(java.lang.Math).ceil(book.reviewRating) and (book.reviewRating % 1) != 0}"
+                                               class="fas fa-star-half-alt text-primary"></i>
+                                            <i th:if="${star > T(java.lang.Math).ceil(book.reviewRating)}"
+                                               class="far fa-star text-primary"></i>
+                                        </th:block>
+                                        <span th:text="${book.reviewRating}"></span>
+                                    </span>
+                                    <div class="price d-flex">
+                                        <h3 class=" text-primary book-discount-cost fw-bold"
+                                            data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">
+                                            $15.00 </h3>
+                                        <h3 th:if="${book.discountPrice} != ${book.price}" class=" original-price"
+                                            data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">
+                                            $18.00 </h3>
+                                    </div>
+                                    <div class="d-flex flex-wrap mt-3 book-btn">
+                                        <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3" th:data-book-id="${book.id}">
+                                            <h5 class="text-uppercase m-0 fw-bold">장바구니</h5>
+                                        </a>
+                                        <a href="#" class="btn-wishlist px-4 pt-3 ">
+                                            <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonial">
+        <div class="container my-5 py-5">
+            <div class="row">
+                <div class="offset-md-1 col-md-10">
+                    <div class="swiper testimonial-swiper">
+                        <div class="swiper-wrapper">
+
+                            <div class="swiper-slide">
+                                <div class="row ">
+                                    <div class="col-2">
+                                        <iconify-icon icon="ri:double-quotes-l"
+                                                      class="quote-icon text-primary"></iconify-icon>
+                                    </div>
+                                    <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
+                                        <p class="testimonial-content fs-2">남의 책을 많이 읽어라. 남이 고생하여 얻은 지식을 아주 쉽게 내것으로 만들 수
+                                            있고, 그것으로 자기 발전을 이룰 수 있다.</p>
+                                        <p class="text-black">- 소크라테스</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="row ">
+                                    <div class="col-2">
+                                        <iconify-icon icon="ri:double-quotes-l"
+                                                      class="quote-icon text-primary"></iconify-icon>
+                                    </div>
+                                    <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
+                                        <p class="testimonial-content fs-2">좋은 책을 읽는 것은 지난 몇 세기에 걸쳐 가장 훌륭한 사람들과 대화하는 것과
+                                            같다.</p>
+                                        <p class="text-black">- 데카르트</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="row ">
+                                    <div class="col-2">
+                                        <iconify-icon icon="ri:double-quotes-l"
+                                                      class="quote-icon text-primary"></iconify-icon>
+                                    </div>
+                                    <div class="col-md-10 mt-md-5 p-5 pt-0 pt-md-5">
+                                        <p class="testimonial-content fs-2">오늘의 나를 있게 한 것은 우리 마을의 도서관이었다.
+
+                                            하버드 졸업장보다 소중한 것은 독서하는 습관이다.</p>
+                                        <p class="text-black">- 빌 게이츠</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--  신상 -->
+    <section id="latest" class="my-5">
+        <div class="container my-5 py-5">
+            <div class="section-header d-md-flex justify-content-between align-items-center">
+                <h2 class="display-2 fw-bold">화제의 신상</h2>
+                <div>
+                    <a href="#" class="btn btn-outline-dark btn-lg fw-bold text-uppercase fs-6 rounded-1">
+                        더보기
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="isotope-container row">
+                <div th:each="book : ${latestBooks}" class="item cat col-md-4 col-lg-3 my-4">
+                    <div class="card position-relative">
+                        <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
+                            <img th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
+                        </a>
+                        <div class="card-body p-0">
+                            <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
+                                <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
+                            </a>
+                            <div class="card-text">
+                            <span class="rating ">
+                                <th:block th:each="star : ${#numbers.sequence(1, 5)}">
+                                    <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"
+                                       class="fas fa-star text-primary"></i>
+                                    <i th:if="${star == T(java.lang.Math).ceil(book.reviewRating) and (book.reviewRating % 1) != 0}"
+                                       class="fas fa-star-half-alt text-primary"></i>
+                                    <i th:if="${star > T(java.lang.Math).ceil(book.reviewRating)}"
+                                       class="far fa-star text-primary"></i>
+                                </th:block>
+                                <span th:text="${book.reviewRating}"></span>
+                            </span>
+                                <div class="price d-flex">
+                                    <h3 class=" text-primary book-discount-cost fw-bold"
+                                        data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">
+                                        $15.00 </h3>
+                                    <h3 th:if="${book.discountPrice} != ${book.price}" class=" original-price"
+                                        data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">
+                                        $18.00 </h3>
+                                </div>
+                                <div class="d-flex flex-wrap mt-3">
+                                    <a href="#" class="btn-cart me-3 px-4 pt-3 pb-3">
+                                        <h5 class="text-uppercase m-0 fw-bold">장바구니</h5>
+                                    </a>
+                                    <a href="#" class="btn-wishlist px-4 pt-3 ">
+                                        <iconify-icon icon="fluent:heart-28-filled" class="fs-5"></iconify-icon>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" tabindex="-1" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+                    <button type="button" class="btn btn-success" id="goToCart">예</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </html>

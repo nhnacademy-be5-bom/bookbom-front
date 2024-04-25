@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,13 +33,14 @@ public class IndexAdapterImpl implements IndexAdapter {
 
 
     @Override
-    public Page<BookMediumResponse> mainLatestBooks(int size) {
+    public Page<BookMediumResponse> mainLatestBooks(Pageable pageable) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/books/best")
-                .queryParam("size", size)
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
                 .build()
                 .toUriString();
 
@@ -53,13 +55,14 @@ public class IndexAdapterImpl implements IndexAdapter {
     }
 
     @Override
-    public Page<BookMediumResponse> mainBestBooks(int size) {
+    public Page<BookMediumResponse> mainBestBooks(Pageable pageable) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/books/best")
-                .queryParam("size", size)
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
                 .build()
                 .toUriString();
 

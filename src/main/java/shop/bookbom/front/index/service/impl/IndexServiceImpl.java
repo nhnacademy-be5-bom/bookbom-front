@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.book.dto.response.BookMediumResponse;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
@@ -17,19 +19,15 @@ public class IndexServiceImpl implements IndexService {
     private final IndexAdapter indexAdapter;
 
     @Override
-    public List<BookSearchResponse> mainLatestBooks(int size) {
-        List<BookMediumResponse> responses = indexAdapter.mainLatestBooks(size).getContent();
-        return responses.stream()
-                .map(this::getBookSearchResponse)
-                .collect(Collectors.toList());
+    public Page<BookSearchResponse> mainLatestBooks(Pageable pageable) {
+        Page<BookMediumResponse> responses = indexAdapter.mainLatestBooks(pageable);
+        return responses.map(this::getBookSearchResponse);
     }
 
     @Override
-    public List<BookSearchResponse> mainBestBooks(int size) {
-        List<BookMediumResponse> responses = indexAdapter.mainBestBooks(size).getContent();
-        return responses.stream()
-                .map(this::getBookSearchResponse)
-                .collect(Collectors.toList());
+    public Page<BookSearchResponse> mainBestBooks(Pageable pageable) {
+        Page<BookMediumResponse> responses = indexAdapter.mainBestBooks(pageable);
+        return responses.map(this::getBookSearchResponse);
     }
 
     /**

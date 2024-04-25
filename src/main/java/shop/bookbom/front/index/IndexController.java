@@ -1,7 +1,8 @@
 package shop.bookbom.front.index;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,10 +18,10 @@ public class IndexController {
 
     @GetMapping("/")
     public String mainPage(Model model) {
-        List<BookSearchResponse> latestBooks = indexService.mainLatestBooks(MAIN_LATEST_BOOK_SIZE);
-        List<BookSearchResponse> bestBooks = indexService.mainBestBooks(MAIN_BEST_BOOK_SIZE);
-        model.addAttribute("bestBooks", bestBooks);
-        model.addAttribute("latestBooks", latestBooks);
+        Page<BookSearchResponse> latestBooks = indexService.mainLatestBooks(PageRequest.of(0, MAIN_LATEST_BOOK_SIZE));
+        Page<BookSearchResponse> bestBooks = indexService.mainBestBooks(PageRequest.of(0, MAIN_BEST_BOOK_SIZE));
+        model.addAttribute("bestBooks", bestBooks.getContent());
+        model.addAttribute("latestBooks", latestBooks.getContent());
         return "page/main";
     }
 

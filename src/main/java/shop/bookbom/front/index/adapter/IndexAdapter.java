@@ -1,22 +1,23 @@
 package shop.bookbom.front.index.adapter;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.book.dto.response.BookMediumResponse;
 
 public interface IndexAdapter {
     /**
-     * 메인 페이지 최신 책 목록을 가져옵니다.
+     * 최신 책 목록을 가져옵니다.
      *
-     * @param size 가져올 책 갯수
+     * @param pageable 페이지 정보
      * @return 최신 책 목록
      */
-    Page<BookMediumResponse> mainLatestBooks(int size);
+    Page<BookMediumResponse> mainLatestBooks(Pageable pageable);
 
     /**
-     * 메인 페이지 인기 책 목록을 가져옵니다.
+     * 인기 책 목록을 가져옵니다.
      *
-     * @param size 가져올 책 갯수
+     * @param pageable 페이지 정보
      * @return 최신 책 목록
      */
-    Page<BookMediumResponse> mainBestBooks(int size);
+    Page<BookMediumResponse> mainBestBooks(Pageable pageable);
 }

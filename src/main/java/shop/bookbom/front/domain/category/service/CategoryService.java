@@ -31,4 +31,5 @@ public class CategoryService {
         // null 없으므로 체크하지 않음
         return (List<CategoryDTO>) response.getResult();
     }
+
 }

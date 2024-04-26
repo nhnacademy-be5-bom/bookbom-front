@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.service.BookService;
 import shop.bookbom.front.domain.category.dto.CategoryDTO;
@@ -36,8 +37,16 @@ public class AdminBookController {
     public String putBook(@ModelAttribute("bookAddRequest") BookAddRequest bookAddRequest,
                           Model model) {
 
-        bookService.putBook(bookAddRequest);
-        //model.addAttribute("success", true);
+        CommonResponse<Void> response = bookService.addBook(bookAddRequest);
+
+        if (response.getHeader().getIsSuccessful()) {
+            model.addAttribute("success", true);
+            model.addAttribute("message", response.getHeader().getResultMessage());
+        } else {
+            model.addAttribute("success", false);
+            model.addAttribute("message", response.getHeader().getResultMessage());
+        }
+
 
         return "page/book/addbook";
     }

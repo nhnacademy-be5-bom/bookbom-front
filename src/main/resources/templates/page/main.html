@@ -89,7 +89,7 @@
             <div class="section-header d-md-flex justify-content-between align-items-center mb-3">
                 <h2 class="display-2 fw-bold">급상승! 많이 보고 있는 상품</h2>
                 <div>
-                    <a href="/best" class="btn btn-outline-dark btn-lg fw-bold fs-6 rounded-1">
+                    <a href="/best-seller" class="btn btn-outline-dark btn-lg fw-bold fs-6 rounded-1">
                         더보기
                         <i class="fa-solid fa-arrow-right"></i>
                     </a>
@@ -101,8 +101,10 @@
                     <div th:each="book : ${bestBooks}" class="swiper-slide">
                         <div class="card position-relative">
                             <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
-                                <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
-                                <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="@{/images/no-image.jpg}" class="rounded-4 book-thumbnail" alt="image">
+                                <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
+                                     th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
+                                <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}"
+                                     th:src="@{/images/no-image.jpg}" class="rounded-4 book-thumbnail" alt="image">
                             </a>
                             <div class="card-body p-0">
                                 <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">

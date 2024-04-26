@@ -3,6 +3,7 @@ package shop.bookbom.front.index;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,18 @@ public class IndexController {
         model.addAttribute("bestBooks", bestBooks.getContent());
         model.addAttribute("latestBooks", latestBooks.getContent());
         return "page/main";
+    }
+
+    @GetMapping("/best-seller")
+    public String showBestSellerPage(Model model, Pageable pageable) {
+        Page<BookSearchResponse> bestBooks = indexService.mainBestBooks(pageable);
+        model.addAttribute("bestBooks", bestBooks.getContent());
+        model.addAttribute("currentPage", bestBooks.getNumber());
+        model.addAttribute("pageSize", bestBooks.getPageable().getPageSize());
+        model.addAttribute("totalPages", bestBooks.getTotalPages());
+        model.addAttribute("totalItems", bestBooks.getTotalElements());
+        model.addAttribute("size", bestBooks.getSize());
+        return "page/best-seller";
     }
 
     @GetMapping("/selectWrapper")

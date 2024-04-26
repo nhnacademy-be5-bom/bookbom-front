@@ -1,14 +1,12 @@
 package shop.bookbom.front.index.service.impl;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.book.dto.response.BookMediumResponse;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
+import shop.bookbom.front.domain.file.dto.FileDTO;
 import shop.bookbom.front.domain.review.dto.response.ReviewDTO;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 import shop.bookbom.front.index.service.IndexService;
@@ -42,11 +40,13 @@ public class IndexServiceImpl implements IndexService {
                 .average().orElse(0);
         averageReviewRate = Math.round(averageReviewRate * 10.0) / 10.0;
         int totalReviewCount = book.getReviews().size();
+        String thumbnail = book.getFiles().stream()
+                .filter(f -> f.getExtension().equals("img"))
+                .findFirst()
+                .orElse(FileDTO.builder().url("NONE").build()).getUrl();
         return BookSearchResponse.builder()
                 .id(book.getId())
-                .thumbnail(Objects.requireNonNull(
-                        book.getFiles().stream().filter(f -> f.getExtension().equals("img")).findFirst()
-                                .orElse(null)).getUrl())
+                .thumbnail(thumbnail)
                 .title(book.getTitle())
                 .author(book.getAuthors())
                 .publisherName(book.getPublisher().getName())

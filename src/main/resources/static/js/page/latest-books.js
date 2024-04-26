@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-    // 10개씩 보기가 기본값
-    document.querySelector('.page-size option[value="10"]').selected = true;
-
     // 수량 감소 버튼 클릭
     document.querySelectorAll('.quantity-decrease').forEach(button => {
         button.addEventListener('click', function () {
@@ -54,23 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
-    // 페이지 크기 선택
-    let pageSizeParam = new URLSearchParams(window.location.search).get('size');
-    let pageSizeSelect = document.querySelector('.page-size');
-    if (!pageSizeParam) {
-        pageSizeSelect.value = "10";
-    } else {
-        pageSizeSelect.value = pageSizeParam;
-    }
-    pageSizeSelect.addEventListener('change', function () {
-        let selectedPageSize = this.value;
-        let currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set("page", 0);
-        currentUrl.searchParams.set('size', selectedPageSize);
-        window.location.replace(currentUrl.toString());
-    });
-
     // 장바구니 버튼 클릭
     document.querySelectorAll('.cart-btn').forEach(button => {
         button.addEventListener('click', function () {
@@ -83,9 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const bookInfo = this.closest('.book-info');
             const cardBody = bookInfo.querySelector('.card-body')
             const thumbnail = bookInfo.querySelector('.book-thumbnail').src;
-            const title = cardBody.querySelector('.book-title').textContent;
-            const price = parseInt(cardBody.querySelector('.book-cost').textContent.replace('원', ''));
-            const discountPrice = parseInt(cardBody.querySelector('.book-discount-cost').textContent.replace('원', ''));
+            const title = cardBody.querySelector('.card-title').textContent;
+            const price = parseInt(cardBody.querySelector('.book-cost').textContent
+                .replace(',', '').replace('원', ''));
+            const discountPrice = parseInt(cardBody.querySelector('.book-discount-cost').textContent
+                .replace(',', '').replace('원', ''));
             const bookId = bookInfo.getAttribute('data-book-id');
 
             // 요청 데이터 생성
@@ -100,33 +82,6 @@ document.addEventListener('DOMContentLoaded', function () {
             addToCart(requestData);
             console.log(requestData)
         });
-    });
-
-    // 주문 폼 생성
-    document.querySelector('.order-btn').addEventListener('click', function () {
-        const bookInfo = this.closest('.book-info');
-        const bookId = bookInfo.getAttribute('data-book-id');
-        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
-        const quantity = parseInt(quantityInput.value);
-
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = '/order/wrapper';
-
-        const bookIdInput = document.createElement('input');
-        bookIdInput.type = 'hidden';
-        bookIdInput.name = `beforeOrderRequests[0].bookId`;
-        bookIdInput.value = bookId;
-        form.appendChild(bookIdInput);
-
-
-        const quantityInputHidden = document.createElement('input');
-        quantityInputHidden.type = 'hidden';
-        quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
-        quantityInputHidden.value = quantity;
-        form.appendChild(quantityInputHidden);
-        document.body.appendChild(form);
-        form.submit();
     });
 
     // 장바구니에 담기 요청
@@ -158,4 +113,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error:', error);
             });
     }
+
+    // 주문 폼 생성
+    document.querySelector('.order-btn').addEventListener('click', function () {
+        console.log('hi');
+        const bookInfo = this.closest('.book-info');
+        const bookId = bookInfo.getAttribute('data-book-id');
+        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+        const quantity = parseInt(quantityInput.value);
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order/wrapper';
+
+        const bookIdInput = document.createElement('input');
+        bookIdInput.type = 'hidden';
+        bookIdInput.name = `beforeOrderRequests[0].bookId`;
+        bookIdInput.value = bookId;
+        form.appendChild(bookIdInput);
+
+
+        const quantityInputHidden = document.createElement('input');
+        quantityInputHidden.type = 'hidden';
+        quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
+        quantityInputHidden.value = quantity;
+        form.appendChild(quantityInputHidden);
+        document.body.appendChild(form);
+        console.log(form)
+
+        form.submit();
+    });
 });

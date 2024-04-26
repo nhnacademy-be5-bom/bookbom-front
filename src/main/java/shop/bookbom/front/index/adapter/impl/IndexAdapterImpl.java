@@ -15,13 +15,13 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.book.dto.response.BookMediumResponse;
+import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 
 @Component
 @RequiredArgsConstructor
 public class IndexAdapterImpl implements IndexAdapter {
-    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookMediumResponse>>>
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookSearchResponse>>>
             BOOK_PAGE_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
@@ -33,7 +33,7 @@ public class IndexAdapterImpl implements IndexAdapter {
 
 
     @Override
-    public Page<BookMediumResponse> mainLatestBooks(Pageable pageable) {
+    public Page<BookSearchResponse> mainLatestBooks(Pageable pageable) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
@@ -44,7 +44,7 @@ public class IndexAdapterImpl implements IndexAdapter {
                 .build()
                 .toUriString();
 
-        CommonResponse<CommonPage<BookMediumResponse>> response =
+        CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
 
         if (response == null || response.getHeader().getIsSuccessful()) {
@@ -55,7 +55,7 @@ public class IndexAdapterImpl implements IndexAdapter {
     }
 
     @Override
-    public Page<BookMediumResponse> mainBestBooks(Pageable pageable) {
+    public Page<BookSearchResponse> mainBestBooks(Pageable pageable) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
@@ -66,7 +66,7 @@ public class IndexAdapterImpl implements IndexAdapter {
                 .build()
                 .toUriString();
 
-        CommonResponse<CommonPage<BookMediumResponse>> response =
+        CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
         if (response == null || response.getHeader().getIsSuccessful()) {
             // todo 예외처리

@@ -184,6 +184,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.header.resultMessage === "SUCCESS") {
                 } else {
                     console.error("수량 업데이트 실패: " + data.header.resultMessage);
+                    alert("수량 변경에 실패하였습니다. 나중에 다시 시도해주세요.")
                     // 실패한 경우 이전 수량으로 복원
                     const input = document.querySelector(`.quantity-input[data-item="${id}"]`);
                     input.value = previousQuantity;

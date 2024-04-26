@@ -9,3 +9,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+document.getElementById("categoryOpener")
+    .addEventListener("click", function () {
+        let categoryMenu = document.getElementById("categoryMenu");
+        if (categoryMenu.style.display === "none") {
+            document.getElementById("categoryMenu").style.display = "block";
+        } else {
+            document.getElementById("categoryMenu").style.display = "none";
+        }
+
+    });
+

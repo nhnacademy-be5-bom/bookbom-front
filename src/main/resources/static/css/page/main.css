@@ -1,0 +1,45 @@
+.book-discount-cost,
+.original-price {
+    margin-right: 10px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: rgba(158, 104, 11, 0.5);
+}
+
+
+.book-link {
+    display: flex;
+    width: 300px;
+    height: 400px;
+    text-align: center;
+}
+
+.book-thumbnail {
+    width: 280px;
+    height: 380px;
+    object-fit: cover;
+}
+
+.swiper-slide-active {
+    display: flex;
+}
+
+.card-title {
+    height: 100px;
+    overflow: hidden;
+}
+
+section {
+    margin-bottom: 100px;
+}
+
+#best .display-2,
+#latest .display-2 {
+    font-size: 3rem;
+}
+
+.text-black {
+    font-size: 1.2rem;
+}

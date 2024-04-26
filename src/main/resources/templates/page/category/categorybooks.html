@@ -2,19 +2,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/default_layout}"
+      lang="ko">
 
-<head>
-    <meta charset="UTF-8">
-</head>
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-    <link rel="stylesheet" th:href="@{/css/page/search.css}">
+    <link rel="stylesheet" th:href="@{/css/page/category/categorybooks.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
-    <script th:src="@{/js/page/search.js}"></script>
-    <script src="https://kit.fontawesome.com/95f398b1ca.js" crossorigin="anonymous"></script>
+    <script th:src="@{/js/page/category/categorybooks.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -22,8 +20,15 @@
     <div class="row">
         <!-- 검색 결과 건수 -->
         <div class="col-md-12 mb-3 result">
-            <p><span class="search-result" th:text="${keyword}">검색어</span>에 대한 결과가
-                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.</p>
+            <p th:unless="${category eq null}">
+                <span class="search-result" th:text="${category.getName()}">카테고리 이름</span>에 속한 도서가
+                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.
+            </p>
+
+            <p th:if="${category eq null}">
+                <span class="search-result">ERROR</span>에 속한 도서가
+                <span class="search-result" th:text="${totalItems}">3</span>건 있습니다.
+            </p>
         </div>
     </div>
 
@@ -55,7 +60,7 @@
                 </ul>
                 <div class="d-flex">
                     <button type="button" class="btn btn-outline-secondary select-all">전체선택</button>
-                    <button type="button" class="btn btn-outline-secondary cart-all">장바구니</button>
+                    <button type="button" class="btn btn-outline-secondary">장바구니</button>
                     <button type="button" class="btn btn-outline-secondary">바로구매</button>
                     <button type="button" class="btn btn-outline-secondary">좋아요</button>
                 </div>
@@ -71,26 +76,28 @@
     </nav>
 
     <div class="row">
-        <!-- 검색 조건 -->
+        <!-- 사이드바 -->
         <div class="col-md-2 search-condition">
-            <h5>검색 조건</h5>
-            <div class="form-check">
-                <input class="custom-checkbox form-check-input search-check"
-                       style="justify-content: center; border: 1px solid rgba(62, 65, 68, 0.52);margin-top: 9px"
-                       type="radio" id="book_title">
-                <label class="form-check-label" for="book_title">도서명</label>
-            </div>
-            <div class="form-check">
-                <input class="custom-checkbox form-check-input search-check"
-                       style="align-items: center; border: 1px solid rgba(62, 65, 68, 0.52);margin-top: 9px"
-                       type="radio" id="author">
-                <label class="form-check-label" for="author">작가명</label>
-            </div>
-            <div class="form-check">
-                <input class="custom-checkbox form-check-input search-check"
-                       style="justify-content: center   ; border: 1px solid rgba(62, 65, 68, 0.52);margin-top: 9px"
-                       type="radio" id="publisher">
-                <label class="form-check-label" for="publisher">출판사명</label>
+            <h5>상세 카테고리</h5>
+            <div class="form-check flex-shrink-0 p-3">
+                <ul th:fragment="fragment_node(category)"
+                    th:unless="${#lists.isEmpty(category.children)}">
+                    <li th:each="child : ${category.children}" th:inline="text">
+                        <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                           th:text="${child.name}"
+                           th:href="@{/category/{categoryId}(categoryId=${child.id})}">
+                        </a>
+                        <ul th:replace="this::fragment_node(${child})"></ul>
+                    </li>
+                </ul>
+
+                <!-- 하위 카테고리 없는 경우 -->
+                <ul class="mb-1" th:if="${#lists.size(category.getChildren()) eq 0}">
+                    <li class="d-inline-flex text-decoration-none rounded">
+                        하위 카테고리 없음
+                    </li>
+                </ul>
+
             </div>
         </div>
 
@@ -103,25 +110,24 @@
                         <!-- 카드 내용 -->
                         <div class="row g-0">
                             <div class="col-md-1 custom-checkbox">
-                                <label th:for="${'bookCheckbox' + book.id}"></label>
-                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + book.id}">
+                                <label th:for="${'bookCheckbox' + bookStat.index}"></label>
+                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + bookStat.index}">
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">
-                                <a th:href="@{'/book/detail/' + ${book.id}}">
-                                    <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}"
-                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
-                                    <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="@{/images/no-image.jpg}"
-                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
+                                <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                    <img th:src="${book.thumbnail != null} ? ${book.thumbnail} : '/images/no-image.jpg'"
+                                         class="card-img-top img-fluid rounded-start"
+                                         alt="...">
                                 </a>
                             </div>
                             <!-- 도서 정보 -->
                             <div class="col-md-6">
                                 <div class="card-body">
-                                    <a th:href="@{'/book/detail/' + ${book.id}}">
-                                        <h5 class="card-title book-title" th:text="${book.title}">오늘부터 나를 고쳐 쓰기로 했다 - 다시
-                                            태어나지 않고도 삶을
-                                            바꾸는 매일의 작은 습관들</h5>
+                                    <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                        <h5 class="card-title" th:text="${book.title}">
+                                            오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들
+                                        </h5>
                                     </a>
                                     <p class="card-text">
                                         <span th:each="author : ${book.author}">
@@ -134,26 +140,11 @@
                                        th:text="${book.publisherName} + ' · ' + ${#temporals.format(book.pubDate, 'yyyy. MM. dd')}">
                                         부키 · <span>2024. 04. 01</span>
                                     </p>
-                                    <p class="card-text"><span class="fw-bold book-discount-cost"
-                                                               data-th-text="${#numbers.formatInteger(book.discountPrice, 3, 'COMMA') + '원'}">12,000</span>
-                                        <span class="text-muted original-price book-cost"
-                                              data-th-text="${#numbers.formatInteger(book.price, 3, 'COMMA') + '원'}">15,000</span>
-                                    </p>
-                                    <p class="card-text">
-                                        <th:block th:each="star : ${#numbers.sequence(1, 5)}">
-                                            <i th:if="${star <= T(java.lang.Math).floor(book.reviewRating)}"
-                                               class="fas fa-star text-primary"></i>
-                                            <i th:if="${star == T(java.lang.Math).ceil(book.reviewRating) and (book.reviewRating % 1) != 0}"
-                                               class="fas fa-star-half-alt text-primary"></i>
-                                            <i th:if="${star > T(java.lang.Math).ceil(book.reviewRating)}"
-                                               class="far fa-star text-primary"></i>
-                                        </th:block>
-                                        <span th:text="${book.reviewRating}">4.5</span>
-                                    </p>
-                                    <p class="card-text">
-                                        <span>리뷰 (<span
-                                                th:text="${book.reviewCount}">123</span>)</span>
-                                    </p>
+                                    <p class="card-text"><span class="fw-bold" th:text="${book.discountPrice} + '원'">12,000</span>
+                                        <span class="text-muted original-price"
+                                              th:text="${book.price} + '원'">15,000</span></p>
+                                    <p class="card-text"><span th:text="${book.reviewRating}">4.8</span> /
+                                        <span>리뷰(<span th:text="${book.reviewCount}">123</span>)개</span></p>
                                 </div>
                             </div>
                             <div class="col-md-2 quantity-and-buttons">
@@ -174,7 +165,7 @@
                                     <div class="col-6 col-md-12 btn-div">
                                         <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
                                         </button>
-                                        <button type="button" class="btn btn-success custom-btn cart-btn">장바구니</button>
+                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
                                         <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
                                     </div>
                                 </div>
@@ -187,7 +178,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${currentPage - 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -195,12 +186,12 @@
                     <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${pageNum == currentPage} ? 'active'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${pageNum}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${pageNum}, size=${pageSize}, sorted=${sorted})}"
                            th:text="${pageNum + 1}"></a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/search(keyword=${keyword}, page=${currentPage + 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage + 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
@@ -208,23 +199,6 @@
                 </ul>
             </nav>
 
-        </div>
-    </div>
-
-    <div class="modal" tabindex="-1" id="successModal">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-                    <button type="button" class="btn btn-success" id="goToCart">예</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>

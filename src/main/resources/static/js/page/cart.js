@@ -114,8 +114,8 @@ document.addEventListener("DOMContentLoaded", function () {
         itemCheckboxes.forEach(function (checkbox) {
             const itemRow = checkbox.closest('tr');
             if (itemRow) {
-                const price = parseInt(itemRow.querySelector('.book-cost').textContent.replace('원', ''));
-                const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', ''));
+                const price = parseInt(itemRow.querySelector('.book-cost').textContent.replace('원', '').replace(/,/g, ''));
+                const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', '').replace(/,/g, ''));
                 const quantity = parseInt(itemRow.querySelector('.quantity-input').value);
 
                 if (checkbox.checked) {
@@ -131,19 +131,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const paymentDue = totalAmount - (totalAmount - totalDiscount) + shippingFee;
 
-        document.getElementById('totalAmount').textContent = totalAmount + '원';
-        document.getElementById('shippingFee').textContent = shippingFee + '원';
-        document.getElementById('productDiscount').textContent = totalAmount - totalDiscount + '원';
-        document.getElementById('paymentDue').textContent = paymentDue + '원';
+        document.getElementById('totalAmount').textContent = numberWithCommas(totalAmount) + '원';
+        document.getElementById('shippingFee').textContent = numberWithCommas(shippingFee) + '원';
+        document.getElementById('productDiscount').textContent = numberWithCommas(totalAmount - totalDiscount) + '원';
+        document.getElementById('paymentDue').textContent = numberWithCommas(paymentDue) + '원';
     }
 
     function updateItemTotal(element) {
         const itemRow = element.closest('tr');
-        const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', ''));
+        const discountPrice = parseInt(itemRow.querySelector('.book-discount-cost').textContent.replace('원', '').replace(/,/g, ''));
         const quantity = parseInt(itemRow.querySelector('.quantity-input').value);
         const itemTotal = itemRow.querySelector('#item-total');
 
-        itemTotal.textContent = (discountPrice * quantity) + '원';
+        const total = discountPrice * quantity;
+        itemTotal.textContent = numberWithCommas(total) + '원';
+    }
+
+    // 금액 표시
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
     // 장바구니 상품 삭제

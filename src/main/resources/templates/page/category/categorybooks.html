@@ -186,12 +186,12 @@
                     <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${pageNum == currentPage} ? 'active'">
                         <a class="page-link"
-                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${pageNum}, size=${pageSize}, sorted=${sorted})}"
                            th:text="${pageNum + 1}"></a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage + 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

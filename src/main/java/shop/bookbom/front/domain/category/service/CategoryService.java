@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.category.adaptor.CategoryAdaptor;
+import shop.bookbom.front.domain.category.adapter.CategoryAdapter;
 import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildResponse;
@@ -14,7 +14,7 @@ import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildRespo
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
-    private final CategoryAdaptor categoryAdaptor;
+    private final CategoryAdapter categoryAdaptor;
 
     public CategoryDepthResponse getAllCategories() {
         CommonResponse<?> response = categoryAdaptor.getAllCategories();

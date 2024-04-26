@@ -1,10 +1,10 @@
-package shop.bookbom.front.domain.book.adaptor;
+package shop.bookbom.front.domain.book.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
- * packageName    : shop.bookbom.front.domain.book.adaptor
+ * packageName    : shop.bookbom.front.domain.book.adapter
  * fileName       : BookRestTemplateAdaptor
  * author         : UuLaptop
  * date           : 2024-04-15
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class BookRestTemplateAdaptor {
+public class BookRestTemplateAdapter {
 //    private static final ParameterizedTypeReference<CommonResponse<CartInfoResponse>> CART_INFO_RESPONSE =
 //            new ParameterizedTypeReference<>() {
 //            };

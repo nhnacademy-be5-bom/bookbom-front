@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.book.adaptor.BookAdaptor;
+import shop.bookbom.front.domain.book.adapter.BookAdapter;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.dto.response.BookDetailResponse;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
@@ -14,7 +14,7 @@ import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private final BookAdaptor bookAdaptor;
+    private final BookAdapter bookAdaptor;
 
     public CommonResponse<Void> addBook(BookAddRequest bookAddRequest) {
         return bookAdaptor.save(bookAddRequest);

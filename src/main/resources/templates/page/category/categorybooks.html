@@ -79,53 +79,19 @@
         <!-- 사이드바 -->
         <div class="col-md-2 search-condition">
             <h5>상세 카테고리</h5>
-            <div class="form-check flex-shrink-0 p-3" style="margin-left: 0; padding-left: 0 !important;">
+            <div class="form-check flex-shrink-0 p-3">
+                <ul th:fragment="fragment_node(category)"
+                    th:unless="${#lists.isEmpty(category.children)}">
+                    <li th:each="child : ${category.children}" th:inline="text">
+                        <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
+                           th:text="${child.name}"
+                           th:href="@{/category/{categoryId}(categoryId=${child.id})}">
+                        </a>
+                        <ul th:replace="this::fragment_node(${child})"></ul>
+                    </li>
+                </ul>
 
-                <th:block th:fragment="fragment_node(category)"
-                          th:unless="${#lists.isEmpty(category.getChildren())}">
-
-                    <ul class="list-unstyled ps-0">
-                        <li class="d-inline-flex text-decoration-none rounded"
-                            th:each="child : ${category.getChildren()}" th:inline="text">
-
-                            <th:block th:if="${#lists.size(category.getChildren()) > 0}">
-                                <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed"
-                                        data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="false"
-                                        style="margin-left: 0; padding-left: 0 !important;"
-                                        th:text="${child.getName()}">
-                                </button>
-
-                                <div class="collapse" id="home-collapse"
-                                     style="margin-left: 0; padding-left: 0 !important;">
-                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                        <li>
-                                            <a th:href="@{/category/{categoryId}(categoryId=${category.getId()})}"
-                                               class="link-body-emphasis d-inline-flex text-decoration-none rounded">
-                                                <th:block th:replace="this::fragment_node(${child})"></th:block>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </th:block>
-
-                            <th:block th:if="${#lists.size(category.getChildren()) eq 0}">
-                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                                    <li>
-                                        <a th:href="@{/category/{categoryId}(categoryId=${category.getId()})}"
-                                           class="link-body-emphasis d-inline-flex text-decoration-none rounded">
-                                            [[${child.getName()}]]
-                                            <th:block th:replace="this::fragment_node(${child})"></th:block>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </th:block>
-
-                        </li>
-                    </ul>
-
-                </th:block>
-
-
+                <!-- 하위 카테고리 없는 경우 -->
                 <ul class="mb-1" th:if="${#lists.size(category.getChildren()) eq 0}">
                     <li class="d-inline-flex text-decoration-none rounded">
                         하위 카테고리 없음
@@ -149,15 +115,20 @@
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">
-                                <img th:src="${book.thumbnail != null} ? ${book.thumbnail} : '/images/no-image.jpg'"
-                                     class="card-img-top img-fluid rounded-start"
-                                     alt="...">
+                                <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                    <img th:src="${book.thumbnail != null} ? ${book.thumbnail} : '/images/no-image.jpg'"
+                                         class="card-img-top img-fluid rounded-start"
+                                         alt="...">
+                                </a>
                             </div>
                             <!-- 도서 정보 -->
                             <div class="col-md-6">
                                 <div class="card-body">
-                                    <h5 class="card-title" th:text="${book.title}">오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을
-                                        바꾸는 매일의 작은 습관들</h5>
+                                    <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                        <h5 class="card-title" th:text="${book.title}">
+                                            오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들
+                                        </h5>
+                                    </a>
                                     <p class="card-text">
                                         <span th:each="author : ${book.author}">
                                             <span th:text="${author.name}"></span>
@@ -207,7 +178,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/category(categoryId=${keyword}, page=${currentPage - 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -215,12 +186,12 @@
                     <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${pageNum == currentPage} ? 'active'">
                         <a class="page-link"
-                           th:href="@{/category(categoryId=${keyword}, page=${pageNum}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
                            th:text="${pageNum + 1}"></a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/category(categoryId=${keyword}, page=${currentPage + 1}, size=${pageSize}, search=${search}, sorted=${sorted})}"
+                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

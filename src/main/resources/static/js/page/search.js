@@ -126,59 +126,86 @@ document.addEventListener('DOMContentLoaded', function () {
     // 장바구니 버튼 클릭
     document.querySelectorAll('.cart-btn').forEach(button => {
         button.addEventListener('click', function () {
-            // 수량 입력 필드를 찾아서 값을 가져옴
+            let requestData = [];
             const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
             const quantity = parseInt(quantityInput.value);
-
-            // 책 ID를 가져옴
             const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
-
-            // 책 정보를 가져옴
             const thumbnail = this.closest('.border-bottom').querySelector('.book-thumbnail').src;
             const title = this.closest('.border-bottom').querySelector('.book-title').textContent;
-            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost').textContent.replace('원', ''));
-            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost').textContent.replace('원', ''));
+            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost')
+                .textContent.replace(',', '').replace('원', ''));
+            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost')
+                .textContent.replace(',', '').replace('원', ''));
 
-            // 요청 데이터 생성
-            const requestData = [
-                {
-                    bookId: parseInt(bookId),
-                    thumbnail: thumbnail,
-                    title: title,
-                    price: price,
-                    discountPrice: discountPrice,
-                    quantity: quantity
-                }
-            ];
+            requestData.push({
+                bookId: parseInt(bookId),
+                thumbnail: thumbnail,
+                title: title,
+                price: price,
+                discountPrice: discountPrice,
+                quantity: quantity
+            });
 
-            // AJAX를 사용하여 POST 요청 전송
-            fetch('/cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestData),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('네트워크 에러가 발생했습니다.');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    let myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-                        keyboard: false
-                    });
-                    myModal.show();
-
-                    document.getElementById('goToCart').addEventListener('click', () => {
-                        window.location.href = '/cart';
-                    });
-
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            addToCart(requestData);
         });
     });
+
+    // 선택한 상품 장바구니에 담기 버튼 클릭
+    document.querySelector('.cart-all').addEventListener('click', function () {
+        let checkedBooks = [];
+        document.querySelectorAll('.book-checkbox:checked').forEach(function (checkbox) {
+            const thumbnail = checkbox.closest('.border-bottom').querySelector('.book-thumbnail').src;
+            const title = checkbox.closest('.border-bottom').querySelector('.book-title').textContent;
+            const price = parseInt(checkbox.closest('.border-bottom').querySelector('.book-cost')
+                .textContent.replace(',', '').replace('원', ''));
+            const discountPrice = parseInt(checkbox.closest('.border-bottom').querySelector('.book-discount-cost')
+                .textContent.replace(',', '').replace('원', ''));
+            const bookId = checkbox.id.replace('bookCheckbox', '');
+            const quantity = parseInt(checkbox.closest('.border-bottom').querySelector('.quantity-input').value);
+
+            checkedBooks.push({
+                bookId: parseInt(bookId),
+                thumbnail: thumbnail,
+                title: title,
+                price: price,
+                discountPrice: discountPrice,
+                quantity: quantity
+            });
+        });
+        if (checkedBooks.length === 0) {
+            alert('장바구니에 담을 책을 선택해주세요.');
+            return;
+        }
+        addToCart(checkedBooks);
+    });
+
+    // 장바구니에 담기 요청
+    function addToCart(requestData) {
+        // AJAX를 사용하여 POST 요청 전송
+        fetch('/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('네트워크 에러가 발생했습니다.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                let myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                    keyboard: false
+                });
+                myModal.show();
+                document.getElementById('goToCart').addEventListener('click', () => {
+                    window.location.href = '/cart';
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
 });

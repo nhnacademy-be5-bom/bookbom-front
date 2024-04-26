@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +28,10 @@ public class IndexController {
     }
 
     @GetMapping("/best-seller")
-    public String showBestSellerPage(Model model, Pageable pageable) {
+    public String showBestSellerPage(Model model, @PageableDefault Pageable pageable) {
         Page<BookSearchResponse> bestBooks = indexService.mainBestBooks(pageable);
         model.addAttribute("bestBooks", bestBooks.getContent());
+        model.addAttribute("startNum", bestBooks.getNumber() * bestBooks.getSize());
         model.addAttribute("currentPage", bestBooks.getNumber());
         model.addAttribute("pageSize", bestBooks.getPageable().getPageSize());
         model.addAttribute("totalPages", bestBooks.getTotalPages());

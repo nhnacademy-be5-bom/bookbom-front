@@ -13,7 +13,7 @@
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
-    <script th:src="@{/js/page/bestseller.js}"></script>
+    <script th:src="@{/js/page/best-seller.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -25,7 +25,7 @@
         </div>
     </div>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light col-md-12">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light col-md-12" style="margin-bottom: 50px">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
@@ -52,13 +52,13 @@
             <div class="col-md-12 mb-6 border-bottom" th:each="book, index : ${bestBooks}">
                 <div class="card">
                     <!-- 카드 내용 -->
-                    <div class="row g-0">
+                    <div class="row g-0 book-info" th:data-book-id="${book.id}">
                         <!-- 순위 -->
                         <div class="col-md-1 text-center">
-                            <span th:text="${index.index + 1 + '. '}"></span>
+                            <span th:text="${startNum + index.count +  '. '}"></span>
                         </div>
                         <!-- 이미지 -->
-                        <div class="col-md-2 text-center">
+                        <div class="col-md-2 text-center thumbnail">
                             <a th:href="@{'/book/detail/' + ${book.id}}">
                                 <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
                                      th:src="${book.thumbnail}"
@@ -111,9 +111,11 @@
                                     </div>
                                 </div>
                                 <div class="col-6 col-md-12 btn-div">
-                                    <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                    <button type="button" class="btn btn-primary custom-btn custom-primary order-btn">
+                                        구매하기
                                     </button>
-                                    <button type="button" class="btn btn-success custom-btn cart-btn">장바구니</button>
+                                    <button type="button" class="btn btn-success custom-btn cart-btn">장바구니
+                                    </button>
                                     <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
                                 </div>
                             </div>
@@ -148,20 +150,19 @@
         </nav>
 
     </div>
-</div>
-
-<div class="modal" tabindex="-1" id="successModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
-                <button type="button" class="btn btn-success" id="goToCart">예</button>
+    <div class="modal" tabindex="-1" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+                    <button type="button" class="btn btn-success" id="goToCart">예</button>
+                </div>
             </div>
         </div>
     </div>

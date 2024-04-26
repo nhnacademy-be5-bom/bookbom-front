@@ -1,118 +1,97 @@
-var newNumber = 1;
-var wrapperList = JSON.parse(document.getElementById('wrapperData').dataset.wrapperList);
+// '다음' 버튼을 클릭할 때 validateRadioButtonSelection 함수를 호출합니다.
+function selectWrapperSubmit() {
+    document.querySelector('.pink-button').addEventListener('click', function () {
+        // validateRadioButtonSelection 함수의 반환값에 따라 이벤트를 처리합니다.
+        var isValid = validateRadioButtonSelection();
+        if (!isValid) {
+            // 모든 라디오 버튼이 선택되었으면 다음 이벤트를 진행합니다
+            alert("포장지 선택을 진행해주세요");
+        } else {
+            alert("선택한 포장지가 유효합니다!");
+        }
 
-
-function addWrapper() {
-
-    var wrappers = document.querySelectorAll('.wrappers > .select');
-    var totalSelectedQuantity = 0;
-    var bookQuantity = 0;
-
-    // beforeOrderBookResponseList에서 각 bookResponse의 quantity를 합산
-    beforeOrderBookResponseList.forEach(function (bookResponse) {
-        bookQuantity = bookResponse.quantity;
     });
-
-    // 각 포장지에서 선택된 수량을 합산
-    wrappers.forEach(function (wrapper) {
-        var quantityInput = wrapper.querySelector('input[name="quantity"]');
-        var quantity = parseInt(quantityInput.value);
-        totalSelectedQuantity += quantity;
-    });
-
-    // 주문한 책의 수량과 선택된 포장지의 수량을 비교하여 알림 메시지 표시
-    if (totalSelectedQuantity >= totalOrderCount) {
-        alert("주문 하신 책의 수량보다 많습니다. 다시 수량을 조절해주세요.");
-        return;
-    }
-    var quantityInput = document.createElement('input');
-    quantityInput.setAttribute('type', 'number');
-    quantityInput.setAttribute('name', 'quantity');
-    quantityInput.setAttribute('min', '1');
-    quantityInput.setAttribute('style', 'width: 40px');
-    quantityInput.id = 'quantity' + newNumber; // 고유한 ID 생성
-    quantityInput.addEventListener('change', updateWrapCountAndCost); // 수량 변경 시 업데이트
-
-    var newWrapper = document.createElement('div');
-    newWrapper.classList.add('select');
-    newNumber++;
-
-    var wrapperContent = `
-    <div style="margin: 10px">
-        <input type="text" class="number" name="number" value="${newNumber}" readonly style="width: 20px; text-align: center">
-`;
-// wrapperList 배열을 순회하면서 각 wrapper에 대한 라디오 버튼과 라벨을 생성
-    wrapperList.forEach(function (wrapper) {
-        wrapperContent += `
-        <div>
-            <input type="radio" id="wrapper${wrapper.id}" name="wrapper" value="${wrapper.id}"> 
-            <label for="wrapper${wrapper.id}">${wrapper.name}</label>
-        </div>
-    `;
-    });
-
-    wrapperContent += '<input type="number" id="quantity" name="quantity" min="1" style="width: 40px"></div>'; // wrapperContent 마무리
-
-    newWrapper.innerHTML = wrapperContent;
-    newWrapper.appendChild(quantityInput); // 수량 입력 필드 추가
-    var firstWrapper = document.querySelector('.wrappers');
-    firstWrapper.appendChild(newWrapper);
-
-    // + 버튼을 누르면 입력 필드를 비활성화
-    quantityInput.disabled = true;
-
-    // 선택한 포장지의 가격을 고려하여 wrapBookCount와 totalWrapCost 업데이트
-    updateWrapCountAndCost();
 }
 
-function removeWrapper() {
-    var wrappers = document.querySelectorAll('.wrappers > .select');
-    if (wrappers.length > 1) {
-        // 제거되는 포장지의 수량 값을 가져와서 newNumber를 갱신
-        var lastWrapper = wrappers[wrappers.length - 1];
-        var numberInput = lastWrapper.querySelector('.number');
-        var removedNumber = parseInt(numberInput.value);
-        newNumber = removedNumber - 1;
+function validateRadioButtonSelection() {
+    // 모든 라디오 버튼을 가져옵니다.
+    var radioButtons = document.querySelectorAll('input[type="radio"]');
 
-        lastWrapper.remove();
-    } else {
-        alert("최소 한 개의 포장지를 유지해야 합니다.");
+    // 각 라디오 버튼에 대해 확인합니다.
+    for (var i = 0; i < radioButtons.length; i++) {
+        var radioButton = radioButtons[i];
+
+        var groupNames = new Set(); // 중복을 허용하지 않는 name을 저장할 Set
+
+        // 각 라디오 버튼에 대해 확인합니다.
+        for (var i = 0; i < radioButtons.length; i++) {
+            var radioButton = radioButtons[i];
+
+            // 현재 라디오 버튼의 name 속성값을 가져와서 Set에 추가합니다.
+            var groupName = radioButton.getAttribute('name');
+            groupNames.add(groupName);
+        }
     }
-    var quantityInput = document.createElement('input');
-    quantityInput.setAttribute('type', 'number');
-    quantityInput.setAttribute('name', 'quantity');
-    quantityInput.setAttribute('min', '1');
-    quantityInput.setAttribute('style', 'width: 40px');
-    quantityInput.id = 'quantity' + newNumber; // 고유한 ID 생성
-    quantityInput.addEventListener('change', updateWrapCountAndCost); // 수량 변경 시 업데이트
-    // - 버튼을 누르면 입력 필드를 다시 활성화
-    quantityInput.disabled = false;
+    for (var groupName of groupNames.values()) {
+        // 같은 name을 가진 라디오 버튼들을 가져옵니다.
+        var group = document.querySelectorAll('input[type="radio"][name="' + groupName + '"]');
+        // 해당 그룹에서 체크된 라디오 버튼의 개수를 세어봅니다.
+        var isChecked = 0;
+        for (var j = 0; j < group.length; j++) {
+            if (group[j].checked) {
+                isChecked += 1;
+                break;
+            }
+        }
+        if (isChecked === 0) {
+            return false;
+        }
+    }
+    return true;
 
-    // 선택한 포장지의 가격을 고려하여 wrapBookCount와 totalWrapCost 업데이트
-    updateWrapCountAndCost();
 }
+
+// // 모든 라디오 버튼에 대해 그룹별로 업데이트 함수 호출
+// var radioButtons = document.querySelectorAll('input[type="radio"]');
+//
+// // 각 라디오 버튼에 대해 확인합니다.
+// for (var i = 0; i < radioButtons.length; i++) {
+//     var radioButton = radioButtons[i];
+//
+//     var groupNames = new Set(); // 중복을 허용하지 않는 name을 저장할 Set
+//
+//     // 각 라디오 버튼에 대해 확인합니다.
+//     for (var j = 0; j < radioButtons.length; j++) {
+//         var radioButton = radioButtons[j]; // 여기서 변수명을 바꿔줍니다.
+//
+//         // 현재 라디오 버튼의 name 속성값을 가져와서 Set에 추가합니다.
+//         var groupName = radioButton.getAttribute('name');
+//         groupNames.add(groupName);
+//     }
+// }
+// for (var groupName of groupNames.values()) {
+//     // 라디오 버튼이 변경될 때마다 업데이트 함수 호출
+//     $('input[name="' + groupName + '"]').on('change', updateWrapCountAndCost);
+// }
 
 function updateWrapCountAndCost() {
+
     // wrapBookCount 및 totalWrapCost 업데이트를 위해 필요한 변수 초기화
     var totalQuantity = 0;
     var totalCost = 0;
 
-    // 모든 포장지에 대해 반복하여 수량 및 가격을 계산
-    var wrappers = document.querySelectorAll('.wrappers > .select');
-    wrappers.forEach(function (wrapper) {
-        var quantityInput = wrapper.querySelector('input[name="quantity"]');
-        var selectedWrapperName = wrapper.querySelector('input[name="wrapper"]:checked').value;
-        var quantity = parseInt(quantityInput.value);
-
-        // 선택한 포장지의 가격 가져오기
-        var selectedWrapper = wrapperList.find(function (wrapper) {
-            return wrapper.name === selectedWrapperName;
-        });
-        var wrapperCost = selectedWrapper.cost;
-
-        // 수량 및 가격을 합산
-        totalQuantity += quantity;
-        totalCost += quantity * wrapperCost;
+    // 각 라디오 버튼에 대해 확인합니다.
+    // 체크된 라디오 버튼에 대해 확인합니다.
+    $('input[type="radio"]:checked').each(function () {
+        // 각 체크된 라디오 버튼의 id와 value 값을 가져와서 계산합니다.
+        var id = parseFloat($(this).attr('id'));
+        var value = parseFloat($(this).val());
+        if (id !== 0) {
+            // totalQuantity를 id 값으로부터 계산합니다.
+            totalQuantity += value;
+        }
+        // totalCost를 id와 value를 곱한 값을 더하여 계산합니다.
+        totalCost += id * value;
     });
 
     // wrapBookCount 및 totalWrapCost 업데이트
@@ -124,6 +103,7 @@ function updateWrapCountAndCost() {
 }
 
 // '보기' 버튼을 클릭할 때마다 테이블 요소를 토글하는 함수
+
 function toggleTable() {
     var table = document.querySelector('table'); // 테이블 요소 선택
     if (table.style.display === 'none' || table.style.display === '') {
@@ -133,6 +113,5 @@ function toggleTable() {
     }
 }
 
-function redirectToURL(url) {
-    window.location.href = url; // 해당 URL로 이동
-}
+
+

@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.book.adaptor;
+package shop.bookbom.front.domain.book.adapter;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ import shop.bookbom.front.domain.book.dto.response.BookDetailResponse;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 
 @FeignClient(value = "BOOKBOM-FRONT-BOOK", path = "/shop", url = "${bookbom.gateway-url}")
-public interface BookAdaptor {
+public interface BookAdapter {
     @PutMapping("/book/update/new")
     CommonResponse<Void> save(@RequestBody BookAddRequest bookAddRequest);
 

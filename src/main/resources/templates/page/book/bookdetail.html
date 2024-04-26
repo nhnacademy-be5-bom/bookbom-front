@@ -82,7 +82,7 @@
                             <dd class="col-9" th:if="${bookDetail.getPointRate().getEarnType() == 'RATE'}"
                                 th:text="|${bookDetail.getPointRate().getEarnPoint()}%|"></dd>
 
-                            <dd class="col-9" th:unless="${bookDetail.getPointRate().getEarnType() == 'RATE'}"
+                            <dd class="col-9" th:if="${bookDetail.getPointRate().getEarnType() == 'COST'}"
                                 th:text="|${bookDetail.getPointRate().getEarnPoint()}포인트|"></dd>
                         </div>
 

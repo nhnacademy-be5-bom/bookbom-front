@@ -16,8 +16,10 @@
 <div class="container mt-5" layout:fragment="content">
     <div class="row justify-content-center mb-3">
         <div class="col-md-6 text-center">
-            <h2 class="fw-bold">냥냥<span class="fs-4">님</span></h2>
-            <span class="fs-5">PLATINUM</span>
+            <span class="fw-bold fs-2" th:text="${member.nickname}">냥냥</span><span class="fs-4">님</span>
+            <div>
+                <span class="fs-5" th:text="${member.rank}">PLATINUM</span>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -43,45 +45,23 @@
         <!-- 우측 영역 -->
         <div class="col-md-9">
             <h4>최근 주문 내역</h4>
-            <table class="table">
+            <table class="table" th:each="order : ${member.lastOrders}">
                 <thead>
                 <tr>
                     <th scope="col">주문 일자</th>
                     <th scope="col">주문 번호</th>
                     <th scope="col">주문 이름</th>
+                    <th scope="col">가격</th>
                     <th scope="col">주문 상태</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr>
-                    <td>2024-04-25</td>
-                    <td>ORD123456</td>
-                    <td>상품명</td>
-                    <td>배송중</td>
-                </tr>
-                <tr>
-                    <td>2024-04-25</td>
-                    <td>ORD123456</td>
-                    <td>상품명</td>
-                    <td>배송중</td>
-                </tr>
-                <tr>
-                    <td>2024-04-25</td>
-                    <td>ORD123456</td>
-                    <td>상품명</td>
-                    <td>배송중</td>
-                </tr>
-                <tr>
-                    <td>2024-04-25</td>
-                    <td>ORD123456</td>
-                    <td>상품명</td>
-                    <td>배송중</td>
-                </tr>
-                <tr>
-                    <td>2024-04-25</td>
-                    <td>ORD123456</td>
-                    <td>상품명</td>
-                    <td>배송중</td>
+                    <td th:text="${order.orderDate}">2024-04-25</td>
+                    <td th:text="${order.orderNumber}">ORD123456</td>
+                    <td th:text="${order.name}">상품명</td>
+                    <td data-th-text="${#numbers.formatInteger(order.totalCost, 3, 'COMMA') + '원'}">25,000원</td>
+                    <td th:text="${order.status}">배송중</td>
                 </tr>
                 </tbody>
             </table>
@@ -90,7 +70,7 @@
                     <div class="card custom-card" style="border-radius: 25px">
                         <div class="card-body">
                             <h5 class="card-title text-center">쿠폰함</h5>
-                            <p class="card-text text-end">3장</p>
+                            <p class="card-text text-end" th:text="${member.couponCount} + '장'">3장</p>
                         </div>
                     </div>
                 </div>
@@ -98,7 +78,7 @@
                     <div class="card custom-card" style="border-radius: 25px">
                         <div class="card-body">
                             <h5 class="card-title text-center">찜 목록</h5>
-                            <p class="card-text text-end">10개</p>
+                            <p class="card-text text-end" th:text="${member.wishCount} + '개'">10개</p>
                         </div>
                     </div>
                 </div>
@@ -106,7 +86,7 @@
                     <div class="card custom-card" style="border-radius: 25px">
                         <div class="card-body">
                             <h5 class="card-title text-center">포인트</h5>
-                            <p class="card-text text-end">2500p</p>
+                            <p class="card-text text-end" th:text="${member.point} + 'p'">2500p</p>
                         </div>
                     </div>
                 </div>

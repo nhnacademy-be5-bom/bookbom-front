@@ -1,8 +1,8 @@
 package shop.bookbom.front.domain.order.adapter;
 
 import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
-import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.PreOrderResponse;
 
 public interface OrderAdapter {
-    public BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList);
+    public PreOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList);
 }

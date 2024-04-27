@@ -37,7 +37,10 @@
                             alt="Book Image" width="80px" height="120px"></td>
                     <td class="order-table-td" th:text="${bookResponse.title}"></td>
                     <td class="order-table-td" th:text="${bookResponse.quantity}+'개'"></td>
-                    <td class="order-table-td" th:text="${bookResponse.cost}+'원'"></td>
+                    <td class="order-table-td">
+                        <span style="text-decoration: line-through;" th:text="${bookResponse.cost}"></span><br>
+                        <span th:text="${bookResponse.discountCost}+'원'"></span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -81,10 +84,10 @@
         <div class="wrapperList">
             <div th:each="wrapper : ${wrapperList}">
                 <img class="wrapperImg"
-                     src="https://previews.123rf.com/images/viaire/viaire1504/viaire150400025/39096768-%ED%8F%AC%EC%9E%A5%EC%A7%80%EC%97%90-%EB%B9%A8%EA%B0%84%EC%83%89-%ED%95%98%ED%8A%B8-%ED%8C%A8%ED%84%B4.jpg"
+                     th:src="${wrapper.imgUrl}"
                      th:alt="'포장지' + ${wrapper.id}" width="90px" height="90px">
-                <span class="wrapperName" th:text="${wrapper.name}" style="margin-right: 20px;"></span>
-                <span class="wrapperCost" th:text="${wrapper.cost}" style="margin-right: 5px"></span><span>원</span>
+                <span class="wrapperName" th:text="${wrapper.name}+'원'" style="margin-right: 20px;"></span>
+                <span class="wrapperCost" th:text="${wrapper.cost}+'원'" style="margin-right: 5px"></span>
             </div>
             <br>
 

@@ -1,16 +1,14 @@
 // '다음' 버튼을 클릭할 때 validateRadioButtonSelection 함수를 호출합니다.
 function selectWrapperSubmit() {
-    document.querySelector('.pink-button').addEventListener('click', function () {
-        // validateRadioButtonSelection 함수의 반환값에 따라 이벤트를 처리합니다.
-        var isValid = validateRadioButtonSelection();
-        if (!isValid) {
-            // 모든 라디오 버튼이 선택되었으면 다음 이벤트를 진행합니다
-            alert("포장지 선택을 진행해주세요");
-        } else {
-            alert("선택한 포장지가 유효합니다!");
-        }
+    var isValid = validateRadioButtonSelection();
+    console.log("버튼 클릭");
+    if (!isValid) {
+        // 모든 라디오 버튼이 선택되었으면 다음 이벤트를 진행합니다
+        alert("포장지 선택을 진행해주세요");
+    } else {
+        alert("선택한 포장지가 유효합니다!");
+    }
 
-    });
 }
 
 function validateRadioButtonSelection() {

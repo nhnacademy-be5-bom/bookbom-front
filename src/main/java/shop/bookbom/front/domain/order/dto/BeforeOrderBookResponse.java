@@ -13,5 +13,6 @@ public class BeforeOrderBookResponse {
     private String title;
     private Integer quantity;
     private Integer cost;
+    private Integer discountCost;
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.PreOrderResponse;
 import shop.bookbom.front.domain.order.exception.BeforeOrderException;
 
 @Component
@@ -29,7 +30,7 @@ public class OrderAdapterImpl implements OrderAdapter {
     String gatewayUrl;
 
     @Override
-    public BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
+    public PreOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -37,12 +38,16 @@ public class OrderAdapterImpl implements OrderAdapter {
                 new HttpEntity<>(beforeOrderRequestList, httpHeaders);
 
 
-        CommonResponse<BeforeOrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/orders/before-order"
-                , HttpMethod.POST, requestEntity, BEFORE_ORDER_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        CommonResponse<BeforeOrderResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/open/orders/before-order"
+                        , HttpMethod.POST, requestEntity, BEFORE_ORDER_RESPONSE).getBody();
+        if (response == null) {
             throw new BeforeOrderException();
         }
-        return Objects.requireNonNull(response).getResult();
+        if (response.getHeader().getResultCode() != 200) {
+            return PreOrderResponse.createFailResponse(false, response.getHeader().getResultMessage());
+        }
+        return PreOrderResponse.createSuccessResponse(Objects.requireNonNull(response).getResult(), true);
     }
 
 }

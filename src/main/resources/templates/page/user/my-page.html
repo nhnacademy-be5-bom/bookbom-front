@@ -4,12 +4,11 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default_layout}" lang="ko">
 
-<!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/page/user/my-page.css}">
 </th:block>
-<!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/my-page.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -24,28 +23,28 @@
     </div>
     <div class="row">
         <div class="col-md-3">
-            <h4>쇼핑</h4>
+            <span class="fw-bold fs-4">쇼핑</span>
             <ul class="list-group mb-3">
-                <li class="list-group-item">주문 내역</li>
-                <li class="list-group-item">찜 목록</li>
-                <li class="list-group-item">쿠폰함</li>
-                <li class="list-group-item">포인트 적립/사용 목록</li>
+                <li class="list-group-item member-link" th:data-href="@{/orders}">주문 내역</li>
+                <li class="list-group-item member-link" th:data-href="@{/wishes}">찜 목록</li>
+                <li class="list-group-item member-link" th:data-href="@{/coupons}">쿠폰함</li>
+                <li class="list-group-item member-link" th:data-href="@{/points}">포인트 적립/사용 목록</li>
             </ul>
             <!-- 회원 정보 -->
-            <h4>회원 정보</h4>
+            <span class="fw-bold fs-4">회원 정보</span>
             <ul class="list-group mb-3">
-                <li class="list-group-item">회원 정보 수정</li>
-                <li class="list-group-item">비밀 번호 수정</li>
-                <li class="list-group-item">나의 주소록</li>
-                <li class="list-group-item">나의 리뷰 목록</li>
-                <li class="list-group-item">나의 회원 등급</li>
+                <li class="list-group-item member-link">회원 정보 수정</li>
+                <li class="list-group-item member-link">비밀 번호 수정</li>
+                <li class="list-group-item member-link">나의 주소록</li>
+                <li class="list-group-item member-link">나의 리뷰 목록</li>
+                <li class="list-group-item member-link">나의 회원 등급</li>
             </ul>
         </div>
 
         <!-- 우측 영역 -->
         <div class="col-md-9">
-            <h4>최근 주문 내역</h4>
-            <table class="table" th:each="order : ${member.lastOrders}">
+            <span class="fw-bold fs-4">최근 주문 내역</span>
+            <table class="table latest-order" th:each="order : ${member.lastOrders}" th:data-order-id="${order.id}">
                 <thead>
                 <tr>
                     <th scope="col">주문 일자</th>
@@ -68,24 +67,24 @@
             <div class="row mt-4 mx-4 justify-content-between my-2">
                 <div class="col-md-2 my-2">
                     <div class="card custom-card" style="border-radius: 25px">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">쿠폰함</h5>
+                        <div class="card-body member-link" th:data-href="@{/coupons}">
+                            <h5 class="card-title text-center fw-bold">쿠폰함</h5>
                             <p class="card-text text-end" th:text="${member.couponCount} + '장'">3장</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2 my-2">
                     <div class="card custom-card" style="border-radius: 25px">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">찜 목록</h5>
+                        <div class="card-body member-link" th:data-href="@{/wishes}">
+                            <h5 class="card-title text-center fw-bold">찜 목록</h5>
                             <p class="card-text text-end" th:text="${member.wishCount} + '개'">10개</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-2 my-2">
                     <div class="card custom-card" style="border-radius: 25px">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">포인트</h5>
+                        <div class="card-body member-link" th:data-href="@{/points}">
+                            <h5 class="card-title text-center fw-bold">포인트</h5>
                             <p class="card-text text-end" th:text="${member.point} + 'p'">2500p</p>
                         </div>
                     </div>

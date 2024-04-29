@@ -6,5 +6,5 @@ import shop.bookbom.front.domain.pointhistory.dto.ChangeReason;
 import shop.bookbom.front.domain.pointhistory.dto.PointHistoryResponse;
 
 public interface PointHistoryAdapter {
-    Page<PointHistoryResponse> findPointHistory(Pageable pageable, ChangeReason reason);
+    Page<PointHistoryResponse> findPointHistory(Pageable pageable, String reason);
 }

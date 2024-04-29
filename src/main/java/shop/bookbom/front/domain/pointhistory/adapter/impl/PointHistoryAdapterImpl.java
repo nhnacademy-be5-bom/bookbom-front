@@ -32,7 +32,7 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
     String gatewayUrl;
 
     @Override
-    public Page<PointHistoryResponse> findPointHistory(Pageable pageable, ChangeReason reason) {
+    public Page<PointHistoryResponse> findPointHistory(Pageable pageable, String reason) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
@@ -43,7 +43,7 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
                         .queryParam("size", pageable.getPageSize())
                         .queryParam("userId", 1L); // todo 회원 처리
         if (reason != null) {
-            uriBuilder.queryParam("reason", reason.name());
+            uriBuilder.queryParam("reason", reason);
         }
         String url = uriBuilder.build().toUriString();
 

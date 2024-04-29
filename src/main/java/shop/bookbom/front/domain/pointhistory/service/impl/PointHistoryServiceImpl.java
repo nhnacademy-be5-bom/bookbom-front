@@ -15,7 +15,7 @@ public class PointHistoryServiceImpl implements PointHistoryService {
     private final PointHistoryAdapter pointHistoryAdapter;
 
     @Override
-    public Page<PointHistoryResponse> findPointHistory(Pageable pageable, ChangeReason reason) {
+    public Page<PointHistoryResponse> findPointHistory(Pageable pageable, String reason) {
         return pointHistoryAdapter.findPointHistory(pageable, reason);
     }
 }

@@ -60,3 +60,10 @@
 .latest-order {
     cursor: pointer;
 }
+
+.member-withdraw {
+    color: #dc3545;
+    background: none;
+    box-shadow: none;
+    cursor: pointer;
+}

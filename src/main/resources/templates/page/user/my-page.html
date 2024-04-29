@@ -16,7 +16,7 @@
     <div class="row justify-content-center mb-3">
         <div class="col-md-6 text-center">
             <span class="fw-bold fs-2" th:text="${member.nickname}">냥냥</span><span class="fs-4">님</span>
-            <div>
+            <div class="member-link" th:data-href="@{/rank-policy}">
                 <span class="fs-5" th:text="${member.rank}">PLATINUM</span>
             </div>
         </div>
@@ -39,6 +39,9 @@
                 <li class="list-group-item member-link">나의 리뷰 목록</li>
                 <li class="list-group-item member-link">나의 회원 등급</li>
             </ul>
+            <form th:action="@{/member/withdraw}" th:method="delete">
+                <button type="submit" class="btn btn-link p-0 border-0 member-withdraw">회원 탈퇴</button>
+            </form>
         </div>
 
         <!-- 우측 영역 -->

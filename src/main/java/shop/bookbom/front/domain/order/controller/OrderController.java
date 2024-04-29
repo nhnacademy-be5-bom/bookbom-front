@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shop.bookbom.front.domain.order.dto.BeforeOrderBookResponse;
-import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
-import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
-import shop.bookbom.front.domain.order.dto.PreOrderResponse;
-import shop.bookbom.front.domain.order.dto.WrapperDto;
+import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
+import shop.bookbom.front.domain.order.dto.request.WrapperDto;
+import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
+import shop.bookbom.front.domain.order.dto.response.BeforeOrderBookResponse;
+import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.WrapperSelectBookResponse;
+import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
 
 @Controller
@@ -66,6 +69,46 @@ public class OrderController {
         model.addAttribute("errorMessage", errorMessage);
 
         return "page/order/exception/stockLow";
+    }
+
+    @PostMapping("/order/ordersheet")
+    public String postOrdersheet(@ModelAttribute WrapperSelectRequest wrapperSelectRequest,
+                                 RedirectAttributes redirectAttributes) {
+        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapper(wrapperSelectRequest);
+        redirectAttributes.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
+        redirectAttributes.addAttribute("deliveryCost", wrapperSelectResponse.getDeliveryCost());
+        redirectAttributes.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
+        redirectAttributes.addAttribute("wrapperSelectResponseList",
+                WrapperSelectResponse.convertWrapperSelectListToString(
+                        wrapperSelectResponse.getWrapperSelectResponseList()));
+        redirectAttributes.addAttribute("estimatedDateList",
+                WrapperSelectResponse.convertEstimatedDateListToString(wrapperSelectResponse.getEstimatedDateList()));
+
+        return "redirect:/order/ordersheet";
+    }
+
+    @GetMapping("/order/ordersheet")
+    public String getOrdersheet(@ModelAttribute WrapperSelectResponse wrapperSelectResponse,
+                                @RequestParam("totalOrderCount") int totalOrderCount,
+                                @RequestParam("deliveryCost") int deliveryCost,
+                                @RequestParam("wrapCost") int wrapCost,
+                                @RequestParam("wrapperSelectResponseList") String wrapperSelectResponseListToString,
+                                @RequestParam("estimatedDateList") String estimatedDateListToStirng,
+                                Model model) {
+
+        List<WrapperSelectBookResponse> wrapperSelectResponseList =
+                WrapperSelectResponse.convertStringToWrapperSelectList(wrapperSelectResponseListToString);
+        List<String> estimatedDateList =
+                WrapperSelectResponse.convertStringToEsitmatedDateList(estimatedDateListToStirng);
+
+        model.addAttribute("totalOrderCount", totalOrderCount);
+        model.addAttribute("deliveryCost", deliveryCost);
+        model.addAttribute("wrapCost", wrapCost);
+        model.addAttribute("wrapperSelectResponseList", wrapperSelectResponseList);
+        model.addAttribute("estimatedDateList", estimatedDateList);
+
+
+        return "page/order/ordersheet_non_member";
     }
 }
 

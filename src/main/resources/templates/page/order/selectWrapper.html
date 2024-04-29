@@ -58,7 +58,7 @@
             <br>
             <div class="select" style="margin: 10px;">
                 <div class="wrapper-select" th:each="wrapper : ${wrapperList}">
-                    <input type="radio" th:id="${wrapper.cost}" th:name="${bookResponse.title}"
+                    <input type="radio" th:id="${wrapper.cost}" th:name="${bookResponse.bookId}"
                            th:value="${bookResponse.quantity}" onclick="updateWrapCountAndCost()">
                     <label th:for="${wrapper.cost}" th:text="${wrapper.name}"></label>
                 </div>
@@ -86,7 +86,7 @@
                 <img class="wrapperImg"
                      th:src="${wrapper.imgUrl}"
                      th:alt="'포장지' + ${wrapper.id}" width="90px" height="90px">
-                <span class="wrapperName" th:text="${wrapper.name}+'원'" style="margin-right: 20px;"></span>
+                <span class="wrapperName" th:text="${wrapper.name}" style="margin-right: 20px;"></span>
                 <span class="wrapperCost" th:text="${wrapper.cost}+'원'" style="margin-right: 5px"></span>
             </div>
             <br>

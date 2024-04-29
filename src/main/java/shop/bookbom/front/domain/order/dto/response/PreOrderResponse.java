@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.order.dto;
+package shop.bookbom.front.domain.order.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;

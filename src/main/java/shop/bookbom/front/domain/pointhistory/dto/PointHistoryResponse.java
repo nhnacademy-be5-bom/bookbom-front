@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PointHistoryResponse {
     private Long id;
-    private String reason;
-    private String detail;
+    private ChangeReason reason;
+    private PointHistoryDetail detail;
     private int changePoint;
     private LocalDateTime changeDate;
 }

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}" lang="ko">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/point-history.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/point-history.js}"></script>
+</th:block>
+
+<div class="container mt-5" layout:fragment="content">
+    <h2 class="mb-5">포인트 내역</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>상태</th>
+            <th>포인트</th>
+            <th>적립 구분</th>
+            <th>적립 날짜</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pointHistory : ${content}">
+            <td th:text="${pointHistory.reason.value}"
+                th:class="${pointHistory.reason.value.equals('적립') ? 'earn' : 'use'}"></td>
+            <td data-th-text="${pointHistory.reason.getValue().equals('EARN') ? '+' + pointHistory.changePoint : '-' + #numbers.formatInteger(pointHistory.changePoint, 3, 'COMMA')}"
+                th:class="${pointHistory.reason.value.equals('적립') ? 'earn' : 'use'}"></td>
+            <td th:text="${pointHistory.detail.value}"></td>
+            <td th:text="${#temporals.format(pointHistory.changeDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation" th:if="${totalItems > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                <th:block th:if="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(page=${currentPage - 1}, size=${pageSize})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(reason=${reason}, page=${currentPage - 1}, size=${pageSize})}"
+                       aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+            </li>
+            <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${pageNum == currentPage} ? 'active'">
+                <th:block th:if="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(page=${pageNum}, size=${pageSize})}"
+                       th:text="${pageNum + 1}">
+                    </a>
+                </th:block>
+                <th:block th:unless="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(reason=${reason}, page=${pageNum}, size=${pageSize})}"
+                       th:text="${pageNum + 1}">
+                    </a>
+                </th:block>
+            </li>
+            <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                <th:block th:if="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(page=${currentPage + 1}, size=${pageSize})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${reason == null}">
+                    <a class="page-link"
+                       th:href="@{/member/point-history(page=${currentPage + 1}, size=${pageSize}, reason=${reason})}"
+                       aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
+</div>

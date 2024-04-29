@@ -29,6 +29,7 @@ public class PointHistoryController {
         model.addAttribute("totalPages", result.getTotalPages());
         model.addAttribute("totalItems", result.getTotalElements());
         model.addAttribute("size", result.getSize());
-        return "member/point-history";
+        model.addAttribute("reason", reason);
+        return "page/user/point-history";
     }
 }

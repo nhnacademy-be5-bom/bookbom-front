@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
+import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperDto;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderBookResponse;
@@ -109,6 +110,12 @@ public class OrderController {
 
 
         return "page/order/ordersheet_non_member";
+    }
+
+    @PostMapping("/order")
+    public String submitOrder(@ModelAttribute OpenOrderRequest openOrderRequest) {
+
+        return "page/order/ordersheet_member";
     }
 }
 

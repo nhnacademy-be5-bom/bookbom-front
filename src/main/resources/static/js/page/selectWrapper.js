@@ -11,9 +11,9 @@ function selectWrapperSubmit() {
         form.method = 'post';
         form.action = '/order/ordersheet';
         checkedItems.forEach((item, index) => {
-            var quantity = item.value;
+            const quantity = item.value;
             const bookId = item.name;
-            var wrapperName = $(item).siblings('label').text();
+            const wrapperName = $(item).siblings('label').text();
 
             const bookIdInput = document.createElement('input');
             bookIdInput.type = 'hidden';
@@ -21,13 +21,13 @@ function selectWrapperSubmit() {
             bookIdInput.value = bookId;
             form.appendChild(bookIdInput);
 
-            var quantityInput = document.createElement('input');
+            const quantityInput = document.createElement('input');
             quantityInput.type = 'hidden';
             quantityInput.name = `wrapperSelectBookRequestList[${index}].quantity`;
             quantityInput.value = quantity;
             form.appendChild(quantityInput);
 
-            var wrapperNameInput = document.createElement('input');
+            const wrapperNameInput = document.createElement('input');
             wrapperNameInput.type = 'hidden';
             wrapperNameInput.name = `wrapperSelectBookRequestList[${index}].wrapperName`;
             wrapperNameInput.value = wrapperName;

@@ -27,7 +27,7 @@
     <div class="main">
         <div class="order-table">
             <b style="margin-right: 200px;">주문 상품</b>
-            <span style="margin-right: 300px" th:text="'총 '+ ${totalOrderCount}+' 개'"></span>
+            <span style="margin-right: 300px" th:text="'총 '+ ${totalOrderCount}+'개'"></span>
             <!--            보기 버튼을 누르면 주문 상품 보여지고, 다시 누르면 안 보여짐-->
             <button onclick="toggleTable()">보기</button>
 
@@ -35,12 +35,14 @@
                 <tbody>
                 <tr class="book-info"
                     th:each="wrapperResponse : ${wrapperSelectResponseList}">
-                    <td class="order-table-td"><img
+                    <td><img
                             th:src="${wrapperResponse.imgUrl}"
                             alt="Book Image" width="80px" height="120px"></td>
-                    <td class="order-table-td" th:text="${wrapperResponse.bookTitle}"></td>
-                    <td class="order-table-td" id="quantity" th:text="${wrapperResponse.quantity}+'개'"></td>
-                    <td class="order-table-td">
+                    <td class="book-title" th:id="${wrapperResponse.bookId}"
+                        th:text="${wrapperResponse.bookTitle}"></td>
+                    <td class="quantity" th:id="${wrapperResponse.wrapperName}"
+                        th:text="${wrapperResponse.quantity}+'개'"></td>
+                    <td>
                         <span class="bookCost" style="text-decoration: line-through;"
                               th:text="${wrapperResponse.cost}+'원'"></span><br>
                         <span class="bookDiscountCost"
@@ -89,7 +91,8 @@
         <div class="delivery-select">
             <b>배송일 선택(도착 예상일)</b><br>
             <div th:each="estimatedDate : ${estimatedDateList}">
-                <button onclick="selectDeliveryDate(this)" th:text="${estimatedDate}"></button>
+                <button onclick="selectDeliveryDate(this)" th:text="${estimatedDate}"
+                        th:value="${estimatedDate}"></button>
             </div>
 
         </div>
@@ -98,9 +101,9 @@
     <div class="side">
         <br>
         <label class="info">상품 금액</label><label class="price" id="productAmount">0 원</label><br>
-        <label class="info">포장비</label><label class="price" id="wrapCost" th:text="${wrapCost}+' 원'"></label><br>
+        <label class="info">포장비</label><label class="price" id="wrapCost" th:text="${wrapCost}+'원'"></label><br>
         <label class="info">배송비</label><label class="price" id="deliveryCost"
-                                              th:text="${deliveryCost}+' 원'"></label><br>
+                                              th:text="${deliveryCost}+'원'"></label><br>
         <label class="info">할인 금액</label><label class="price" id="discountCost">0 원</label><br>
 
         <hr>

@@ -40,6 +40,7 @@ function selectDeliveryDate(button) {
         btn.classList.remove('selected');
     });
     button.classList.add('selected');
+
 }
 
 function calculateProductAmount() {
@@ -48,7 +49,7 @@ function calculateProductAmount() {
     // 각 book-info 클래스를 가진 tr 요소에 대해 반복합니다.
     document.querySelectorAll('.book-info').forEach(function (element) {
         // 해당 요소 내의 수량과 가격을 가져옵니다.
-        var quantityElement = element.querySelector('.order-table-td#quantity');
+        var quantityElement = element.querySelector('.quantity');
         var bookCostElement = element.querySelector('.bookCost');
 
         // 수량과 가격이 모두 존재하는 경우에만 계산을 수행합니다.
@@ -69,7 +70,7 @@ function calculateDiscountAmount() {
 
     document.querySelectorAll('.book-info').forEach(function (element) {
         // 해당 요소 내의 수량과 가격을 가져옵니다.
-        var quantityElement = element.querySelector('.order-table-td#quantity');
+        var quantityElement = element.querySelector('.quantity');
         var bookDiscountCostElement = element.querySelector('.bookDiscountCost');
         if (quantityElement && bookDiscountCostElement) {
             var quantity = parseFloat(quantityElement.textContent);
@@ -225,8 +226,142 @@ function validateDeliveryAndProceed() {
         alert('도착 예상일을 선택해주세요'); // 경고창 표시
         return false;
     } else {
-        // 여기에 결제로 넘어가는 로직을 추가하세요
-        // 예: window.location.href = '/payment';
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order';
+
+        const bookInfos = document.querySelectorAll('.book-info');
+        bookInfos.forEach((bookInfo, index) => {
+            const titleElement = bookInfo.querySelector('.book-title');
+            const quantityElement = bookInfo.querySelector('.quantity');
+
+            const bookId = titleElement.id;
+            const quantity = quantityElement.textContent.trim().replace('개', '');
+            const wrapperName = quantityElement.id;
+
+            //bookId
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `wrapperSelectRequestList[${index}].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
+
+            //quantiy
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'hidden';
+            quantityInput.name = `wrapperSelectRequestList[${index}].quantity`;
+            quantityInput.value = quantity;
+            form.appendChild(quantityInput);
+
+            //wrapperName
+            const wrapperNameInput = document.createElement('input');
+            wrapperNameInput.type = 'hidden';
+            wrapperNameInput.name = `wrapperSelectRequestList[${index}].wrapperName`;
+            wrapperNameInput.value = wrapperName;
+            form.appendChild(wrapperNameInput);
+
+        });
+        //name
+        const name = document.getElementById('name').value;
+        const nameInput = document.createElement('input');
+        nameInput.type = 'hidden';
+        nameInput.name = `name`;
+        nameInput.value = name;
+        form.appendChild(nameInput);
+
+        //phoneNumber
+        const phoneNumber = document.getElementById('phone-number').value;
+        const phoneNumberInput = document.createElement('input');
+        phoneNumberInput.type = 'hidden';
+        phoneNumberInput.name = `phoneNumber`;
+        phoneNumberInput.value = phoneNumber;
+        form.appendChild(phoneNumberInput);
+
+        //totalCost
+        const totalCostElement = document.getElementById('finalPayment').innerText.trim().replace('원', '');
+        const totalCost = parseInt(totalCostElement.trim().replace(',', ''));
+        const totalCostInput = document.createElement('input');
+        totalCostInput.type = 'hidden';
+        totalCostInput.name = `totalCost`;
+        totalCostInput.value = totalCost;
+        form.appendChild(totalCostInput);
+
+        //discountCost
+        const discountCostElement = document.getElementById('discountCost').innerText.trim().replace('원', '');
+        const discountCost = parseInt(discountCostElement.trim().replace(',', ''));
+        const discountCostInput = document.createElement('input');
+        discountCostInput.type = 'hidden';
+        discountCostInput.name = `discountCost`;
+        discountCostInput.value = discountCost;
+        form.appendChild(discountCostInput);
+
+        //email
+        const email = document.getElementById('email').value;
+        const emailInput = document.createElement('input');
+        emailInput.type = 'hidden';
+        emailInput.name = `email`;
+        emailInput.value = email;
+        form.appendChild(emailInput);
+
+        //password
+        const password = document.getElementById('password').value;
+        const passwordInput = document.createElement('input');
+        passwordInput.type = 'hidden';
+        passwordInput.name = `password`;
+        passwordInput.value = password;
+        form.appendChild(passwordInput);
+
+        //estimatedDateTostring
+        // const estimatedDateTostring = document.querySelector('.delivery-select button:checked').value;
+        const button = document.querySelector('.delivery-select button.selected');
+        const estimatedDateTostring = button.value;
+        // let estimatedDateTostring = null;
+        // buttons.forEach(button => {
+        //     if (button.checked) {
+        //         estimatedDateTostring = button.value;
+        //     }
+        // });
+        const estimatedDateTostringInput = document.createElement('input');
+        estimatedDateTostringInput.type = 'hidden';
+        estimatedDateTostringInput.name = `estimatedDateTostring`;
+        estimatedDateTostringInput.value = estimatedDateTostring;
+        form.appendChild(estimatedDateTostringInput);
+
+        //deliveryCost
+        const deliveryCost = parseInt(document.getElementById('deliveryCost').textContent.trim().replace('원', ''));
+        const deliveryCostInput = document.createElement('input');
+        deliveryCostInput.type = 'hidden';
+        deliveryCostInput.name = `deliveryCost`;
+        deliveryCostInput.value = deliveryCost;
+        form.appendChild(deliveryCostInput);
+
+        //zipCode
+        const zipCode = document.getElementById('zip-code').value;
+        const zipCodeInput = document.createElement('input');
+        zipCodeInput.type = 'hidden';
+        zipCodeInput.name = `zipCode`;
+        zipCodeInput.value = zipCode;
+        form.appendChild(zipCodeInput);
+
+        //deliveryAddress
+        const deliveryAddress = document.getElementById('delivery-address').value;
+        const deliveryAddressInput = document.createElement('input');
+        deliveryAddressInput.type = 'hidden';
+        deliveryAddressInput.name = `deliveryAddress`;
+        deliveryAddressInput.value = deliveryAddress;
+        form.appendChild(deliveryAddressInput);
+
+        //addressDetail
+        const addressDetail = document.getElementById('address-detail').value;
+        const addressDetailInput = document.createElement('input');
+        addressDetailInput.type = 'hidden';
+        addressDetailInput.name = `addressDetail`;
+        addressDetailInput.value = addressDetail;
+        form.appendChild(addressDetailInput);
+
+
+        document.body.appendChild(form);
+        form.submit();
         return true;
     }
 }

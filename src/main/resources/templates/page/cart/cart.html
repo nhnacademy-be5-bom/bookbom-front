@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/default_layout}" lang="ko">
 
 <head>
     <meta charset="UTF-8">
+    <title>장바구니</title>
 </head>
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
@@ -27,7 +28,6 @@
                 전체 선택
             </label>
         </div>
-        <button type="button" class="btn btn-danger align-self-center">선택 삭제</button>
     </div>
 
     <!-- 장바구니 상품 리스트 테이블 -->
@@ -37,16 +37,20 @@
             <td class="align-middle">
                 <div class="d-flex align-items-center">
                     <div class="custom-control custom-checkbox me-2">
-                        <input class="custom-control-input item-check" type="checkbox" th:id="${item.bookId}"
-                               th:value="${item.bookId}">
+                        <label>
+                            <input class="custom-control-input item-check" type="checkbox" th:id="${item.bookId}"
+                                   th:value="${item.bookId}">
+                        </label>
                         <label class="custom-control-label" th:for="${item.bookId}"></label>
                     </div>
                     <img th:src="${item.thumbnail}" class="img-thumbnail me-3" th:alt="${item.title}">
                     <div>
                         <div th:text="${item.title}"></div>
                         <div>
-                            <span class="fw-bold book-discount-cost" th:text="${item.discountPrice} + '원'"></span>
-                            <span class="text-muted original-price book-cost" th:text="${item.price} + '원'"></span>
+                            <span class="fw-bold book-discount-cost"
+                                  data-th-text="${#numbers.formatInteger(item.discountPrice, 3, 'COMMA') + '원'}"></span>
+                            <span class="text-muted original-price book-cost"
+                                  data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
                         </div>
                     </div>
                 </div>
@@ -55,15 +59,18 @@
                 <div class="d-flex flex-column align-items-center">
                     <!-- 상품 가격 -->
                     <span class="fw-bold mb-2" id="item-total"
-                          th:text="${item.discountPrice} * ${item.quantity}+ '원'"></span>
+                          data-th-text="${#numbers.formatInteger(item.discountPrice * item.quantity, 3, 'COMMA') + '원'}">
+                    </span>
                     <!--  수량 버튼 -->
                     <div class="quantity-input-group">
                         <button class="btn btn-outline-secondary quantity-decrease" type="button"
                                 th:data-item="${item.bookId}">-
                         </button>
-                        <input type="number" min="1" max="99" class="form-control quantity-input"
-                               th:value="${item.quantity}"
-                               th:data-item="${item.bookId}">
+                        <label>
+                            <input type="number" min="1" max="99" class="form-control quantity-input"
+                                   th:value="${item.quantity}"
+                                   th:data-item="${item.bookId}">
+                        </label>
                         <button class="btn btn-outline-secondary quantity-increase" type="button"
                                 th:data-item="${item.bookId}">+
                         </button>

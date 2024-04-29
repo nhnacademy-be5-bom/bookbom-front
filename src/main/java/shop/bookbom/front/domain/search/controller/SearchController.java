@@ -45,7 +45,7 @@ public class SearchController {
     }
 
 
-    private static String getSortCondition(String sorted) {
+    public static String getSortCondition(String sorted) {
         if (StringUtils.hasText(sorted)) {
             return SearchSort.valueOf(sorted.toUpperCase()).name();
         }

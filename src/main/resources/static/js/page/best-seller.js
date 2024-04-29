@@ -1,30 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
-    let queryParams = new URLSearchParams(window.location.search);
-    let searchCondition = queryParams.get('search');
-    let checkboxes = document.querySelectorAll('.search-check');
-    checkboxes.forEach(function (checkbox) {
-        if (searchCondition === checkbox.id) {
-            checkbox.checked = true;
-        }
-        // 체크박스 체크했을 때
-        checkbox.addEventListener('change', function (event) {
-            const keyword = queryParams.get('keyword');
-            let newUrl = window.location.pathname + '?keyword=' + keyword;
-            // 체크했다면 검색 조건 붙여서 요청
-            if (event.target.checked) {
-                // 다른 박스 체크 해제
-                let searchCondition = event.target.id;
-                newUrl += '&search=' + searchCondition;
-                checkboxes.forEach(function (box) {
-                    if (box !== event.target) {
-                        box.checked = false;
-                    }
-                });
-            }
-
-            window.location.href = newUrl;
-        });
-    });
+    // 10개씩 보기가 기본값
+    document.querySelector('.page-size option[value="10"]').selected = true;
 
     // 수량 감소 버튼 클릭
     document.querySelectorAll('.quantity-decrease').forEach(button => {
@@ -78,47 +54,19 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 전체 선택
-    let selectAllButton = document.querySelector('.select-all');
-    let bookCheckboxes = document.querySelectorAll('.book-checkbox');
-
-    selectAllButton.addEventListener('click', function () {
-        let allChecked = true;
-        bookCheckboxes.forEach(function (checkbox) {
-            if (!checkbox.checked) {
-                allChecked = false;
-            }
-        });
-
-        bookCheckboxes.forEach(function (checkbox) {
-            checkbox.checked = !allChecked;
-        });
-    });
-
-    // 검색 결과 정렬
-    document.querySelectorAll('.sort-condition').forEach(condition => {
-        condition.addEventListener('click', function () {
-            let sortCondition = this.id.trim();
-            let currentUrl = new URL(window.location.href);
-            currentUrl.searchParams.delete("page");
-            currentUrl.searchParams.set('sorted', sortCondition);
-            window.location.href = currentUrl.toString();
-        });
-    });
 
     // 페이지 크기 선택
     let pageSizeParam = new URLSearchParams(window.location.search).get('size');
     let pageSizeSelect = document.querySelector('.page-size');
     if (!pageSizeParam) {
-        pageSizeSelect.value = "5";
+        pageSizeSelect.value = "10";
     } else {
         pageSizeSelect.value = pageSizeParam;
     }
     pageSizeSelect.addEventListener('change', function () {
         let selectedPageSize = this.value;
         let currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.delete("sorted");
-        currentUrl.searchParams.delete("page");
+        currentUrl.searchParams.set("page", 0);
         currentUrl.searchParams.set('size', selectedPageSize);
         window.location.replace(currentUrl.toString());
     });
@@ -127,16 +75,20 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.cart-btn').forEach(button => {
         button.addEventListener('click', function () {
             let requestData = [];
+            // 수량 입력 필드를 찾아서 값을 가져옴
             const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
             const quantity = parseInt(quantityInput.value);
-            const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
-            const thumbnail = this.closest('.border-bottom').querySelector('.book-thumbnail').src;
-            const title = this.closest('.border-bottom').querySelector('.book-title').textContent;
-            const price = parseInt(this.closest('.border-bottom').querySelector('.book-cost')
-                .textContent.replace(',', '').replace('원', ''));
-            const discountPrice = parseInt(this.closest('.border-bottom').querySelector('.book-discount-cost')
-                .textContent.replace(',', '').replace('원', ''));
 
+            // 책 정보를 가져옴
+            const bookInfo = this.closest('.book-info');
+            const cardBody = bookInfo.querySelector('.card-body')
+            const thumbnail = bookInfo.querySelector('.book-thumbnail').src;
+            const title = cardBody.querySelector('.book-title').textContent;
+            const price = parseInt(cardBody.querySelector('.book-cost').textContent.replace('원', ''));
+            const discountPrice = parseInt(cardBody.querySelector('.book-discount-cost').textContent.replace('원', ''));
+            const bookId = bookInfo.getAttribute('data-book-id');
+
+            // 요청 데이터 생성
             requestData.push({
                 bookId: parseInt(bookId),
                 thumbnail: thumbnail,
@@ -145,38 +97,37 @@ document.addEventListener('DOMContentLoaded', function () {
                 discountPrice: discountPrice,
                 quantity: quantity
             });
-
             addToCart(requestData);
+            console.log(requestData)
         });
     });
 
-    // 선택한 상품 장바구니에 담기 버튼 클릭
-    document.querySelector('.cart-all').addEventListener('click', function () {
-        let checkedBooks = [];
-        document.querySelectorAll('.book-checkbox:checked').forEach(function (checkbox) {
-            const thumbnail = checkbox.closest('.border-bottom').querySelector('.book-thumbnail').src;
-            const title = checkbox.closest('.border-bottom').querySelector('.book-title').textContent;
-            const price = parseInt(checkbox.closest('.border-bottom').querySelector('.book-cost')
-                .textContent.replace(',', '').replace('원', ''));
-            const discountPrice = parseInt(checkbox.closest('.border-bottom').querySelector('.book-discount-cost')
-                .textContent.replace(',', '').replace('원', ''));
-            const bookId = checkbox.id.replace('bookCheckbox', '');
-            const quantity = parseInt(checkbox.closest('.border-bottom').querySelector('.quantity-input').value);
+    // 주문 폼 생성
+    document.querySelector('.order-btn').addEventListener('click', function () {
 
-            checkedBooks.push({
-                bookId: parseInt(bookId),
-                thumbnail: thumbnail,
-                title: title,
-                price: price,
-                discountPrice: discountPrice,
-                quantity: quantity
-            });
-        });
-        if (checkedBooks.length === 0) {
-            alert('장바구니에 담을 책을 선택해주세요.');
-            return;
-        }
-        addToCart(checkedBooks);
+        const bookInfo = this.closest('.book-info');
+        const bookId = bookInfo.getAttribute('data-book-id');
+        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+        const quantity = parseInt(quantityInput.value);
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order/wrapper';
+
+        const bookIdInput = document.createElement('input');
+        bookIdInput.type = 'hidden';
+        bookIdInput.name = `beforeOrderRequests[${index}].bookId`;
+        bookIdInput.value = bookId;
+        form.appendChild(bookIdInput);
+
+
+        const quantityInputHidden = document.createElement('input');
+        quantityInputHidden.type = 'hidden';
+        quantityInputHidden.name = `beforeOrderRequests[${index}].quantity`;
+        quantityInputHidden.value = quantity;
+        form.appendChild(quantityInputHidden);
+        document.body.appendChild(form);
+        form.submit();
     });
 
     // 장바구니에 담기 요청

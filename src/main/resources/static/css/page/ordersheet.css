@@ -37,17 +37,17 @@ td {
 }
 
 .delivery-input {
-    width: 55%;
+    width: 50%;
     display: inline-block;
     vertical-align: top;
 }
 
 .non-member-info {
-    width: 30%;
+    width: 35%;
     display: inline-block;
     vertical-align: top;
     border-left: 1px solid black;
-    padding: 10px;
+    padding: 5px;
 }
 
 .delivery input {

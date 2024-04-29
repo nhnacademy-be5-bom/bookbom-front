@@ -14,11 +14,13 @@ window.onload = function () {
     const categoryList = document.querySelectorAll(".categorypop");
 
     categoryList.forEach(function (category) {
-        category.addEventListener("mouseover", setChildCategory);
+        category.addEventListener("mouseover", updateChildCategory);
 
         category.addEventListener("click", function (e) {
             document.location.href = "/category/" + this.id;
         });
+
+        setDefaultChildCategory(category);
     })
 
     observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
@@ -38,13 +40,38 @@ let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
     });
 })
 
-async function setChildCategory(e) {
+async function updateChildCategory(e) {
     let popoverElement = e.target;
     let popoverInstance = bootstrap.Popover.getInstance(popoverElement);
 
     if (popoverInstance._config.content.length === 0) {
         const response = await fetch(
             GATEWAY_URL + "/shop/category/" + this.id,
+            {
+                method: "GET"
+            });
+
+        const childList = await response.json();
+
+        if (childList.result.length !== 0) {
+
+            for (const child of childList.result) {
+                const content1 = "<p><a href='/category/";
+                const content2 = "'>";
+                const content3 = "</a></p>"
+
+                popoverInstance._config.content += content1 + child.id + content2 + child.name + content3;
+            }
+        }
+    }
+}
+
+async function setDefaultChildCategory(categoryElement) {
+    let popoverInstance = bootstrap.Popover.getInstance(categoryElement);
+
+    if (popoverInstance._config.content.length === 0) {
+        const response = await fetch(
+            GATEWAY_URL + "/shop/category/" + categoryElement.id,
             {
                 method: "GET"
             });

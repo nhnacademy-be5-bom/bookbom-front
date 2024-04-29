@@ -191,3 +191,42 @@ function validatePassword() {
         return true;
     }
 }
+
+function validateDelivery() {
+    var zipcodeInput = document.getElementById('zip-code');
+    var deliveryAddressinput = document.getElementById('delivery-address');
+    var addressDetailInput = document.getElementById('address-detail');
+    var deliveryErrorSpan = document.getElementById('delivery-error');
+
+    var zipcode = zipcodeInput.value.trim();
+    var deliveryAddress = deliveryAddressinput.value.trim();
+    var addressDetail = addressDetailInput.value.trim();
+    if (!zipcode || !deliveryAddress || !addressDetail) {
+        deliveryErrorSpan.innerText = '배송지를 입력해주세요';
+        zipcodeInput.style.border = '1px solid red';
+        deliveryAddressinput.style.border = '1px solid red';
+        addressDetailInput.style.border = '1px solid red';
+        deliveryErrorSpan.style.display = 'inline';
+        return false;
+    } else {
+        deliveryErrorSpan.innerText = '';
+        zipcodeInput.style.border = '';
+        deliveryAddressinput.style.border = '';
+        addressDetailInput.style.border = '';
+        deliveryErrorSpan.style.display = 'none';
+        return true;
+    }
+}
+
+function validateDeliveryAndProceed() {
+    var selectedButton = document.querySelector('.delivery-select button.selected');
+
+    if (!selectedButton) {
+        alert('도착 예상일을 선택해주세요'); // 경고창 표시
+        return false;
+    } else {
+        // 여기에 결제로 넘어가는 로직을 추가하세요
+        // 예: window.location.href = '/payment';
+        return true;
+    }
+}

@@ -55,20 +55,22 @@
             <hr>
             <div class="delivery-info">
                 <label>이름</label><br>
-                <label>배송 주소</label><br><br><br><br>
+                <label>배송 주소</label><br><br><br><br><br>
                 <label>휴대폰</label><br>
             </div>
             <div class="delivery-input">
                 <input id="name" type="text" onblur="validateName()">
                 <span id="name-error" class="error" style="color: red; display: none"></span><br>
-                <input id="zip-code" type="text">
+                <input id="zip-code" type="text" onblur="validateDelivery()">
                 <button>주소 찾기</button>
                 <button>내 주소록</button>
                 <br>
+                <span id="delivery-error" class="error" style="color: red; display: none"></span>
+                <br>
                 <label style="width: 75px; text-align:center;">도로명 주소</label>
-                <input id="delivery-address" type="text"><br>
+                <input id="delivery-address" type="text" onblur="validateDelivery()"><br>
                 <label style="width: 75px; text-align:center;">상세 주소</label>
-                <input id="address-detail" type="text"><br>
+                <input id="address-detail" type="text" onblur="validateDelivery()"><br>
                 <input id="phone-number" type="text" placeholder="- 없이 입력해주세요" onblur="validatePhoneNumber()">
                 <span id="phone-error" class="error" style="color: red; display: none"></span><br>
             </div>
@@ -105,7 +107,7 @@
         <br>
         <label class="info">최종 결제 금액</label><label class="price" id="finalPayment">0 원</label><br><br>
 
-        <button type="button" class="pink-button">결제 하기</button>
+        <button type="button" class="pink-button" onclick="validateDeliveryAndProceed()">결제 하기</button>
     </div>
 </div>
 </html>

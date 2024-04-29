@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.pointhistory.adapter.PointHistoryAdapter;
-import shop.bookbom.front.domain.pointhistory.dto.ChangeReason;
 import shop.bookbom.front.domain.pointhistory.dto.PointHistoryResponse;
 import shop.bookbom.front.domain.pointhistory.service.PointHistoryService;
 

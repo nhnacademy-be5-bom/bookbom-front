@@ -16,7 +16,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.pointhistory.adapter.PointHistoryAdapter;
-import shop.bookbom.front.domain.pointhistory.dto.ChangeReason;
 import shop.bookbom.front.domain.pointhistory.dto.PointHistoryResponse;
 
 @Component

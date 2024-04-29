@@ -33,7 +33,7 @@
         <tr th:each="pointHistory : ${content}">
             <td th:text="${pointHistory.reason.value}"
                 th:class="${pointHistory.reason.value.equals('적립') ? 'earn' : 'use'}"></td>
-            <td data-th-text="${pointHistory.reason.getValue().equals('EARN') ? '+' + pointHistory.changePoint : '-' + #numbers.formatInteger(pointHistory.changePoint, 3, 'COMMA')}"
+            <td data-th-text="${pointHistory.reason.getValue().equals('EARN') ? '+' + pointHistory.changePoint : '-' + #numbers.formatInteger(pointHistory.changePoint, 0, 'COMMA')}"
                 th:class="${pointHistory.reason.value.equals('적립') ? 'earn' : 'use'}"></td>
             <td th:text="${pointHistory.detail.value}"></td>
             <td th:text="${#temporals.format(pointHistory.changeDate, 'yyyy-MM-dd HH:mm:ss')}"></td>

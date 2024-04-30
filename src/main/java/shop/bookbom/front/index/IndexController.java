@@ -36,4 +36,15 @@ public class IndexController {
 
         return "page/order/ordersheet_non_member";
     }
+
+    @GetMapping("/signup")
+    public String signUp(HttpServletRequest request, Model model) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+        model.addAttribute("ip", ip);
+        return "page/signup/signup";
+    }
+
 }

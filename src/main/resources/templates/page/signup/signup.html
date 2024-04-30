@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+</head>
+
+<th:block>
+    <link rel="stylesheet" th:href="@{/css/page/signup.css}">
+</th:block>
+
+<body>
+<div class="container">
+    <h2>회원가입</h2>
+    <form id="signupForm" action="/signup" method="post">
+        <div class="form-group">
+            <label for="email">아이디 (이메일)</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="confirmPassword">비밀번호 재입력</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" required>
+        </div>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="name">별명</label>
+            <input type="text" id="nickName" name="nickName" required>
+        </div>
+        <div class="form-group">
+            <label for="birthdate">생년월일</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+        <div class="form-group">
+            <label for="phoneNumber">전화번호</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="addressNumber">우편번호</label>
+            <input type="text" id="addressNumber" name="addressNumber" required>
+        </div>
+        <div class="form-group">
+            <label for="location">주소</label>
+            <input type="text" id="location" name="location" required>
+        </div>
+        <button type="submit">가입완료</button>
+    </form>
+</div>
+</body>
+</html>

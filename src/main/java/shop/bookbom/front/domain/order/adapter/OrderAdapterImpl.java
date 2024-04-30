@@ -12,11 +12,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
+import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.exception.BeforeOrderException;
+import shop.bookbom.front.domain.order.exception.OrderFailException;
 
 @Component
 @RequiredArgsConstructor
@@ -29,6 +32,11 @@ public class OrderAdapterImpl implements OrderAdapter {
             };
     private static final ParameterizedTypeReference<CommonResponse<WrapperSelectResponse>>
             WRAPPER_SELECT_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
+    private static final ParameterizedTypeReference<CommonResponse<OrderResponse>>
+            ORDER_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -61,7 +69,6 @@ public class OrderAdapterImpl implements OrderAdapter {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-
         HttpEntity<WrapperSelectRequest> requestEntity =
                 new HttpEntity<>(wrapperSelectRequest, httpHeaders);
 
@@ -70,6 +77,21 @@ public class OrderAdapterImpl implements OrderAdapter {
                 , HttpMethod.POST, requestEntity, WRAPPER_SELECT_RESPONSE).getBody();
         if (response == null || response.getHeader().getIsSuccessful()) {
             throw new BeforeOrderException();
+        }
+        return Objects.requireNonNull(response).getResult();
+    }
+
+    @Override
+    public OrderResponse submitOrder(OpenOrderRequest openOrderRequest) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OpenOrderRequest> requestEntity = new HttpEntity<>(openOrderRequest, httpHeaders);
+
+        CommonResponse<OrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/open/orders"
+                , HttpMethod.POST, requestEntity, ORDER_RESPONSE).getBody();
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            throw new OrderFailException();
         }
         return Objects.requireNonNull(response).getResult();
     }

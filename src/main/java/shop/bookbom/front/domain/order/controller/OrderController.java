@@ -15,6 +15,7 @@ import shop.bookbom.front.domain.order.dto.request.WrapperDto;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderBookResponse;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectBookResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
@@ -114,6 +115,8 @@ public class OrderController {
 
     @PostMapping("/order")
     public String submitOrder(@ModelAttribute OpenOrderRequest openOrderRequest) {
+        OrderResponse orderResponse = orderService.submitOrder(openOrderRequest);
+
 
         return "page/order/ordersheet_member";
     }

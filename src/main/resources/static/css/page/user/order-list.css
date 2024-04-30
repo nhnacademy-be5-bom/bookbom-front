@@ -4,7 +4,7 @@
 
 .detail-link {
     text-decoration: underline;
-    color: rgb(237,191,111);
+    color: rgba(237, 191, 111, 0.9);
     cursor: pointer;
 }
 

@@ -1,5 +1,10 @@
+function getDate(date = new Date()) {
+    const UTCDate = date instanceof Date ? date : new Date(date);
+    return new Date(UTCDate.getTime() + (9 * 60 * 60 * 1000));
+}
+
 function setDateRange(type) {
-    const today = new Date();
+    const today = getDate();
     today.setHours(0, 0, 0, 0);
     let from = new Date(today);
 
@@ -31,9 +36,9 @@ function submitDates() {
         return;
     }
 
-    const dateFromObj = new Date(dateFrom);
-    const dateToObj = new Date(dateTo);
-    const today = new Date();
+    const dateFromObj = getDate(dateFrom + 'T00:00:00+09:00');
+    const dateToObj = getDate(dateTo + 'T00:00:00+09:00');
+    const today = getDate();
     today.setHours(0, 0, 0, 0);
 
     if (dateToObj > today) {
@@ -48,4 +53,3 @@ function submitDates() {
 
     window.location.href = `/users/order?date_from=${dateFrom}&date_to=${dateTo}`;
 }
-

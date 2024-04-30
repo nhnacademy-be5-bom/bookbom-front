@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/order/order-detail.css}">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+<div layout:fragment="content" class="container mt-4">
+    <!-- 제목 -->
+    <h2 class="mb-3 fw-bold">주문/배송 조회 상세</h2>
+
+    <!-- 주문 정보 (Nav) -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="container-fluid">
+            <div class="order-info">
+                <span class="fw-bold">2024.03.20 </span>
+                <span>주문번호 <span class="fw-bold">O24309828 </span></span>
+                <span class="fw-bold">기술 면접 노트 외 1건</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 배송 정보 (Card) -->
+    <div class="card mb-3">
+        <div class="card-header fw-bold">배송</div>
+        <div class="card-body">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <input type="checkbox">
+                    <img th:src="@{/images/no-image.jpg}" alt="Product Thumbnail" class="product-thumbnail">
+                </div>
+                <div class="col-md-4">
+                    <p class="fw-bold mb-0">기술 면접 노트</p>
+                    <span>수량: <span>3</span></span>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold">15,000원</div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold">배송중</div>
+                <div class="col-md-1 d-flex flex-column">
+                    <button class="btn btn-outline-secondary btn-sm mb-1">반품 신청</button>
+                    <button class="btn btn-outline-secondary btn-sm">취소 신청</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">구매자 정보</div>
+        <div class="card-body">
+            <span>홍길동</span> / <span>010-1234-5678</span>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">배송 정보</div>
+        <div class="card-body">
+            <div>
+                <span>홍길동</span> / <span>010-1234-5678</span>
+                <button class="btn btn-outline-secondary btn-sm">변경</button>
+            </div>
+            <div>[<span>54140</span>] <span>서울특별시 어딘가 123번지</span></div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header fw-bold">결제 정보</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 d-flex justify-content-between">
+                    <span class="fw-bold">주문 금액</span>
+                    <span>35,000원</span>
+                </div>
+                <div class="col-md-4 d-flex justify-content-between">
+                    <span class="fw-bold">할인/포인트 금액 </span>
+                    <span>5,000원</span>
+                </div>
+                <div class="col-md-4 d-flex justify-content-between">
+                    <span class="fw-bold">결제 금액</span>
+                    <span>30,000원</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header fw-bold">적립 정보</div>
+        <div class="card-body col-md-4 d-flex justify-content-between">
+            <span class="fw-bold ">적립 예정 포인트</span>
+            <span>1000P</span>
+        </div>
+    </div>
+</div>

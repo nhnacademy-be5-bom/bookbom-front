@@ -125,36 +125,9 @@ public class OrderController {
         return "redirect:/payment-method";
     }
 
-    @GetMapping("/payment-method")
-    public String selectPaymentMethod(@RequestParam("orderId") String orderId,
-                                      @RequestParam("orderName") String orderName,
-                                      @RequestParam("amount") String amount,
-                                      RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("orderId", orderId);
-        redirectAttributes.addAttribute("orderName", orderName);
-        redirectAttributes.addAttribute("amount", amount);
-        return "page/payment/checkout";
-    }
 
-    @GetMapping("/toss-pay")
-    public String showtosspay() {
-        return "page/payment/tosspay";
-    }
-
-    @GetMapping("/toss-success")
-    public String showtosspay_success() {
-//        @RequestParam("paymentKey") String paymentKey,
-//        @RequestParam("orderId") String orderId,
-//        @RequestParam("amount") Integer amount
-
-        return "page/payment/tosssuccess";
-    }
-
-    @GetMapping("/toss-fail")
-    public String showtosspay_fail() {
-        return "page/payment/tossfail";
-    }
 }
+
 
 
 

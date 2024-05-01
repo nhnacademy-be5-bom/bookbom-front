@@ -18,18 +18,17 @@ paymentSelectButtons.forEach(button => {
 });
 
 
-import {ANONYMOUS, loadPaymentWidget} from "@tosspayments/payment-widget-sdk";
+var clientKey = 'test_ck_ex6BJGQOVDbEXGJvJJ558W4w2zNb'
+var tossPayments = TossPayments(clientKey) // 클라이언트 키로 초기화하기
 
-const main = async () => {
-    const paymentWidget = await loadPaymentWidget(
-        "test_ck_ex6BJGQOVDbEXGJvJJ558W4w2zNb",
-        // 비회원 customerKey
-        ANONYMOUS
-    );
-}
+// orderId 가져오기
+var orderId = document.getElementById("order-id").value;
 
+// orderName 가져오기
+var orderName = document.getElementById("order-name").value;
 
-const paymentRequestButton = document.getElementById('payment-request-button');
+// amount 가져오기
+var amount = document.getElementById("amount").value;
 
 function handlePayment() {
     const isTossPaySelected = tossPayButton.classList.contains('active');
@@ -37,16 +36,27 @@ function handlePayment() {
         // 토스 페이로 결제 처리 로직 추가
         // window.location.href = '/toss-pay';
         // window.open('/toss-pay', '_blank');
-        paymentWidget.requestPayment({
-            amount: 30000,
-            orderId: 'pNlQfRdsfesfd46',
-            orderName: '낮잠자자! 외 1건',
-            customerName: '김아무개',
-            successUrl: 'http://localhost:8020/toss/success',
-            failUrl: 'http://localhost:8020/toss/fail',
-            flowMode: 'DIRECT',
-            easyPay: '토스페이',
-        });
+        tossPayments
+            .requestPayment('카드', {
+                // 결제수단
+                // 결제 정보
+                amount: amount,
+                orderId: orderId,
+                orderName: orderName,
+                customerName: '김아무개',
+                successUrl: 'http://localhost:8020/toss-success',
+                failUrl: 'http://localhost:8020/toss-fail',
+                flowMode: 'DIRECT',
+                easyPay: '토스페이',
+
+            })
+            .catch(function (error) {
+                if (error.code === 'USER_CANCEL') {
+                    // 결제 고객이 결제창을 닫았을 때 에러 처리
+                } else if (error.code === 'INVALID_CARD_COMPANY') {
+                    // 유효하지 않은 카드 코드에 대한 에러 처리
+                }
+            })
 
     } else {
         console.log('토스 페이로 선택되지 않았습니다.');

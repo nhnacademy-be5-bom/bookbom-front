@@ -18,11 +18,48 @@
             <h4 class="text-center description">결제 승인하고 완료해보세요.</h4>
         </div>
         <div class="w-100">
-            <button id="confirmPaymentButton">결제 승인하기</button>
+            <button id="confirmPaymentButton" onclick="confirmPayment()">결제 승인하기</button>
         </div>
+        <input id="order-id" type="text" style="display: none" th:value="${orderId}">
+        <input id="payment-key" type="text" style="display: none" th:value="${paymentKey}">
+        <input id="amount" type="text" style="display: none" th:value="${amount}">
     </div>
     </div>
 </div>
-<script type="module" src="./success.js"></script>
+<script>
+
+    function confirmPayment() {
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/payment-complete';
+
+        const orderId = document.getElementById("order-id").value;
+        const paymentKey = document.getElementById("payment-key").value;
+        const amount = document.getElementById("amount").value;
+
+        const orderIdInput = document.createElement('input');
+        orderIdInput.type = 'hidden';
+        orderIdInput.name = "orderId";
+        orderIdInput.value = orderId;
+        form.appendChild(orderIdInput);
+
+        const paymentKeyInput = document.createElement('input');
+        paymentKeyInput.type = 'hidden';
+        paymentKeyInput.name = "paymentKey";
+        paymentKeyInput.value = paymentKey;
+        form.appendChild(paymentKeyInput);
+
+        const amountInput = document.createElement('input');
+        amountInput.type = 'hidden';
+        amountInput.name = "amount";
+        amountInput.value = amount;
+        form.appendChild(amountInput);
+
+
+
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
 </body>
 </html>

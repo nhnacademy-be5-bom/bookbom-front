@@ -21,20 +21,14 @@ public interface BookAdapter {
     CommonResponse<Void> save(@RequestBody BookAddRequest bookAddRequest);
 
     @PutMapping("/book/update/{id}")
-    public CommonResponse<Void> updateBook(@RequestBody BookUpdateRequest bookUpdateRequest,
-                                           @PathVariable("id") Long bookId);
+    CommonResponse<Void> updateBook(@RequestBody BookUpdateRequest bookUpdateRequest,
+                                    @PathVariable("id") Long bookId);
 
     @DeleteMapping("/book/delete/{id}")
-    public CommonResponse<Void> deleteBook(@PathVariable("id") Long bookId);
+    CommonResponse<Void> deleteBook(@PathVariable("id") Long bookId);
 
     @GetMapping("/book/detail/{id}")
     CommonResponse<BookDetailResponse> get(@PathVariable("id") Long bookId);
-
-//    @GetMapping("/books/best")
-//    CommonResponse<Page<BookMediumResponse>> getBest(Pageable pageable);
-//
-//    @GetMapping("/books/all")
-//    CommonResponse<Page<BookMediumResponse>> getAll(Pageable pageable);
 
     @GetMapping("/books/category/{categoryId}")
     CommonResponse<CommonPage<BookSearchResponse>> getByCategoryId(

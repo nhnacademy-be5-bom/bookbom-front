@@ -114,11 +114,45 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public String submitOrder(@ModelAttribute OpenOrderRequest openOrderRequest) {
+    public String submitOrder(@ModelAttribute OpenOrderRequest openOrderRequest,
+                              RedirectAttributes redirectAttributes) {
         OrderResponse orderResponse = orderService.submitOrder(openOrderRequest);
 
+        redirectAttributes.addAttribute("orderId", orderResponse.getOrderId());
+        redirectAttributes.addAttribute("orderName", orderResponse.getOrderName());
+        redirectAttributes.addAttribute("amount", orderResponse.getAmount());
 
-        return "page/order/ordersheet_member";
+        return "redirect:/payment-method";
+    }
+
+    @GetMapping("/payment-method")
+    public String selectPaymentMethod(@RequestParam("orderId") String orderId,
+                                      @RequestParam("orderName") String orderName,
+                                      @RequestParam("amount") String amount,
+                                      RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("orderId", orderId);
+        redirectAttributes.addAttribute("orderName", orderName);
+        redirectAttributes.addAttribute("amount", amount);
+        return "page/payment/checkout";
+    }
+
+    @GetMapping("/toss-pay")
+    public String showtosspay() {
+        return "page/payment/tosspay";
+    }
+
+    @GetMapping("/toss-success")
+    public String showtosspay_success() {
+//        @RequestParam("paymentKey") String paymentKey,
+//        @RequestParam("orderId") String orderId,
+//        @RequestParam("amount") Integer amount
+
+        return "page/payment/tosssuccess";
+    }
+
+    @GetMapping("/toss-fail")
+    public String showtosspay_fail() {
+        return "page/payment/tossfail";
     }
 }
 

@@ -50,13 +50,5 @@ public class IndexController {
         return "page/coupon/myCoupon_detail";
     }
 
-    @GetMapping("/tosspay")
-    public String showtosspay() {
-        return "page/payment/tosspay";
-    }
 
-    @GetMapping("/toss/success")
-    public String showtosspay_success() {
-        return "page/payment/tosssuccess";
-    }
 }

@@ -6,6 +6,8 @@
 
 <head>
     <meta charset="UTF-8">
+
+
 </head>
 <!-- 메인 페이지 고유 CSS 추가-->
 <th:block layout:fragment="css">
@@ -13,71 +15,80 @@
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가-->
 <th:block layout:fragment="script">
+    <script th:src="@{https://code.jquery.com/jquery-latest.js}"></script>
     <script th:src="@{/js/page/selectWrapper.js}"></script>
 </th:block>
 <div layout:fragment="content" class="container">
     <div class="main">
-<!--        주문상품 표시-->
+        <!--        주문상품 표시-->
+
         <div>
-            <b style="margin-right: 200px;" >주문 상품</b>
-            <span style="margin-right: 300px">총 8 개</span>
-<!--            보기 버튼을 누르면 주문 상품 보여지고, 다시 누르면 안 보여짐-->
+            <b style="margin-right: 200px;">주문 상품</b>
+            <span style="margin-right: 300px">총 <span th:text="${totalOrderCount}"></span> 개</span>
+            <!--            보기 버튼을 누르면 주문 상품 보여지고, 다시 누르면 안 보여짐-->
             <button onclick="toggleTable()">보기</button>
         </div>
         <div>
             <table class="order-table" style="display: block">
                 <tbody>
-                <tr>
-                    <td class="order-table-td"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791188331796.jpg"
-                             alt="돈의 속성 이미지" width="80px" height="120px"></td>
-                    <td class="order-table-td">[국내도서] 돈의 속성(300쇄 리커버에디션)</td>
-                    <td class="order-table-td">3개</td>
-                    <td class="order-table-td">48,060원</td>
+                <tr th:each="bookResponse : ${beforeOrderBookResponseList}">
+                    <td class="order-table-td"><img
+                            th:src="${bookResponse.imageUrl}"
+                            alt="Book Image" width="80px" height="120px"></td>
+                    <td class="order-table-td" th:text="${bookResponse.title}"></td>
+                    <td class="order-table-td" th:text="${bookResponse.quantity}+'개'"></td>
+                    <td class="order-table-td" th:text="${bookResponse.cost}+'원'"></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-<!--        포장지 선택-->
+        <!--        포장지 선택-->
         <div style="text-align: center">
             <hr>
             <b>포장지 선택</b>
         </div>
 
-        <div class="wrappers" style="margin: 10px">
-            <b style="margin-right: 70%">돈의 속성</b>
-            <span>수량</span><br>
-            <div class="select" style="margin: 10px">
-                <input type="text" class="number" name="number" value="1" readonly style="width: 20px; text-align: center">
-                <input type="radio" id="wrapper1" name="wrapper" value="wrapper1">
-                <label for="wrapper1">포장지 1</label>
-                <input type="radio" id="wrapper2" name="wrapper" value="wrapper2">
-                <label for="wrapper2">포장지 2</label>
-                <input type="radio" id="none" name="wrapper" value="none">
-                <label for="none">포장지 3</label>
-                <input type="number" id="quantity" name="quantity" min="1" style=" width: 40px">
-<!--                +,- 버튼으로 포장지 수량 조절-->
-                <button onclick="addWrapper()">+</button>
-                <button onclick="removeWrapper()">-</button>
+
+        <div class="wrappers" style="margin: 10px"
+             th:each="bookResponse : ${beforeOrderBookResponseList}">
+            <b th:text="${bookResponse.title}"></b>
+            <br>
+            <div class="select" style="margin: 10px;">
+                <div class="wrapper-select" th:each="wrapper : ${wrapperList}">
+                    <input type="radio" th:id="${wrapper.cost}" th:name="${bookResponse.title}"
+                           th:value="${bookResponse.quantity}" onclick="updateWrapCountAndCost()">
+                    <label th:for="${wrapper.cost}" th:text="${wrapper.name}"></label>
+                </div>
+
             </div>
         </div>
-    </div><div class="side">
+
+        <div id="wrapperData" th:attr="data-wrapperList=${wrapperList}" style="display: none;"></div>
+        <div id="bookResponseList" th:attr="data-bookResponseList=${beforeOrderBookResponseList}"
+             style="display: none;"></div>
+
+    </div>
+    <div class="side">
         <div style="text-align: center">
             <br><br>
-            <span>포장 책 권수</span><span style="margin-left: 120px">0권</span><br><br>
-            <span>선택 포장 총액</span><span style="margin-left: 110px">0원</span><br><br>
-            <span>추가 결제액</span><span style="margin-left: 110px">0원</span><br><br>
-<!--            주문서 작성 단계로 넘어감-->
-            <button type="button" class="pink-button" onclick="redirectToURL('/ordersheet')">다음</button><br><br><br>
+            <span>포장 책 권수</span><span style="margin-left: 120px" class="wrapBookCount"></span><br><br>
+            <span>선택 포장 총액</span><span style="margin-left: 110px" class="totalWrapCost"></span><br><br>
+            <!--            주문서 작성 단계로 넘어감-->
+            <button type="button" class="pink-button" onclick="selectWrapperSubmit()">다음</button>
+            <br><br><br>
         </div>
-<!--    포장지 리스트 보여줌-->
+        <!--    포장지 리스트 보여줌-->
         <div class="wrapperList">
-            <img class="wrapperImg" src="https://previews.123rf.com/images/viaire/viaire1504/viaire150400025/39096768-%ED%8F%AC%EC%9E%A5%EC%A7%80%EC%97%90-%EB%B9%A8%EA%B0%84%EC%83%89-%ED%95%98%ED%8A%B8-%ED%8C%A8%ED%84%B4.jpg" alt="포장지 1" width="90px" height="90px">
-            <img class="wrapperImg" src="https://png.pngtree.com/element_our/png/20181130/christmas-cartoon-image-fresh-and-lovely-wrapping-paper-background-png_254829.jpg" alt="포장지 2" width="90px" height="90px">
-            <img class="wrapperImg" src="https://previews.123rf.com/images/vorotnikovartem/vorotnikovartem1610/vorotnikovartem161000026/67894273-%EB%B2%A1%ED%84%B0-%EC%9B%90%ED%99%9C%ED%95%9C-%ED%8C%A8%ED%84%B4-%EB%94%94%EC%9E%90%EC%9D%B8-doodling%EC%9E%85%EB%8B%88%EB%8B%A4-%EB%A9%94%EB%A6%AC-%ED%81%AC%EB%A6%AC%EC%8A%A4%EB%A7%88%EC%8A%A4%EC%99%80-%ED%96%89%EB%B3%B5-%ED%95%9C-%EC%83%88-%ED%95%B4-%EB%B0%B0%EA%B2%BD%EC%9E%85%EB%8B%88%EB%8B%A4-%ED%8F%AC%EC%9E%A5%EC%A7%80.jpg" alt="포장지 3" width="90px" height="90px">
+            <div th:each="wrapper : ${wrapperList}">
+                <img class="wrapperImg"
+                     src="https://previews.123rf.com/images/viaire/viaire1504/viaire150400025/39096768-%ED%8F%AC%EC%9E%A5%EC%A7%80%EC%97%90-%EB%B9%A8%EA%B0%84%EC%83%89-%ED%95%98%ED%8A%B8-%ED%8C%A8%ED%84%B4.jpg"
+                     th:alt="'포장지' + ${wrapper.id}" width="90px" height="90px">
+                <span class="wrapperName" th:text="${wrapper.name}" style="margin-right: 20px;"></span>
+                <span class="wrapperCost" th:text="${wrapper.cost}" style="margin-right: 5px"></span><span>원</span>
+            </div>
             <br>
-            <span class="wrapperName">포장지 1</span>
-            <span class="wrapperName">포장지 2</span>
-            <span class="wrapperName">포장지 3</span>
+
+
         </div>
     </div>
 </div>

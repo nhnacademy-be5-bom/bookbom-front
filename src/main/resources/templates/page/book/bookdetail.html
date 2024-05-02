@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge"/>
+    <title>책봄 책 상세 페이지</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css"/>
+    <!-- Google Fonts Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"/>
+</head>
+
+<!-- CSS -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/book/bookdetail.css}">
+</th:block>
+<!-- JS -->
+<th:block layout:fragment="script">
+    <script th:src="@{https://code.jquery.com/jquery-latest.js}"></script>
+    <script th:src="@{/js/page/book/bookdetail.js}"></script>
+</th:block>
+
+<body>
+
+<!-- content -->
+<div layout:fragment="content">
+    <section class="py-5">
+        <div class="container">
+            <div class="row gx-5">
+                <aside class="col-lg-6">
+                    <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                        <a style="width: 60%; height: auto;" data-fslightbox="mygalley" class="rounded-4"
+                           data-type="image">
+                            <img style="width: 100%; height: auto; margin: auto;" class="rounded-4 fit"
+                                 th:src="@{${bookDetail.getFiles().get(0).getUrl()}}"/>
+                        </a>
+                    </div>
+                </aside>
+                <main class="col-lg-6">
+                    <div class="ps-lg-3">
+                        <h4 class="title text-dark" th:text="${bookDetail.getTitle()}"></h4>
+                        <p th:text="|출판사: ${bookDetail.getPublisher().getName()}|"></p>
+
+                        <p th:each="author : ${bookDetail.getAuthors()}"
+                           th:text="|${author.getRole()}: ${author.getName()} |"></p>
+
+                        <p th:text="|출판일: ${bookDetail.getPubDate()}|"></p>
+
+                        <div class="d-flex flex-row my-3">
+                            <div id="starContainer" class="text-warning mb-1 me-2" style="color: #FFCC00 !important">
+                                <p id="starScoreContainer" style="display: none"
+                                   th:text="${bookDetail.getReviewStatistics().getAverageReviewRate()}"></p>
+
+                                <span id="scoreText" class="ms-1"
+                                      th:text="|${bookDetail.getReviewStatistics().getTotalReviewCount()}건의 리뷰(${bookDetail.getReviewStatistics().getAverageReviewRate()})|">
+                                </span>
+                            </div>
+
+                            <span id="bookStock" class="text-success ms-2" style="color: #198754 !important"
+                                  th:text="|${bookDetail.getStock()}권 남음|"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <span class="text-muted" style="text-decoration: line-through"
+                                  th:text="|${bookDetail.getCost()}원|"></span>
+                            <span class="h5" th:text="| /${bookDetail.getDiscountCost()}원|"></span>
+                        </div>
+
+                        <div class="row">
+                            <dt class="col-3">배송비:</dt>
+                            <dd class="col-9"> 5000원</dd>
+
+                            <dt class="col-3">포장여부:</dt>
+                            <dd class="col-9" th:if="${bookDetail.getPackagable() == true}">가능</dd>
+                            <dd class="col-9" th:unless="${bookDetail.getPackagable() == true}">불가능</dd>
+
+                            <dt class="col-3">포인트 적립율:</dt>
+                            <dd class="col-9" th:if="${bookDetail.getPointRate().getEarnType() == 'RATE'}"
+                                th:text="|${bookDetail.getPointRate().getEarnPoint()}%|"></dd>
+
+                            <dd class="col-9" th:if="${bookDetail.getPointRate().getEarnType() == 'COST'}"
+                                th:text="|${bookDetail.getPointRate().getEarnPoint()}포인트|"></dd>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row mb-4">
+                            <!-- col.// -->
+                            <div class="col-md-4 col-6 mb-3">
+                                <label class="mb-2 d-block">수량</label>
+                                <div class="input-group mb-3" style="width: 170px;">
+                                    <button class="btn btn-white border border-secondary px-3" type="button"
+                                            id="button-addon1" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+
+                                    <input type="text" class="form-control text-center border border-secondary"
+                                           id="bookQuantity" name="bookQuantity" value="0" placeholder="0"
+                                           aria-label="수량"
+                                           aria-describedby="button-addon1"/>
+                                    <input type="hidden" name="bookId" th:value="${bookDetail.getId()}"/>
+
+                                    <button class="btn btn-white border border-secondary px-3" type="button"
+                                            id="button-addon2" data-mdb-ripple-color="dark">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 책 수량=@RequestParam "bookQuantity"/ 책 id=@RequestParam "bookId" -->
+                        <a th:href="@{/shop/주문페이지}" class="btn btn-warning shadow-0"> 즉시구매 </a>
+
+                        <a th:href="@{/shop/장바구니페이지}" class="btn btn-primary shadow-0"
+                           style="padding: 0.375rem 0.75rem !important;">
+                            <i class="me-1 fa fa-shopping-basket"></i>장바구니
+                        </a>
+
+                        <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
+                                class="me-1 fa fa-heart fa-lg"></i></a>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+    <!-- content -->
+
+    <section class="bg-light border-top py-4">
+        <div class="container">
+            <div class="row gx-4">
+                <div class="col-lg-8 mb-4">
+                    <div class="border rounded-2 px-3 py-2 bg-white">
+
+                        <!-- Pills content -->
+                        <div class="tab-content" id="ex1-content">
+                            <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel"
+                                 aria-labelledby="ex1-tab-1">
+                                <h4>이 상품의 태그</h4>
+                                <span th:unless="${#lists.isEmpty(bookDetail.getTags())}"
+                                      th:each="tag : ${bookDetail.getTags()}"
+                                      th:text="|#${tag.getName()} |"></span>
+
+                                <span th:if="${#lists.isEmpty(bookDetail.getTags())}">
+                                    태그가 없습니다.
+                                </span>
+                                <hr>
+
+                                <h4>이 상품의 카테고리</h4>
+                                <span th:unless="${#lists.isEmpty(bookDetail.getCategories())}"
+                                      th:each="category, status : ${bookDetail.getCategories()}"
+                                      th:text="${!status.last} ? ${category.getName()} + ' > ': ${category.getName()}">
+                                </span>
+
+                                <span th:if="${#lists.isEmpty(bookDetail.getCategories())}">
+                                    카테고리가 없습니다.
+                                </span>
+                                <hr>
+
+                                <h4>ISBN 정보</h4>
+                                <span th:text="|10자리: ${bookDetail.getIsbn10()}|"></span>
+                                <p th:text="|13자리: ${bookDetail.getIsbn13()}|"></p>
+                                <hr>
+
+                                <h4>책 소개</h4>
+                                <p th:unless="${#strings.isEmpty(bookDetail.getDescription())}"
+                                   th:text="${bookDetail.getDescription()}"></p>
+
+                                <p th:if="${#strings.isEmpty(bookDetail.getDescription())}">
+                                    소개말이 없습니다.
+                                </p>
+                                <hr>
+
+                                <h4>목차</h4>
+                                <p th:unless="${#strings.equals(bookDetail.getIndex(),'<toc> </toc>')}"
+                                   th:text="${bookDetail.getIndex()}" style="display: none" id="indexPtag">
+                                </p>
+
+                                <p th:if="${#strings.equals(bookDetail.getIndex(),'<toc> </toc>')}">
+                                    목차가 없습니다.
+                                </p>
+                            </div>
+
+                        </div>
+                        <!-- Pills content -->
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

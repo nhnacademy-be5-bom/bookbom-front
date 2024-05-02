@@ -1,0 +1,67 @@
+/* 쿠폰함, 찜 목록, 포인트 카드 스타일 */
+.card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* 주문 내역 테이블 스타일 */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th,
+.table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+.list-group-item {
+    border: none;
+    background-color: transparent;
+}
+
+.list-group-item:hover {
+    background-color: #f2f2f2;
+}
+
+.list-group-item:last-child {
+    margin-bottom: 0;
+}
+
+.member-link {
+    cursor: pointer;
+}
+
+.latest-order {
+    cursor: pointer;
+}
+
+.member-withdraw {
+    box-shadow: none;
+    cursor: pointer;
+}

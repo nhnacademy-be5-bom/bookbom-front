@@ -19,6 +19,7 @@ import shop.bookbom.front.domain.payment.service.PaymentService;
 public class PaymentController {
     private final PaymentService paymentService;
 
+    //결제 수단 페이지
     @GetMapping("/payment-method")
     public String selectPaymentMethod(@RequestParam("orderId") String orderId,
                                       @RequestParam("orderName") String orderName,
@@ -31,7 +32,7 @@ public class PaymentController {
         return "page/payment/checkout";
     }
 
-
+    //토스 결제 성공했을 때
     @GetMapping("/toss-success")
     public String showtosspay_success(@RequestParam("paymentKey") String paymentKey,
                                       @RequestParam("orderId") String orderId,
@@ -44,11 +45,13 @@ public class PaymentController {
         return "page/payment/tosssuccess";
     }
 
+    //토스 결제 실패 했을 때
     @GetMapping("/toss-fail")
     public String showtosspay_fail() {
         return "page/payment/tossfail";
     }
 
+    //주문 완료 페이지
     @PostMapping("/payment-complete")
     public String paymentComplete(@ModelAttribute PaymentRequest paymentRequest,
                                   RedirectAttributes redirectAttributes) {
@@ -72,6 +75,7 @@ public class PaymentController {
         return "redirect:/order-complete";
     }
 
+    //주문 완료 페이지
     @GetMapping("/order-complete")
     public String showOrderComplete(@RequestParam("orderNumber") String orderNumber,
                                     @RequestParam("orderInfo") String orderInfo,

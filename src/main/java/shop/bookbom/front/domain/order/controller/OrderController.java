@@ -26,6 +26,7 @@ import shop.bookbom.front.domain.order.service.OrderService;
 public class OrderController {
     private final OrderService orderService;
 
+    //포장지 선택페이지
     @PostMapping("/order/wrapper")
     public String processSelectWrapperPage(@ModelAttribute BeforeOrderRequestList beforeOrderRequestList,
                                            RedirectAttributes redirectAttributes) {
@@ -36,9 +37,11 @@ public class OrderController {
         }
         BeforeOrderResponse beforeOrderResponse =
                 (BeforeOrderResponse) preOrderResponse.getBeforeOrderResponse();
+        //redirectAttributes.addAttribute는 string만 전달가능해서
         // 리스트를 콤마로 구분된 문자열로 변환하여 리다이렉트 매개변수로 전달
         redirectAttributes.addAttribute("wrapperList",
                 BeforeOrderResponse.convertWrapperListToString(beforeOrderResponse.getWrapperList()));
+        // 리스트를 콤마로 구분된 문자열로 변환하여 리다이렉트 매개변수로 전달
         redirectAttributes.addAttribute("beforeOrderBookResponseList",
                 BeforeOrderResponse.convertBookListToString(beforeOrderResponse.getBeforeOrderBookResponseList()));
         redirectAttributes.addAttribute("totalOrderCount", beforeOrderResponse.getTotalOrderCount());
@@ -46,6 +49,7 @@ public class OrderController {
         return "redirect:/order/selectWrapper";
     }
 
+    //prg 패턴으로 보여줌
     @GetMapping("/order/selectWrapper")
     public String showSelectWrapperPage(@RequestParam("totalOrderCount") int totalOrderCount,
                                         @RequestParam("wrapperList") String wrapperListAsString,
@@ -65,6 +69,7 @@ public class OrderController {
         return "page/order/selectWrapper";
     }
 
+    //재고 부족 페이지
     @GetMapping("/order/stockLow")
     public String stockLow(@RequestParam("errorMessage") String errorMessage,
                            Model model) {
@@ -73,6 +78,7 @@ public class OrderController {
         return "page/order/exception/stockLow";
     }
 
+    //주문서 작성 페이지
     @PostMapping("/order/ordersheet")
     public String postOrdersheet(@ModelAttribute WrapperSelectRequest wrapperSelectRequest,
                                  RedirectAttributes redirectAttributes) {
@@ -89,6 +95,7 @@ public class OrderController {
         return "redirect:/order/ordersheet";
     }
 
+    //주문서 작성 페이지
     @GetMapping("/order/ordersheet")
     public String getOrdersheet(@ModelAttribute WrapperSelectResponse wrapperSelectResponse,
                                 @RequestParam("totalOrderCount") int totalOrderCount,
@@ -113,6 +120,7 @@ public class OrderController {
         return "page/order/ordersheet_non_member";
     }
 
+    //결제 수단페이지
     @PostMapping("/order")
     public String submitOrder(@ModelAttribute OpenOrderRequest openOrderRequest,
                               RedirectAttributes redirectAttributes) {

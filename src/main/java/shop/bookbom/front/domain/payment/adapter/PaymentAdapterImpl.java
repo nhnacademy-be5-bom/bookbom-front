@@ -29,6 +29,12 @@ public class PaymentAdapterImpl implements PaymentAdapter {
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
 
+    /**
+     * 결제 요청
+     *
+     * @param paymentRequest
+     * @return PaymentSuccessResponse
+     */
     public PaymentSuccessResponse getPaymentConfirm(PaymentRequest paymentRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);

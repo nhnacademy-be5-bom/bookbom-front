@@ -14,6 +14,7 @@ import shop.bookbom.front.domain.order.dto.BeforeOrderBookResponse;
 import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.WrapperDto;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
 
 @Controller
@@ -56,7 +57,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public String getOrderDetail(@PathVariable("id") Long id, Model model) {
+    public String orderDetailPage(@PathVariable("id") Long id, Model model) {
+        OrderDetailResponse orderDetail = orderService.getOrderDetail(id);
+        model.addAttribute("order", orderDetail);
         return "page/order/order-detail";
     }
 }

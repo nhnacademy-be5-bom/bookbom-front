@@ -2,10 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/default_layout}" lang="ko">
 
 <head>
     <meta charset="UTF-8">
+    <title>주문/배송 상세 조회</title>
 </head>
 <th:block layout:fragment="css">
     <link rel="stylesheet" th:href="@{/css/page/order/order-detail.css}">
@@ -15,36 +16,44 @@
 
 <div layout:fragment="content" class="container mt-4">
     <!-- 제목 -->
-    <h2 class="mb-3 fw-bold">주문/배송 조회 상세</h2>
+    <h2 class="mb-3 fw-bold">주문/배송 상세 조회</h2>
 
     <!-- 주문 정보 (Nav) -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="container-fluid">
             <div class="order-info">
-                <span class="fw-bold">2024.03.20 </span>
-                <span>주문번호 <span class="fw-bold">O24309828 </span></span>
-                <span class="fw-bold">기술 면접 노트 외 1건</span>
+                <span class="fw-bold"
+                      th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}">2024.03.20 </span>
+                <span>주문번호 <span th:text="${order.orderNumber}">O24309828 </span></span>
+                <span class="fw-bold" th:text="${order.orderInfo}">기술 면접 노트 외 1건</span>
             </div>
         </div>
     </nav>
 
     <!-- 배송 정보 (Card) -->
     <div class="card mb-3">
-        <div class="card-header fw-bold">배송</div>
-        <div class="card-body">
+        <div class="card-header fw-bold">배송
+        </div>
+        <div class="card-body" th:each="book : ${order.books}">
             <div class="row align-items-center">
                 <div class="col-md-3">
-                    <input type="checkbox">
-                    <img th:src="@{/images/no-image.jpg}" alt="Product Thumbnail" class="product-thumbnail">
+                    <label>
+                        <input type="checkbox">
+                    </label>
+                    <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}"
+                         class="product-thumbnail" alt="...">
+                    <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}"
+                         th:src="@{/images/no-image.jpg}"
+                         class="product-thumbnail" alt="...">
                 </div>
                 <div class="col-md-4">
-                    <p class="fw-bold mb-0">기술 면접 노트</p>
-                    <span>수량: <span>3</span></span>
+                    <p class="fw-bold mb-0" th:text="${book.title}">기술 면접 노트</p>
+                    <span>수량: <span th:text="${book.quantity}">3</span></span>
                 </div>
-                <div class="col-md-2 d-flex justify-content-center fw-bold">15,000원</div>
-                <div class="col-md-2 d-flex justify-content-center fw-bold">배송중</div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold" th:text="${book.price}">15,000원</div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold" th:text="${book.status}">배송중</div>
                 <div class="col-md-1 d-flex flex-column">
-                    <button class="btn btn-outline-secondary btn-sm mb-1">반품 신청</button>
+                    <!--                    <button class="btn btn-outline-secondary btn-sm mb-1">반품 신청</button>-->
                     <button class="btn btn-outline-secondary btn-sm">취소 신청</button>
                 </div>
             </div>
@@ -54,7 +63,8 @@
     <div class="card mb-3">
         <div class="card-header fw-bold">구매자 정보</div>
         <div class="card-body">
-            <span>홍길동</span> / <span>010-1234-5678</span>
+            <span th:text="${order.senderName}">홍길동</span> / <span
+                th:text="${order.senderPhoneNumber}">010-1234-5678</span>
         </div>
     </div>
 
@@ -62,10 +72,12 @@
         <div class="card-header fw-bold">배송 정보</div>
         <div class="card-body">
             <div>
-                <span>홍길동</span> / <span>010-1234-5678</span>
+                <span th:text="${order.recipientName}">홍길동</span> / <span th:text="${order.recipientPhoneNumber}">010-1234-5678</span>
                 <button class="btn btn-outline-secondary btn-sm">변경</button>
             </div>
-            <div>[<span>54140</span>] <span>서울특별시 어딘가 123번지</span></div>
+            <div>[<span th:text="${order.recipientAddress.zipCode}">54140</span>] <span
+                    th:text="${order.recipientAddress.address}">서울특별시 어딘가 123번지</span> <span
+                    th:text="${order.recipientAddress.detailAddress}"></span></div>
         </div>
     </div>
 
@@ -73,17 +85,35 @@
         <div class="card-header fw-bold">결제 정보</div>
         <div class="card-body">
             <div class="row">
-                <div class="col-md-4 d-flex justify-content-between">
-                    <span class="fw-bold">주문 금액</span>
-                    <span>35,000원</span>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">주문 금액</span>
+                        <span th:text="${order.totalPrice}">44,200원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>상품 금액</span>
+                        <span th:text="${order.discountPrice}">36,000원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>포장비</span>
+                        <span>3,200원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>배송비</span>
+                        <span>5,000원</span>
+                    </div>
                 </div>
-                <div class="col-md-4 d-flex justify-content-between">
-                    <span class="fw-bold">할인/포인트 금액 </span>
-                    <span>5,000원</span>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">할인/포인트 금액</span>
+                        <span>0원</span>
+                    </div>
                 </div>
-                <div class="col-md-4 d-flex justify-content-between">
-                    <span class="fw-bold">결제 금액</span>
-                    <span>30,000원</span>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">결제 금액</span>
+                        <span th:text="${order.paymentPrice}">44,200원</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -93,7 +123,7 @@
         <div class="card-header fw-bold">적립 정보</div>
         <div class="card-body col-md-4 d-flex justify-content-between">
             <span class="fw-bold ">적립 예정 포인트</span>
-            <span>1000P</span>
+            <span th:text="${order.accumulatedPoint + 'P'}">1000P</span>
         </div>
     </div>
 </div>

@@ -1,0 +1,13 @@
+.btn-group {
+    margin-right: 10px;
+}
+
+.detail-link {
+    text-decoration: underline;
+    color: rgba(237, 191, 111, 0.9);
+    cursor: pointer;
+}
+
+.custom-btn {
+    padding: 0;
+}

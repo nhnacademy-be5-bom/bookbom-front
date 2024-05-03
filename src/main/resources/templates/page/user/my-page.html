@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}" lang="ko">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/my-page.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/my-page.js}"></script>
+</th:block>
+
+<!-- Content -->
+<div class="container mt-5" layout:fragment="content">
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-6 text-center">
+            <span class="fw-bold fs-2" th:text="${member.nickname}">냥냥</span><span class="fs-4">님</span>
+            <div class="member-link" th:data-href="@{/rank-policy}">
+                <span class="fs-5" th:text="${member.rank}">PLATINUM</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <span class="fw-bold fs-4">쇼핑</span>
+            <ul class="list-group mb-3">
+                <li class="list-group-item member-link" th:data-href="@{/orders}">주문 내역</li>
+                <li class="list-group-item member-link" th:data-href="@{/wishes}">찜 목록</li>
+                <li class="list-group-item member-link" th:data-href="@{/coupons}">쿠폰함</li>
+                <li class="list-group-item member-link" th:data-href="@{/points}">포인트 적립/사용 목록</li>
+            </ul>
+            <!-- 회원 정보 -->
+            <span class="fw-bold fs-4">회원 정보</span>
+            <ul class="list-group mb-3">
+                <li class="list-group-item member-link">회원 정보 수정</li>
+                <li class="list-group-item member-link">비밀 번호 수정</li>
+                <li class="list-group-item member-link">나의 주소록</li>
+                <li class="list-group-item member-link">나의 리뷰 목록</li>
+                <li class="list-group-item member-link">나의 회원 등급</li>
+            </ul>
+            <form th:action="@{/member/withdraw}" th:method="delete">
+                <button type="submit" class="btn btn-link p-0 border-0 member-withdraw"
+                        style="color: #dc3545">회원 탈퇴
+                </button>
+            </form>
+        </div>
+
+        <!-- 우측 영역 -->
+        <div class="col-md-9">
+            <span class="fw-bold fs-4">최근 주문 내역</span>
+            <table class="table latest-order" th:each="order : ${member.lastOrders}" th:data-order-id="${order.id}">
+                <thead>
+                <tr>
+                    <th scope="col">주문 일자</th>
+                    <th scope="col">주문 번호</th>
+                    <th scope="col">주문 이름</th>
+                    <th scope="col">가격</th>
+                    <th scope="col">주문 상태</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td th:text="${order.orderDate}">2024-04-25</td>
+                    <td th:text="${order.orderNumber}">ORD123456</td>
+                    <td th:text="${order.name}">상품명</td>
+                    <td data-th-text="${#numbers.formatInteger(order.totalCost, 3, 'COMMA') + '원'}">25,000원</td>
+                    <td th:text="${order.status}">배송중</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="row mt-4 mx-4 justify-content-between my-2">
+                <div class="col-md-2 my-2">
+                    <div class="card custom-card" style="border-radius: 25px">
+                        <div class="card-body member-link" th:data-href="@{/coupons}">
+                            <h5 class="card-title text-center fw-bold">쿠폰함</h5>
+                            <p class="card-text text-end" th:text="${member.couponCount} + '장'">3장</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 my-2">
+                    <div class="card custom-card" style="border-radius: 25px">
+                        <div class="card-body member-link" th:data-href="@{/wishes}">
+                            <h5 class="card-title text-center fw-bold">찜 목록</h5>
+                            <p class="card-text text-end" th:text="${member.wishCount} + '개'">10개</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 my-2">
+                    <div class="card custom-card" style="border-radius: 25px">
+                        <div class="card-body member-link" th:data-href="@{/points}">
+                            <h5 class="card-title text-center fw-bold">포인트</h5>
+                            <p class="card-text text-end" th:text="${member.point} + 'p'">2500p</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

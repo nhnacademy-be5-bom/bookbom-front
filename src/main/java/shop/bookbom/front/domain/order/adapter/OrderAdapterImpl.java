@@ -43,6 +43,12 @@ public class OrderAdapterImpl implements OrderAdapter {
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
 
+    /**
+     * 주문 정보 불러오기
+     *
+     * @param beforeOrderRequestList
+     * @return
+     */
     @Override
     public PreOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -58,12 +64,19 @@ public class OrderAdapterImpl implements OrderAdapter {
         if (response == null) {
             throw new BeforeOrderException();
         }
+        //exception 이면 failResponse 빌더를 만듬
         if (response.getHeader().getResultCode() != 200) {
             return PreOrderResponse.createFailResponse(false, response.getHeader().getResultMessage());
         }
         return PreOrderResponse.createSuccessResponse(Objects.requireNonNull(response).getResult(), true);
     }
 
+    /**
+     * 포장지 응답 받기
+     *
+     * @param wrapperSelectRequest
+     * @return
+     */
     @Override
     public WrapperSelectResponse wrapperSelect(WrapperSelectRequest wrapperSelectRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -81,6 +94,12 @@ public class OrderAdapterImpl implements OrderAdapter {
         return Objects.requireNonNull(response).getResult();
     }
 
+    /**
+     * 주문 정보 전달
+     *
+     * @param openOrderRequest
+     * @return
+     */
     @Override
     public OrderResponse submitOrder(OpenOrderRequest openOrderRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();

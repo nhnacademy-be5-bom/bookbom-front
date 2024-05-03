@@ -40,6 +40,34 @@ public class IndexController {
         return "page/best-seller";
     }
 
+    @GetMapping("/latest")
+    public String showLatestPage(Model model, @PageableDefault(size = 9) Pageable pageable) {
+        Page<BookSearchResponse> latestBooks = indexService.mainLatestBooks(pageable);
+        model.addAttribute("latestBooks", latestBooks.getContent());
+        model.addAttribute("currentPage", latestBooks.getNumber());
+        model.addAttribute("pageSize", latestBooks.getPageable().getPageSize());
+        model.addAttribute("totalPages", latestBooks.getTotalPages());
+        model.addAttribute("totalItems", latestBooks.getTotalElements());
+        model.addAttribute("size", latestBooks.getSize());
+        return "page/latest-books";
+    }
+
+
+    @GetMapping("/selectWrapper")
+    public String showSelectWrpperPage() {
+        return "page/order/selectWrapper";
+    }
+
+    @GetMapping("/ordersheet")
+    public String showOrderPage() {
+        return "page/order/ordersheet_member";
+    }
+
+    @GetMapping("/ordersheet_non_member")
+    public String showOrderPage_non_member() {
+        return "page/order/ordersheet_non_member";
+    }
+
     @GetMapping("/myCoupon")
     public String showMyCouponPage() {
         return "page/coupon/myCoupon";
@@ -50,5 +78,13 @@ public class IndexController {
         return "page/coupon/myCoupon_detail";
     }
 
+    @GetMapping("/tosspay")
+    public String showtosspay() {
+        return "page/payment/tosspay";
+    }
 
+    @GetMapping("/toss/success")
+    public String showtosspay_success() {
+        return "page/payment/tosssuccess";
+    }
 }

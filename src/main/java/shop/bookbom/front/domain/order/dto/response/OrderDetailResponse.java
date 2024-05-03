@@ -21,5 +21,8 @@ public class OrderDetailResponse {
     private int totalPrice;
     private int discountPrice;
     private int paymentPrice;
-    private int accumulatedPoint;
+    private int wrapperPrice;
+    private int usedPoint;
+    private int deliveryFee;
+    private String status;
 }

@@ -9,7 +9,9 @@ public class OrderBookResponse {
     private Long id;
     private String thumbnail;
     private String title;
-    private int price;
+    private int bookPrice;
     private int quantity;
+    private boolean isPackaging;
+    private int wrapperCost;
     private String status;
 }

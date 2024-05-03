@@ -24,7 +24,7 @@
             <div class="order-info">
                 <span class="fw-bold"
                       th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}">2024.03.20 </span>
-                <span>주문번호 <span th:text="${order.orderNumber}">O24309828 </span></span>
+                <span>주문번호 <span th:text="${order.orderNumber}">O24309828</span></span>
                 <span class="fw-bold" th:text="${order.orderInfo}">기술 면접 노트 외 1건</span>
             </div>
         </div>
@@ -50,8 +50,13 @@
                     <p class="fw-bold mb-0" th:text="${book.title}">기술 면접 노트</p>
                     <span>수량: <span th:text="${book.quantity}">3</span></span>
                 </div>
-                <div class="col-md-2 d-flex justify-content-center fw-bold" th:text="${book.bookPrice}">15,000원</div>
-                <div class="col-md-2 d-flex justify-content-center fw-bold" th:text="${book.status}">배송중</div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold"
+                     data-th-text="${#numbers.formatInteger(book.bookPrice, 0, 'COMMA') + '원'}">15,000원
+                </div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold"
+                     th:text="${book.status == 'NONE' ? order.status : book.status}">
+                    배송중
+                </div>
                 <div class="col-md-1 d-flex flex-column">
                     <!--                    <button class="btn btn-outline-secondary btn-sm mb-1">반품 신청</button>-->
                     <button class="btn btn-outline-secondary btn-sm">취소 신청</button>
@@ -88,42 +93,42 @@
                 <div class="col-md-4">
                     <div class="d-flex justify-content-between order-cost">
                         <span class="fw-bold">주문 금액</span>
-                        <span th:text="${order.totalPrice}">44,200원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA') + '원'}">44,200원</span>
                     </div>
                     <div class="d-flex justify-content-between sub-cost">
                         <span>상품 금액</span>
-                        <span th:text="${order.discountPrice}">36,000원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA') + '원'}">36,000원</span>
                     </div>
                     <div class="d-flex justify-content-between sub-cost">
                         <span>포장비</span>
-                        <span th:text="${order.wrapperPrice}">3,200원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.wrapperPrice, 0, 'COMMA') + '원'}">3,200원</span>
                     </div>
                     <div class="d-flex justify-content-between sub-cost">
                         <span>배송비</span>
-                        <span th:text="${order.deliveryFee}">5,000원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.deliveryFee, 0, 'COMMA') + '원'}">5,000원</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-between order-cost">
                         <span class="fw-bold">할인/포인트 금액</span>
-                        <span th:text="${order.usedPoint}">0원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.usedPoint, 0, 'COMMA') + '원'}">0원</span>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="d-flex justify-content-between order-cost">
                         <span class="fw-bold">결제 금액</span>
-                        <span th:text="${order.paymentPrice}">44,200원</span>
+                        <span data-th-text="${#numbers.formatInteger(order.paymentPrice, 0, 'COMMA') + '원'}">44,200원</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header fw-bold">적립 정보</div>
-        <div class="card-body col-md-4 d-flex justify-content-between">
-            <span class="fw-bold ">적립 예정 포인트</span>
-            <span>1000P</span>
-        </div>
-    </div>
+<!--    <div class="card mb-4">-->
+<!--        <div class="card-header fw-bold">적립 정보</div>-->
+<!--        <div class="card-body col-md-4 d-flex justify-content-between">-->
+<!--            <span class="fw-bold ">적립 예정 포인트</span>-->
+<!--            <span>1000P</span>-->
+<!--        </div>-->
+<!--    </div>-->
 </div>

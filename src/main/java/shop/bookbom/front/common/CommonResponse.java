@@ -37,4 +37,14 @@ public class CommonResponse<T> {
                         .resultMessage(errorCode.getMessage()).build())
                 .build();
     }
+
+    public static <T> CommonResponse<T> successWithData(T data) {
+        return CommonResponse.<T>builder()
+                .header(ResponseHeader.builder()
+                        .isSuccessful(true)
+                        .resultCode(HttpStatus.OK.value())
+                        .resultMessage(SUCCESS_MESSAGE).build())
+                .result(data)
+                .build();
+    }
 }

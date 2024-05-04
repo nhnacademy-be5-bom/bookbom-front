@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const orders = document.querySelectorAll('.latest-order');
+    const orders = document.querySelectorAll('.order-detail');
 
     // 주문 내역 클릭
     orders.forEach(row => {
         row.addEventListener('click', function () {
             const orderId = this.getAttribute('data-order-id');
-            window.location.href = `/order/${orderId}`;
+            window.location.href = `/orders/${orderId}`;
         });
     });
 

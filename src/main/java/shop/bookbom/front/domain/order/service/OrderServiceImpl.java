@@ -3,7 +3,7 @@ package shop.bookbom.front.domain.order.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.order.adapter.OrderAdapter;
-import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
+import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;

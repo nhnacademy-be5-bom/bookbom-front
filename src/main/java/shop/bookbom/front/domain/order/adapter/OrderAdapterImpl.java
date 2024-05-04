@@ -12,12 +12,16 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.order.dto.BeforeOrderRequestList;
-import shop.bookbom.front.domain.order.dto.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
+import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
+import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
+import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
+import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.exception.BeforeOrderException;
+import shop.bookbom.front.domain.order.exception.OrderFailException;
 
 @Component
 @RequiredArgsConstructor

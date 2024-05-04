@@ -12,6 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/page/order/order-detail.css}">
 </th:block>
 <th:block layout:fragment="script">
+    <script th:src="@{/js/page/order/order-detail.js}"></script>
 </th:block>
 
 <div layout:fragment="content" class="container mt-4">
@@ -26,6 +27,14 @@
                       th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}">2024.03.20 </span>
                 <span>주문번호 <span th:text="${order.orderNumber}">O24309828</span></span>
                 <span class="fw-bold" th:text="${order.orderInfo}">기술 면접 노트 외 1건</span>
+            </div>
+            <div>
+                <button
+                        class="btn btn-sm btn-outline-secondary"
+                        data-bs-target="#orderCancel" data-bs-toggle="modal" th:if="${order.status.equals('대기')}"
+                        type="button">
+                    주문 취소
+                </button>
             </div>
         </div>
     </nav>
@@ -58,8 +67,9 @@
                     배송중
                 </div>
                 <div class="col-md-1 d-flex flex-column">
-                    <!--                    <button class="btn btn-outline-secondary btn-sm mb-1">반품 신청</button>-->
-                    <button class="btn btn-outline-secondary btn-sm">취소 신청</button>
+                    <button class="btn btn-outline-secondary btn-sm mb-1"
+                            th:if="${order.status.equals('완료')}">반품 신청
+                    </button>
                 </div>
             </div>
         </div>
@@ -124,11 +134,21 @@
         </div>
     </div>
 
-    <!--    <div class="card mb-4">-->
-    <!--        <div class="card-header fw-bold">적립 정보</div>-->
-    <!--        <div class="card-body col-md-4 d-flex justify-content-between">-->
-    <!--            <span class="fw-bold ">적립 예정 포인트</span>-->
-    <!--            <span>1000P</span>-->
-    <!--        </div>-->
-    <!--    </div>-->
+    <div aria-hidden="true" aria-labelledby="orderCancelLabel" class="modal fade" id="orderCancel" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="orderCancelLabel">주문 취소</h1>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    주문을 취소하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success confirm-delete" type="button">예</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

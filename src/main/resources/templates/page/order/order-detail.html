@@ -60,7 +60,7 @@
                     <span>수량: <span th:text="${book.quantity}">3</span></span>
                 </div>
                 <div class="col-md-2 d-flex justify-content-center fw-bold"
-                     data-th-text="${#numbers.formatInteger(book.bookPrice, 0, 'COMMA') + '원'}">15,000원
+                     data-th-text="${#numbers.formatInteger(book.bookPrice * book.quantity, 0, 'COMMA') + '원'}">15,000원
                 </div>
                 <div class="col-md-2 d-flex justify-content-center fw-bold"
                      th:text="${book.status == 'NONE' ? order.status : book.status}">

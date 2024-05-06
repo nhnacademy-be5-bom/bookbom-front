@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectBookRequest;
-import shop.bookbom.front.domain.payment.dto.PaymentRequest;
 
 public class OrderUtil {
     // BeforeOrderRequest 객체 리스트를 문자열로 변환하는 메서드
@@ -55,25 +54,4 @@ public class OrderUtil {
         }
     }
 
-    // PaymentRequest 객체를 JSON 문자열로 변환하는 메서드
-    public static String convertPaymentRequestToString(PaymentRequest request) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(request);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    // JSON 문자열을 PaymentRequest 객체로 변환하는 메서드
-    public static PaymentRequest convertStringToPaymentRequest(String jsonString) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.readValue(jsonString, PaymentRequest.class);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

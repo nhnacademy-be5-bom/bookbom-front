@@ -12,14 +12,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.exception.OrderFailException;
+import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
 import shop.bookbom.front.domain.payment.dto.PaymentRequest;
 import shop.bookbom.front.domain.payment.dto.PaymentSuccessResponse;
+import shop.bookbom.front.domain.payment.exception.PaymentFailException;
 
 @Component
 @RequiredArgsConstructor
 public class PaymentAdapterImpl implements PaymentAdapter {
     private final RestTemplate restTemplate;
 
+    private static final ParameterizedTypeReference<CommonResponse<OrderIdResponse>>
+            ORDER_ID_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
     private static final ParameterizedTypeReference<CommonResponse<PaymentSuccessResponse>>
             PAYMENT_RESPONSE =
             new ParameterizedTypeReference<>() {
@@ -35,20 +41,36 @@ public class PaymentAdapterImpl implements PaymentAdapter {
      * @param paymentRequest
      * @return PaymentSuccessResponse
      */
-    public PaymentSuccessResponse getPaymentConfirm(PaymentRequest paymentRequest) {
+    public OrderIdResponse getPaymentConfirm(PaymentRequest paymentRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest, httpHeaders);
-        CommonResponse<PaymentSuccessResponse> response =
-                restTemplate.exchange(gatewayUrl + "/shop/payment/tosspay/confirm"
-                        , HttpMethod.POST, requestEntity, PAYMENT_RESPONSE).getBody();
+
+        CommonResponse<OrderIdResponse> response = restTemplate.exchange(gatewayUrl + "/shop/payment/tosspay/confirm"
+                , HttpMethod.POST, requestEntity, ORDER_ID_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new OrderFailException();
         }
         return Objects.requireNonNull(response).getResult();
 
+    }
+
+    public PaymentSuccessResponse orderComplete(Long orderId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
+
+        CommonResponse<PaymentSuccessResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/payment/order-complete/{orderId}",
+                        HttpMethod.GET, requestEntity, PAYMENT_RESPONSE, orderId).getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new PaymentFailException();
+        }
+        return Objects.requireNonNull(response).getResult();
     }
 }

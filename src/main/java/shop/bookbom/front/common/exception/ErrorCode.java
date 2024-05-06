@@ -15,7 +15,9 @@ public enum ErrorCode {
     BEFORE_ORDER_IS_FAILED(400, "주문 전, 책정보를 불러오지 못했습니다. 다시 시도해주세요."),
     ORDER_IS_FAILED(400, "주문이 실패했습니다."),
     //order
-    LOW_STOCK(400, "해당 요쳥 책의 재고가 부족합니다. 다시 시도해주세요.");
+    LOW_STOCK(400, "해당 요쳥 책의 재고가 부족합니다. 다시 시도해주세요."),
+    //payment
+    PAYMENT_FAILED(400, "결제가 실패했습니다");
 
     private final int code;
     private final String message;

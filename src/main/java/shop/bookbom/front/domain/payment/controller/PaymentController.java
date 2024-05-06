@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shop.bookbom.front.domain.order.util.OrderUtil;
 import shop.bookbom.front.domain.payment.dto.PaymentRequest;
 import shop.bookbom.front.domain.payment.dto.PaymentSuccessResponse;
 import shop.bookbom.front.domain.payment.service.PaymentService;
@@ -54,20 +53,19 @@ public class PaymentController {
     @PostMapping("/payment-complete")
     public String paymentComplete(@ModelAttribute PaymentRequest paymentRequest,
                                   RedirectAttributes redirectAttributes) {
-        String paymentRequestToStr = OrderUtil.convertPaymentRequestToString(paymentRequest);
-        redirectAttributes.addAttribute("paymentRequestToStr", paymentRequestToStr);
+
+        Long orderId = paymentService.getPaymentConfirm(paymentRequest).getOrderId();
+        redirectAttributes.addAttribute("orderId", orderId);
 
         return "redirect:/payment-complete";
     }
 
     //주문 완료 페이지
     @GetMapping("/payment-complete")
-    public String showOrderComplete(@RequestParam("paymentRequestToStr") String paymentRequestToStr
+    public String showOrderComplete(@RequestParam("orderId") Long orderId
             , Model model) {
 
-        PaymentRequest paymentRequest = OrderUtil.convertStringToPaymentRequest(paymentRequestToStr);
-        PaymentSuccessResponse paymentResponse = paymentService.getPaymentConfirm(paymentRequest);
-
+        PaymentSuccessResponse paymentResponse = paymentService.orderComplete(orderId);
         model.addAttribute("orderNumber", paymentResponse.getOrderNumber());
         model.addAttribute("orderInfo", paymentResponse.getOrderInfo());
         model.addAttribute("totalCount", paymentResponse.getTotalCount());

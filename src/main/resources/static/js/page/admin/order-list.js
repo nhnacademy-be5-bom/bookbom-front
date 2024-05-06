@@ -36,6 +36,9 @@ function submitDates() {
         return;
     }
 
+    const sort = document.querySelector('input[name="sort_order"]:checked').value;
+    const deliveryStatus = document.querySelector('input[name="delivery_status"]:checked').value;
+
     const dateFromObj = getDate(dateFrom + 'T00:00:00+09:00');
     const dateToObj = getDate(dateTo + 'T00:00:00+09:00');
     const today = getDate();
@@ -51,5 +54,6 @@ function submitDates() {
         return;
     }
 
-    window.location.href = `/admin/orders?date_from=${dateFrom}&date_to=${dateTo}`;
+    const queryParams = `?date_from=${dateFrom}&date_to=${dateTo}&sorted=${sort}&status=${deliveryStatus}`;
+    window.location.href = `/admin/orders${queryParams}`;
 }

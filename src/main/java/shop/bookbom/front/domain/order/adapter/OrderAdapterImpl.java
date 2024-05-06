@@ -1,20 +1,26 @@
 package shop.bookbom.front.domain.order.adapter;
 
+import java.time.LocalDate;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
@@ -37,6 +43,11 @@ public class OrderAdapterImpl implements OrderAdapter {
 
     private static final ParameterizedTypeReference<CommonResponse<OrderResponse>>
             ORDER_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<OrderManagementResponse>>>
+            ORDER_MANAGEMENT_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -115,4 +126,27 @@ public class OrderAdapterImpl implements OrderAdapter {
         return Objects.requireNonNull(response).getResult();
     }
 
+    @Override
+    public Page<OrderManagementResponse> getOrderManagement(Pageable pageable, LocalDate dateFrom, LocalDate dateTo,
+                                                            String sort, String status) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/orders")
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
+                .queryParam("sorted", sort)
+                .queryParam("status", status)
+                .toUriString();
+
+        CommonResponse<CommonPage<OrderManagementResponse>> response =
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ORDER_MANAGEMENT_RESPONSE).getBody();
+
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            throw new RuntimeException();
+        }
+        return Objects.requireNonNull(response).getResult();
+    }
 }

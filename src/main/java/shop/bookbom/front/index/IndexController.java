@@ -40,6 +40,18 @@ public class IndexController {
         return "page/best-seller";
     }
 
+    @GetMapping("/latest")
+    public String showLatestPage(Model model, @PageableDefault(size = 9) Pageable pageable) {
+        Page<BookSearchResponse> latestBooks = indexService.mainLatestBooks(pageable);
+        model.addAttribute("latestBooks", latestBooks.getContent());
+        model.addAttribute("currentPage", latestBooks.getNumber());
+        model.addAttribute("pageSize", latestBooks.getPageable().getPageSize());
+        model.addAttribute("totalPages", latestBooks.getTotalPages());
+        model.addAttribute("totalItems", latestBooks.getTotalElements());
+        model.addAttribute("size", latestBooks.getSize());
+        return "page/latest-books";
+    }
+
     @GetMapping("/myCoupon")
     public String showMyCouponPage() {
         return "page/coupon/myCoupon";
@@ -49,6 +61,4 @@ public class IndexController {
     public String showMyCouponDetailPage() {
         return "page/coupon/myCoupon_detail";
     }
-
-
 }

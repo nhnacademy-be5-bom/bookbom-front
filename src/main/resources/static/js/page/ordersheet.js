@@ -180,8 +180,8 @@ function validatePassword() {
         passwordInput.style.border = '1px solid red';
         passwordErrorSpan.style.display = 'inline'; // 에러 메시지 표시
         return false;
-    } else if (/^(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,20}$/.test(password)) { // 영어, 특수문자 포함하여 8자리 이상 확인
-        passwordErrorSpan.innerText = '비밀번호는 영어와 특수문자를 포함하여 8~20자리 이어야 합니다';
+    } else if (!/^(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,20}$/.test(password)) { // 영어, 특수문자 포함하여 8자리 이상 확인
+        passwordErrorSpan.innerText = '비밀번호는 영어와 특수문자를 포함하여 8자리 이상이어야 합니다';
         passwordInput.style.border = '1px solid red';
         passwordErrorSpan.style.display = 'inline'; // 에러 메시지 표시
         return false;

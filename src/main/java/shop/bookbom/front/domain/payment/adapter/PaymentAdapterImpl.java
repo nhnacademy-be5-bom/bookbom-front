@@ -45,7 +45,7 @@ public class PaymentAdapterImpl implements PaymentAdapter {
                 restTemplate.exchange(gatewayUrl + "/shop/payment/tosspay/confirm"
                         , HttpMethod.POST, requestEntity, PAYMENT_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             throw new OrderFailException();
         }
         return Objects.requireNonNull(response).getResult();

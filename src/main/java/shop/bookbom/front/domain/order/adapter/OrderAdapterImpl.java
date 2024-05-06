@@ -16,9 +16,9 @@ import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
-import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.exception.BeforeOrderException;
+import shop.bookbom.front.domain.order.exception.LowStockException;
 import shop.bookbom.front.domain.order.exception.OrderFailException;
 
 @Component
@@ -50,7 +50,7 @@ public class OrderAdapterImpl implements OrderAdapter {
      * @return
      */
     @Override
-    public PreOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
+    public BeforeOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -65,10 +65,10 @@ public class OrderAdapterImpl implements OrderAdapter {
             throw new BeforeOrderException();
         }
         //exception 이면 failResponse 빌더를 만듬
-        if (response.getHeader().getResultCode() != 200) {
-            return PreOrderResponse.createFailResponse(false, response.getHeader().getResultMessage());
+        if (!response.getHeader().isSuccessful()) {
+            throw new LowStockException();
         }
-        return PreOrderResponse.createSuccessResponse(Objects.requireNonNull(response).getResult(), true);
+        return Objects.requireNonNull(response).getResult();
     }
 
     /**
@@ -88,7 +88,7 @@ public class OrderAdapterImpl implements OrderAdapter {
 
         CommonResponse<WrapperSelectResponse> response = restTemplate.exchange(gatewayUrl + "/shop/open/orders/wrapper"
                 , HttpMethod.POST, requestEntity, WRAPPER_SELECT_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             throw new BeforeOrderException();
         }
         return Objects.requireNonNull(response).getResult();
@@ -112,8 +112,8 @@ public class OrderAdapterImpl implements OrderAdapter {
         if (response == null) {
             throw new OrderFailException();
         }
-        if (!response.getHeader().getIsSuccessful()) {
-
+        if (!response.getHeader().isSuccessful()) {
+            throw new LowStockException();
         }
         return Objects.requireNonNull(response).getResult();
     }

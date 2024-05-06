@@ -15,7 +15,6 @@ import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
-import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
 import shop.bookbom.front.domain.order.util.OrderUtil;
@@ -43,13 +42,7 @@ public class OrderController {
         List<BeforeOrderRequest> beforeOrderRequests = OrderUtil.convertStringToBeforeOrderList(beforeOrderRequestsStr);
         BeforeOrderRequestList beforeOrderRequestList =
                 BeforeOrderRequestList.builder().beforeOrderRequests(beforeOrderRequests).build();
-        PreOrderResponse preOrderResponse = orderService.beforeOrder(beforeOrderRequestList);
-        if (!preOrderResponse.isSuccessful()) {
-            redirectAttributes.addAttribute("errorMessage", preOrderResponse.getResultMessage());
-            return "redirect:/order/stockLow";
-        }
-        BeforeOrderResponse beforeOrderResponse =
-                (BeforeOrderResponse) preOrderResponse.getBeforeOrderResponse();
+        BeforeOrderResponse beforeOrderResponse = orderService.beforeOrder(beforeOrderRequestList);
 
         model.addAttribute("totalOrderCount", beforeOrderResponse.getTotalOrderCount());
         model.addAttribute("wrapperList", beforeOrderResponse.getWrapperList());
@@ -58,13 +51,13 @@ public class OrderController {
     }
 
     //재고 부족 페이지
-    @GetMapping("/order/stockLow")
-    public String stockLow(@RequestParam("errorMessage") String errorMessage,
-                           Model model) {
-        model.addAttribute("errorMessage", errorMessage);
-
-        return "page/order/exception/stockLow";
-    }
+//    @GetMapping("/order/stockLow")
+//    public String stockLow(@RequestParam("errorMessage") String errorMessage,
+//                           Model model) {
+//        model.addAttribute("errorMessage", errorMessage);
+//
+//        return "page/order/exception/stockLow";
+//    }
 
     //주문서 작성 페이지
     @PostMapping("/order/ordersheet")
@@ -90,7 +83,7 @@ public class OrderController {
         model.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
         model.addAttribute("wrapperSelectResponseList", wrapperSelectResponse.getWrapperSelectResponseList());
         model.addAttribute("estimatedDateList", wrapperSelectResponse.getEstimatedDateList());
-        
+
 
         return "page/order/ordersheet_non_member";
     }

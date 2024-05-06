@@ -43,7 +43,6 @@ function handlePayment() {
                 amount: amount,
                 orderId: orderId,
                 orderName: orderName,
-                customerName: '김아무개',
                 successUrl: 'http://localhost:8020/toss-success',
                 failUrl: 'http://localhost:8020/toss-fail',
                 flowMode: 'DIRECT',

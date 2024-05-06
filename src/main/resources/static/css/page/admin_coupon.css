@@ -1,0 +1,59 @@
+.titleContainer {
+    margin: 2rem;
+    padding: 0 5rem;
+}
+
+.checkboxContainer {
+    text-align: center;
+}
+
+.policyListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.policyContainer {
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    margin: 1rem;
+    padding: 1rem;
+    width: 70%;
+}
+
+.policyContentContainer {
+    width: 70%;
+    display: inline-block;
+}
+
+.policyContentContainer input {
+    border: none;
+    background: #FFFFFF;
+    margin: 0.5rem;
+}
+
+.policyButtonContainer {
+    display: inline-block;
+}
+
+.policyButtonContainer button {
+    margin: 0.5rem;
+}
+
+.topButtonContainer {
+    text-align: right;
+}
+
+.createPolicyModal {
+    display: none;
+    background-color: #fff3cd;
+    position: fixed; /* 고정 위치 */
+    top: 50%; /* 화면 상단에서 50% 위치 */
+    left: 50%; /* 화면 왼쪽에서 50% 위치 */
+    transform: translate(-50%, -50%); /* 화면의 가운데 정렬을 위한 변형 */
+    z-index: 1000; /* 다른 요소 위에 모달 표시 */
+    padding: 20px;
+    border-radius: 5px;
+}
+
+

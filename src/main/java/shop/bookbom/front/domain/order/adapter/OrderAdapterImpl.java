@@ -109,8 +109,11 @@ public class OrderAdapterImpl implements OrderAdapter {
 
         CommonResponse<OrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/open/orders"
                 , HttpMethod.POST, requestEntity, ORDER_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null) {
             throw new OrderFailException();
+        }
+        if (!response.getHeader().getIsSuccessful()) {
+
         }
         return Objects.requireNonNull(response).getResult();
     }

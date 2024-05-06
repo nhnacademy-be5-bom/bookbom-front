@@ -57,3 +57,21 @@ function submitDates() {
     const queryParams = `?date_from=${dateFrom}&date_to=${dateTo}&sorted=${sort}&status=${deliveryStatus}`;
     window.location.href = `/admin/orders${queryParams}`;
 }
+
+function setRadioButtons() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sortOrder = urlParams.get('sorted');
+    const deliveryStatus = urlParams.get('status');
+
+    // 정렬 순서 라디오 버튼 설정
+    if (sortOrder) {
+        document.querySelector(`input[name="sort_order"][value="${sortOrder}"]`).checked = true;
+    }
+
+    // 배송 상태 라디오 버튼 설정
+    if (deliveryStatus) {
+        document.querySelector(`input[name="delivery_status"][value="${deliveryStatus}"]`).checked = true;
+    }
+}
+
+window.onload = setRadioButtons;

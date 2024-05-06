@@ -10,7 +10,7 @@
 </head>
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-    <!--    <link rel="stylesheet" th:href="@{/css/page/admin/point_rate.css}">-->
+    <link rel="stylesheet" th:href="@{/css/page/admin/order-list.css}">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
@@ -81,23 +81,30 @@
                         </label>
                     </div>
                     <div class="form-check m-2">
-                        <input class="form-check-input" id="before" name="delivery_status" type="radio" value="before">
+                        <input class="form-check-input" id="before" name="delivery_status" type="radio" value="대기">
                         <label class="form-check-label" for="before">
                             배송 전
                         </label>
                     </div>
                     <div class="form-check m-2">
                         <input class="form-check-input" id="completed" name="delivery_status" type="radio"
-                               value="completed">
+                               value="배송중">
                         <label class="form-check-label" for="completed">
                             배송 중
                         </label>
                     </div>
                     <div class="form-check m-2">
                         <input class="form-check-input" id="pending" name="delivery_status" type="radio"
-                               value="pending">
+                               value="완료">
                         <label class="form-check-label" for="pending">
                             배송 완료
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="cancel" name="delivery_status" type="radio"
+                               value="취소">
+                        <label class="form-check-label" for="cancel">
+                            취소
                         </label>
                     </div>
                 </div>
@@ -124,27 +131,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <tr th:each="order : ${orders}">
             <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
-            <td>12345</td>
-            <td>2024-05-01</td>
-            <td>John Doe</td>
-            <td>Product ABC</td>
-            <td>2024-05-10</td>
-            <td>2024-05-12</td>
-            <td>배송중</td>
+            <td class="truncate-text" th:text="${order.orderNumber}">12345</td>
+            <td th:text="${order.orderDate}">2024-05-01</td>
+            <td class="truncate-text" th:text="${order.senderName}">John Doe</td>
+            <td th:text="${order.orderInfo}">Product ABC</td>
+            <td th:text="${order.expectedDeliveryDate}">2024-05-10</td>
+            <td th:text="${order.completeDeliveryDate == null ? '' : order.completeDeliveryDate}">2024-05-12</td>
+            <td th:text="${order.status}">배송중</td>
         </tr>
-        <tr>
-            <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
-            <td>12346</td>
-            <td>2024-05-02</td>
-            <td>Jane Smith</td>
-            <td>Product XYZ</td>
-            <td>2024-05-12</td>
-            <td></td>
-            <td>배송준비중</td>
-        </tr>
-        <!-- 여기에 추가적인 주문 목록을 추가할 수 있어요 -->
         </tbody>
     </table>
 </div>

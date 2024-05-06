@@ -18,6 +18,7 @@ import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
+import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
@@ -48,6 +49,11 @@ public class OrderAdapterImpl implements OrderAdapter {
 
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<OrderManagementResponse>>>
             ORDER_MANAGEMENT_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
+    private static final ParameterizedTypeReference<CommonResponse<Void>>
+            COMMON_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -126,6 +132,16 @@ public class OrderAdapterImpl implements OrderAdapter {
         return Objects.requireNonNull(response).getResult();
     }
 
+    /**
+     * 관리자 주문 관리 페이지를 위해 주문 정보를 받아오는 메서드입니다.
+     *
+     * @param pageable 페이징 정보
+     * @param dateFrom 주문 검색 시작 날짜
+     * @param dateTo   주문 검색 종료 날짜
+     * @param sort     정렬 기준
+     * @param status   주문 상태
+     * @return 주문 정보 페이지
+     */
     @Override
     public Page<OrderManagementResponse> getOrderManagement(Pageable pageable, LocalDate dateFrom, LocalDate dateTo,
                                                             String sort, String status) {
@@ -148,5 +164,30 @@ public class OrderAdapterImpl implements OrderAdapter {
             throw new RuntimeException();
         }
         return Objects.requireNonNull(response).getResult();
+    }
+
+    /**
+     * 주문 상태를 변경하는 메서드입니다.
+     *
+     * @param request 주문 상태를 변경할 주문 ID 리스트, 변경할 주문 상태
+     * @return 주문 상태 변경 결과
+     */
+    @Override
+    public CommonResponse<Void> updateOrderStatus(OrderStatusUpdateRequest request) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<OrderStatusUpdateRequest> requestEntity = new HttpEntity<>(request, httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/orders/update-status")
+                .toUriString();
+
+        CommonResponse<Void> response =
+                restTemplate.exchange(url, HttpMethod.PUT, requestEntity, COMMON_RESPONSE).getBody();
+
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            throw new RuntimeException();
+        }
+        return Objects.requireNonNull(response);
     }
 }

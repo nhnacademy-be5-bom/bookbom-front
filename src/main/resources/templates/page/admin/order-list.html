@@ -112,10 +112,15 @@
             <button class="btn btn-outline-primary" onclick="submitDates()" type="button">조회하기</button>
         </div>
     </div>
-    <div class="col-md-12 d-flex justify-content-end">
-        <button class="btn btn-outline-primary" onclick="submitDates()" type="button">발송처리</button>
+    <div class="col-md-12 d-flex flex-column align-items-end">
+        <ul class="list-group list-group-horizontal" id="statusList">
+            <li class="list-group-item">배송중</li>
+            <li class="list-group-item">완료</li>
+            <li class="list-group-item">취소</li>
+            <li class="list-group-item">반품</li>
+        </ul>
+        <button class="btn btn-outline-primary my-3" id="updateButton" type="button">변경하기</button>
     </div>
-
     <!-- 테이블 -->
     <table class="table">
         <thead>
@@ -132,14 +137,15 @@
         </thead>
         <tbody>
         <tr th:each="order : ${orderPage.content}">
-            <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
+            <td class="text-center"><input class="form-check-input" th:data-order-id="${order.id}" type="checkbox"/>
+            </td>
             <td class="truncate-text" th:text="${order.orderNumber}">12345</td>
             <td th:text="${order.orderDate}">2024-05-01</td>
             <td class="truncate-text" th:text="${order.senderName}">John Doe</td>
             <td th:text="${order.orderInfo}">Product ABC</td>
             <td th:text="${order.expectedDeliveryDate}">2024-05-10</td>
             <td th:text="${order.completeDeliveryDate == null ? '' : order.completeDeliveryDate}">2024-05-12</td>
-            <td th:text="${order.status}">배송중</td>
+            <td class="order-status" th:text="${order.status}">배송중</td>
         </tr>
         </tbody>
     </table>

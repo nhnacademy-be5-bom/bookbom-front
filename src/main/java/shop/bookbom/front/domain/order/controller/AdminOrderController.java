@@ -32,7 +32,11 @@ public class AdminOrderController {
         LocalDate orderDateMax = dateTo == null ? null : LocalDate.parse(dateTo);
         Page<OrderManagementResponse> orders =
                 orderService.orderManagement(pageable, sort, status, orderDateMin, orderDateMax);
-        model.addAttribute("orders", orders);
+        model.addAttribute("orderPage", orders);
+        model.addAttribute("dateFrom", dateFrom);
+        model.addAttribute("dateTo", dateTo);
+        model.addAttribute("sorted", sort);
+        model.addAttribute("status", status);
         return "page/admin/order-list";
     }
 }

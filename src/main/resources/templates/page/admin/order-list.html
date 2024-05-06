@@ -131,7 +131,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orders}">
+        <tr th:each="order : ${orderPage.content}">
             <td class="text-center"><input class="form-check-input" type="checkbox"/></td>
             <td class="truncate-text" th:text="${order.orderNumber}">12345</td>
             <td th:text="${order.orderDate}">2024-05-01</td>
@@ -143,5 +143,55 @@
         </tr>
         </tbody>
     </table>
+
+    <nav aria-label="Page navigation" th:if="${orderPage.totalElements > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${orderPage.number == 0} ? 'disabled'">
+                <th:block th:if="${dateFrom}">
+                    <a aria-label="Previous"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number - 1}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, date_from=${dateFrom}, date_to=${dateTo})}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a aria-label="Previous"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number - 1}, size=${orderPage.pageable.pageSize})}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+            </li>
+            <li class="page-item" th:classappend="${pageNum == orderPage .number} ? 'active'"
+                th:each="pageNum : ${#numbers.sequence(0, orderPage.totalPages - 1)}">
+                <th:block th:if="${dateFrom}">
+                    <a class="page-link"
+                       th:href="@{/admin/orders(page=${pageNum}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, date_from=${dateFrom}, date_to=${dateTo})}"
+                       th:text="${pageNum + 1}"></a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a class="page-link"
+                       th:href="@{/admin/orders(page=${pageNum}, size=${orderPage.pageable.pageSize})}"
+                       th:text="${pageNum + 1}"></a>
+                </th:block>
+            </li>
+            <li class="page-item" th:classappend="${orderPage.number + 1 == orderPage.totalPages} ? 'disabled'">
+                <th:block th:if="${dateFrom}">
+                    <a aria-label="Next"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number + 1}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, dateFrom=${dateFrom}, date_to=${dateTo})}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a aria-label="Next"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number + 1}, size=${orderPage.pageable.pageSize})}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
 </div>
 </html>

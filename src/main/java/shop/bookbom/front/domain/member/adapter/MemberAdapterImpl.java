@@ -39,7 +39,7 @@ public class MemberAdapterImpl implements MemberAdapter {
                 HttpMethod.GET,
                 requestEntity,
                 MEMBER_INFO).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

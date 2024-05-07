@@ -1,4 +1,6 @@
-<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org">
+
 <header th:fragment="headerFragment">
     <div class="container py-2">
         <div class="row py-4 pb-0 pb-sm-4 align-items-center ">
@@ -94,7 +96,6 @@
                         <a href="#" class="mx-3" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch"
                            aria-controls="offcanvasSearch">
                             <iconify-icon icon="tabler:search" class="fs-4"></iconify-icon>
-                            </span>
                         </a>
                     </li>
                 </ul>
@@ -117,23 +118,43 @@
                 <div class="offcanvas-body justify-content-between">
 
                     <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
-                        <li class="nav-item">
-                            <a href="" class="nav-link active">카테고리</a>
+
+                        <!-- 카테고리 메뉴 -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle nav-link" id="navbarDropdown" role="button"
+                               data-bs-toggle="dropdown" aria-expanded="false">
+                                카테고리
+                            </a>
+
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
+                                style=" max-height: 20em; overflow-y: scroll;">
+                                <th:block th:if="${@CategoryService ne null}"
+                                          th:each="category_d1 : ${@CategoryService.getDepthOneCategories()}">
+
+                                    <li id="category_depth1">
+                                        <button type="button" class="dropdown-item categorypop"
+                                                data-bs-toggle="popover"
+                                                th:title="|${category_d1.name} 하위 카테고리 목록|"
+                                                th:text="${category_d1.name}"
+                                                th:href="@{/category/{categoryId}(categoryId=${category_d1.getId()})}"
+                                                th:id="${category_d1.getId()}">
+                                        </button>
+                                    </li>
+                                </th:block>
+
+                                <th:block th:if="${@CategoryService eq null}">
+                                    <li>
+                                        <a class="dropdown-item">카테고리를 받아오지 못했습니다.</a>
+                                    </li>
+                                </th:block>
+                            </ul>
                         </li>
+
                         <li class="nav-item">
                             <a href="/best-seller" class="nav-link">베스트</a>
                         </li>
                         <li class="nav-item">
                             <a href="/latest" class="nav-link">신상품</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" role="button" id="pages" data-bs-toggle="dropdown"
-                               aria-expanded="false">기간별 베스트</a>
-                            <ul class="dropdown-menu" aria-labelledby="pages">
-                                <li><a href="월간베스트.html" class="dropdown-item">월간 베스트</a></li>
-                                <li><a href="주간베스트.html" class="dropdown-item">주간 베스트</a></li>
-                                <li><a href="일간베스트.html" class="dropdown-item">일간 베스트</a></li>
-                            </ul>
                         </li>
                     </ul>
 
@@ -144,15 +165,6 @@
                         <li class="nav-item">
                             <a href="shop.html" class="nav-link">회원가입</a>
                         </li>
-                        <!--              <li class="nav-item">-->
-                        <!--                <a href="blog.html" class="nav-link">Blog</a>-->
-                        <!--              </li>-->
-                        <!--              <li class="nav-item">-->
-                        <!--                <a href="contact.html" class="nav-link">Contact</a>-->
-                        <!--              </li>-->
-                        <!--              <li class="nav-item">-->
-                        <!--                <a href="#" class="nav-link">Others</a>-->
-                        <!--              </li>-->
                     </ul>
 
                 </div>
@@ -163,5 +175,9 @@
 
     </div>
     <script src="/js/header.js"></script>
+    <link id="gateWayURL" th:data-contextPath="${@environment.getProperty('bookbom.gateway-url')}"/>
+    <script>
+        const GATEWAY_URL = document.querySelector("#gateWayURL").getAttribute("data-contextPath");
+    </script>
 </header>
 </html>

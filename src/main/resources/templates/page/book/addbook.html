@@ -38,8 +38,8 @@
               enctype="multipart/form-data">
 
             <div class="form-group mt-3">
-                <label th:for="*{thumbnail}" class="mr-2">책 썸네일:</label>
-                <input type="file" th:field="*{thumbnail}">
+                <label for="thumbnail" class="mr-2">책 썸네일:</label>
+                <input type="file" id="thumbnail" name="thumbnail">
             </div>
 
             <hr>
@@ -170,8 +170,8 @@
                 <label th:for="status">상태</label>
                 <select class="form-control" th:field="*{status}">
                     <option value="" selected>선택하세요</option>
-                    <option value="FS">판매중</option>
-                    <option value="EOS">판매종료</option>
+                    <option value="FOR_SALE">판매중</option>
+                    <option value="END_OF_SALE">판매종료</option>
                 </select>
             </div>
 

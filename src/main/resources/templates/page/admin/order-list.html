@@ -136,13 +136,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="order-detail" th:data-order-id="${order.id}" th:each="order : ${orderPage.content}">
+        <tr th:data-order-id="${order.id}" th:each="order : ${orderPage.content}">
             <td class="text-center"><input class="form-check-input" th:data-order-id="${order.id}" type="checkbox"/>
             </td>
-            <td class="truncate-text" th:text="${order.orderNumber}">12345</td>
+            <td class="truncate-text order-detail" th:data-order-id="${order.id}" th:text="${order.orderNumber}">12345
+            </td>
             <td th:text="${order.orderDate}">2024-05-01</td>
             <td class="truncate-text" th:text="${order.senderName}">John Doe</td>
-            <td th:text="${order.orderInfo}">Product ABC</td>
+            <td  class="order-detail"  th:data-order-id="${order.id}" th:text="${order.orderInfo}">Product ABC</td>
             <td th:text="${order.expectedDeliveryDate}">2024-05-10</td>
             <td th:text="${order.completeDeliveryDate == null ? '' : order.completeDeliveryDate}">2024-05-12</td>
             <td class="order-status" th:text="${order.status}">배송중</td>

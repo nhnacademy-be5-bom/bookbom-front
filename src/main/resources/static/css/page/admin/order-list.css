@@ -4,3 +4,24 @@
     text-overflow: ellipsis;
     max-width: 200px; /* 텍스트가 표시될 최대 너비 */
 }
+
+.table th,
+.table td {
+    border: 1px solid #dee2e6;
+    padding: 8px;
+    text-align: center;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: bold;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table tbody tr:hover {
+    background-color: #e9ecef;
+    cursor : pointer;
+}

@@ -8,8 +8,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
 
@@ -38,5 +40,12 @@ public class AdminOrderController {
         model.addAttribute("sorted", sort);
         model.addAttribute("status", status);
         return "page/admin/order-list";
+    }
+
+    @GetMapping("/{orderId}")
+    public String orderDetail(@PathVariable("orderId") Long id, Model model) {
+        OrderDetailResponse order = orderService.getOrderDetail(id);
+        model.addAttribute("order", order);
+        return "page/admin/order-detail";
     }
 }

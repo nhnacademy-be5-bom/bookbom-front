@@ -136,7 +136,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="order : ${orderPage.content}">
+        <tr class="order-detail" th:data-order-id="${order.id}" th:each="order : ${orderPage.content}">
             <td class="text-center"><input class="form-check-input" th:data-order-id="${order.id}" type="checkbox"/>
             </td>
             <td class="truncate-text" th:text="${order.orderNumber}">12345</td>

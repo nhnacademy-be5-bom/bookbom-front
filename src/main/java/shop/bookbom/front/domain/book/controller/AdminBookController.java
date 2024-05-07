@@ -45,7 +45,7 @@ public class AdminBookController {
                           @ModelAttribute("bookAddRequest") BookAddRequest bookAddRequest,
                           Model model) throws IOException {
 
-        CommonResponse<Void> response = bookService.addBook_REST(thumbnail, bookAddRequest);
+        CommonResponse<Void> response = bookService.addBook(thumbnail, bookAddRequest);
 
         if (response.getHeader().getIsSuccessful()) {
             model.addAttribute("success", true);
@@ -64,7 +64,7 @@ public class AdminBookController {
         List<CategoryDTO> list_depth1 = categoryService.getDepthOneCategories();
         model.addAttribute("categories_depth1", list_depth1);
 
-        BookUpdateResponse bookUpdateResponse = bookService.getBookUpdateInfo(bookId).getResult();
+        BookUpdateResponse bookUpdateResponse = bookService.getBookUpdateInfo(bookId);
         model.addAttribute("bookUpdateInfo", bookUpdateResponse);
 
         return "page/book/updatebook";

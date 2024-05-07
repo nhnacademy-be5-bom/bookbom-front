@@ -5,8 +5,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectBookRequest;
+import shop.bookbom.front.domain.order.exception.OrderFailException;
 
 public class OrderUtil {
+
+    private OrderUtil() {
+        throw new OrderFailException();
+    }
+
     // BeforeOrderRequest 객체 리스트를 문자열로 변환하는 메서드
     public static String convertBeforeOrderListToString(List<BeforeOrderRequest> requestList) {
         try {

@@ -21,6 +21,7 @@ import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
@@ -35,6 +36,11 @@ public class OrderAdapterImpl implements OrderAdapter {
 
     private static final ParameterizedTypeReference<CommonResponse<BeforeOrderResponse>>
             BEFORE_ORDER_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
+
+    private static final ParameterizedTypeReference<CommonResponse<OrderDetailResponse>> ORDER_DETAIL_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<WrapperSelectResponse>>
@@ -130,6 +136,25 @@ public class OrderAdapterImpl implements OrderAdapter {
             throw new OrderFailException();
         }
         return Objects.requireNonNull(response).getResult();
+    }
+
+    @Override
+    public OrderDetailResponse getOrderDetail(Long id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/orders/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+
+        CommonResponse<OrderDetailResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
+                ORDER_DETAIL_RESPONSE).getBody();
+        if (response == null || response.getHeader().getIsSuccessful()) {
+            // todo 예외처리
+            throw new RuntimeException();
+        }
+        return response.getResult();
     }
 
     /**

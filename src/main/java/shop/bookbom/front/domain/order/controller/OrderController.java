@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -15,6 +16,7 @@ import shop.bookbom.front.domain.order.dto.request.WrapperDto;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderBookResponse;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectBookResponse;
@@ -67,6 +69,13 @@ public class OrderController {
         model.addAttribute("wrapperList", wrapperList);
         model.addAttribute("beforeOrderBookResponseList", beforeOrderBookResponseList);
         return "page/order/selectWrapper";
+    }
+
+    @GetMapping("/orders/{id}")
+    public String orderDetailPage(@PathVariable("id") Long id, Model model) {
+        OrderDetailResponse orderDetail = orderService.getOrderDetail(id);
+        model.addAttribute("order", orderDetail);
+        return "page/order/order-detail";
     }
 
     //재고 부족 페이지
@@ -132,10 +141,7 @@ public class OrderController {
 
         return "redirect:/payment-method";
     }
-
-
 }
-
 
 
 

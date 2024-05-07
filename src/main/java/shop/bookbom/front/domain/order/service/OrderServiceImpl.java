@@ -11,6 +11,7 @@ import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
@@ -27,6 +28,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderDetailResponse getOrderDetail(Long id) {
+        return orderAdapter.getOrderDetail(id);
+    }
+
+    @Override
     public WrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest) {
         return orderAdapter.wrapperSelect(wrapperSelectRequest);
 
@@ -38,7 +44,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderManagementResponse> orderManagement(Pageable pageable, String sort, String status, LocalDate dateFrom,
+    public Page<OrderManagementResponse> orderManagement(Pageable pageable, String sort, String status,
+                                                         LocalDate dateFrom,
                                                          LocalDate dateTo) {
         return orderAdapter.getOrderManagement(pageable, dateFrom, dateTo, sort, status);
     }

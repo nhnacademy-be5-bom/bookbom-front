@@ -109,22 +109,40 @@ function validateId() {
     var idInput = document.getElementById('id');
     var idErrorSpan = document.getElementById('id-error');
     var id = idInput.value.trim(); // 앞뒤 공백 제거
-
+    var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
     if (id === '') {
-        idErrorSpan.innerText = '아이디를 입력해주세요';
+        idErrorSpan.innerText = '아이디를 입력해주세요.';
         idInput.style.border = '1px solid red';
         idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
         return false;
-    } else if (!/^[a-zA-Z]+[a-zA-Z0-9!@#$%^&*()_+\-=<>?]{3,19}$/.test(id)) { // 아이디 형식 확인
-        idErrorSpan.innerText = '올바른 아이디를 입력하세요 (영어 4자리 이상 20자리 이하)';
+    } else if (!emailPattern.test(id)) { // 아이디 형식 확인
+        idErrorSpan.innerText = '올바른 이메일 형식을 입력하세요.';
         idInput.style.border = '1px solid red';
         idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
         return false;
     } else {
-        idErrorSpan.innerText = '';
-        idInput.style.border = '';
-        idErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
-        return true;
+        fetch('/users/check-email?email=' + encodeURIComponent(id))
+            .then(response => response.json())
+            .then(data => {
+                if (!data.result.canUse) {
+                    idErrorSpan.innerText = '이미 가입된 이메일입니다.';
+                    idInput.style.border = '1px solid red';
+                    idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+                    return false;
+                } else {
+                    idErrorSpan.innerText = '';
+                    idInput.style.border = '';
+                    idErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
+                    return true;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // idErrorSpan.innerText = '서버 오류가 발생했습니다. 관리자에게 문의 주세요.';
+                // idInput.style.border = '1px solid red';
+                // idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+                return true;
+            });
     }
 }
 

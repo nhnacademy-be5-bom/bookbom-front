@@ -6,6 +6,7 @@ import shop.bookbom.front.domain.order.adapter.OrderAdapter;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
@@ -18,6 +19,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public PreOrderResponse beforeOrder(BeforeOrderRequestList beforeOrderRequestList) {
         return orderAdapter.beforeOrder(beforeOrderRequestList);
+    }
+
+    @Override
+    public OrderDetailResponse getOrderDetail(Long id) {
+        return orderAdapter.getOrderDetail(id);
     }
 
     @Override

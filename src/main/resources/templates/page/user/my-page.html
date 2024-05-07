@@ -39,7 +39,7 @@
                 <li class="list-group-item member-link">나의 리뷰 목록</li>
                 <li class="list-group-item member-link">나의 회원 등급</li>
             </ul>
-            <form th:action="@{/member/withdraw}" th:method="delete">
+            <form th:action="@{/members/withdraw}" th:method="delete">
                 <button type="submit" class="btn btn-link p-0 border-0 member-withdraw"
                         style="color: #dc3545">회원 탈퇴
                 </button>
@@ -49,7 +49,7 @@
         <!-- 우측 영역 -->
         <div class="col-md-9">
             <span class="fw-bold fs-4">최근 주문 내역</span>
-            <table class="table latest-order" th:each="order : ${member.lastOrders}" th:data-order-id="${order.id}">
+            <table class="table latest-order">
                 <thead>
                 <tr>
                     <th scope="col">주문 일자</th>
@@ -60,11 +60,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
+                <tr class="order-detail" th:data-order-id="${order.id}" th:each="order : ${member.lastOrders}">
                     <td th:text="${order.orderDate}">2024-04-25</td>
                     <td th:text="${order.orderNumber}">ORD123456</td>
                     <td th:text="${order.name}">상품명</td>
-                    <td data-th-text="${#numbers.formatInteger(order.totalCost, 3, 'COMMA') + '원'}">25,000원</td>
+                    <td data-th-text="${#numbers.formatInteger(order.totalCost, 0, 'COMMA') + '원'}">25,000원</td>
                     <td th:text="${order.status}">배송중</td>
                 </tr>
                 </tbody>

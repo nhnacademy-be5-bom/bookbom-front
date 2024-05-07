@@ -47,22 +47,6 @@ public class IndexController {
     }
 
 
-
-    @GetMapping("/selectWrapper")
-    public String showSelectWrpperPage() {
-        return "page/order/selectWrapper";
-    }
-
-    @GetMapping("/ordersheet")
-    public String showOrderPage() {
-        return "page/order/ordersheet_member";
-    }
-
-    @GetMapping("/ordersheet_non_member")
-    public String showOrderPage_non_member() {
-        return "page/order/ordersheet_non_member";
-    }
-
     @GetMapping("/myCoupon")
     public String showMyCouponPage() {
         return "page/coupon/myCoupon";
@@ -92,5 +76,4 @@ public class IndexController {
         model.addAttribute("ip", ip);
         return "page/signup/signup";
     }
-
 }

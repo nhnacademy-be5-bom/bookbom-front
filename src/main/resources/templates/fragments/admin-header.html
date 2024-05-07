@@ -1,0 +1,59 @@
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<header id="page-top" th:fragment="adminHeaderFragment">
+    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+        <button class="btn btn-link d-md-none rounded-circle mr-3" id="sidebarToggleTop">
+            <i class="fa fa-bars"></i>
+        </button>
+
+        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+            <div class="input-group">
+                <input aria-describedby="basic-addon2" aria-label="Search" class="form-control bg-light border-0 small"
+                       placeholder="Search for..." type="text">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Topbar Navbar -->
+        <ul class="navbar-nav ml-auto">
+
+            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+            <li class="nav-item dropdown no-arrow d-sm-none">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                   href="#"
+                   id="searchDropdown" role="button">
+                    <i class="fas fa-search fa-fw"></i>
+                </a>
+                <!-- Dropdown - Messages -->
+                <div aria-labelledby="searchDropdown"
+                     class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in">
+                    <form class="form-inline mr-auto w-100 navbar-search">
+                        <div class="input-group">
+                            <input aria-describedby="basic-addon2" aria-label="Search"
+                                   class="form-control bg-light border-0 small"
+                                   placeholder="Search for..." type="text">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <div class="topbar-divider d-none d-sm-block"></div>
+            <!-- Nav Item - Messages -->
+            <li class="nav-item dropdown no-arrow mx-1">
+                <a class="nav-link" data-target="#logoutModal" data-toggle="modal" href="/logout">
+                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Logout</span>
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+</header>
+</html>

@@ -188,7 +188,7 @@ public class OrderAdapterImpl implements OrderAdapter {
         CommonResponse<CommonPage<OrderManagementResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, ORDER_MANAGEMENT_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }
         return Objects.requireNonNull(response).getResult();
@@ -213,7 +213,7 @@ public class OrderAdapterImpl implements OrderAdapter {
         CommonResponse<Void> response =
                 restTemplate.exchange(url, HttpMethod.PUT, requestEntity, COMMON_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }
         return Objects.requireNonNull(response);

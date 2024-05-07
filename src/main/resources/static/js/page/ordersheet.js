@@ -312,15 +312,8 @@ function validateDeliveryAndProceed() {
         form.appendChild(passwordInput);
 
         //estimatedDateTostring
-        // const estimatedDateTostring = document.querySelector('.delivery-select button:checked').value;
         const button = document.querySelector('.delivery-select button.selected');
         const estimatedDateTostring = button.value;
-        // let estimatedDateTostring = null;
-        // buttons.forEach(button => {
-        //     if (button.checked) {
-        //         estimatedDateTostring = button.value;
-        //     }
-        // });
         const estimatedDateTostringInput = document.createElement('input');
         estimatedDateTostringInput.type = 'hidden';
         estimatedDateTostringInput.name = `estimatedDateTostring`;

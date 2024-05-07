@@ -94,8 +94,10 @@
                 <button onclick="selectDeliveryDate(this)" th:text="${estimatedDate}"
                         th:value="${estimatedDate}"></button>
             </div>
-
+            <button onclick="selectDeliveryDate(this)" value="none">선택안함</button>
+            <br>
         </div>
+        <span style="font-size: smaller; margin-left: 75%">선택안함 선택 시 가장 빠른 배송일에 배송</span>
     </div>
 
     <div class="side">

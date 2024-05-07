@@ -8,32 +8,6 @@ function toggleTable() {
 }
 
 
-// function selectPaymentMethod(button) {
-//     var buttons = document.querySelectorAll('.payment button');
-//     buttons.forEach(function (btn) {
-//         btn.classList.remove('selected');
-//     });
-//     button.classList.add('selected');
-// }
-
-// function showCreditCardSelect() {
-//     var selectElement = document.getElementById('creditCardSelect');
-//     var button = document.getElementById('creditCardBtn');
-//
-//     if (selectElement.style.display === 'none' || selectElement.style.display === '') {
-//         selectElement.style.display = 'block'; // 카드 선택을 표시
-//     } else {
-//         selectElement.style.display = 'none'; // 카드 선택을 숨김
-//     }
-// }
-//
-// function hideCreditCardSelect() {
-//     var selectElement = document.getElementById('creditCardSelect');
-//     if (selectElement) {
-//         selectElement.style.display = 'none';
-//     }
-// }
-
 function selectDeliveryDate(button) {
     var buttons = document.querySelectorAll('.delivery-select button');
     buttons.forEach(function (btn) {
@@ -42,6 +16,12 @@ function selectDeliveryDate(button) {
     button.classList.add('selected');
 
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+    calculateProductAmount();
+    calculateDiscountAmount();
+    calculateFinalPayment();
+});
 
 function calculateProductAmount() {
     var productAmount = 0;
@@ -121,6 +101,29 @@ function validatePhoneNumber() {
         phoneErrorSpan.innerText = '';
         phoneNumberInput.style.border = '';
         phoneErrorSpan.style.display = 'none';
+        return true;
+    }
+}
+
+function validateId() {
+    var idInput = document.getElementById('id');
+    var idErrorSpan = document.getElementById('id-error');
+    var id = idInput.value.trim(); // 앞뒤 공백 제거
+
+    if (id === '') {
+        idErrorSpan.innerText = '아이디를 입력해주세요';
+        idInput.style.border = '1px solid red';
+        idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+        return false;
+    } else if (!/^[a-zA-Z]+[a-zA-Z0-9!@#$%^&*()_+\-=<>?]{3,19}$/.test(id)) { // 아이디 형식 확인
+        idErrorSpan.innerText = '올바른 아이디를 입력하세요 (영어 4자리 이상 20자리 이하)';
+        idInput.style.border = '1px solid red';
+        idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+        return false;
+    } else {
+        idErrorSpan.innerText = '';
+        idInput.style.border = '';
+        idErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
         return true;
     }
 }

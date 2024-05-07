@@ -11,7 +11,7 @@ import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildResponse;
 
-@Service
+@Service("CategoryService")
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryAdapter categoryAdaptor;

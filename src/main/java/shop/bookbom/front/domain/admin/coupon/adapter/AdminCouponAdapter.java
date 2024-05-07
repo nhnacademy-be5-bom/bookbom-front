@@ -13,4 +13,6 @@ public interface AdminCouponAdapter {
     void updateCouponPolicy(CouponPolicyInfoDto request, Long userId);
 
     List<CouponPolicyInfoDto> getCouponPolicyInfo(Long userId);
+
+    <T> void addCoupon(String type, T addCouponDto, Long userId);
 }

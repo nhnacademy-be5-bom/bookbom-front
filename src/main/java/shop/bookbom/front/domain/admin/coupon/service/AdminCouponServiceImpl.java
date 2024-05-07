@@ -32,4 +32,9 @@ public class AdminCouponServiceImpl implements AdminCouponService {
     public void updateCouponPolicy(CouponPolicyInfoDto request, Long userId) {
         adminCouponAdapter.updateCouponPolicy(request, userId);
     }
+
+    @Override
+    public <T> void createCoupon(String type, T addCouponDto, Long userId) {
+        adminCouponAdapter.addCoupon(type, addCouponDto, userId);
+    }
 }

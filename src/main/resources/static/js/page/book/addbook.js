@@ -44,7 +44,6 @@ function removeTag(tagElement) {
 async function setChildCategory(selectBox, categoryId) {
     const currentDepth = Number(selectBox.id.slice(-1));
 
-    // #todo 주소 수정
     const response = await fetch(
         GATEWAY_URL + "/shop/category/" + categoryId,
         {

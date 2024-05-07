@@ -298,13 +298,13 @@ function validateDeliveryAndProceed() {
         discountCostInput.value = discountCost;
         form.appendChild(discountCostInput);
 
-        //email
-        const email = document.getElementById('email').value;
-        const emailInput = document.createElement('input');
-        emailInput.type = 'hidden';
-        emailInput.name = `email`;
-        emailInput.value = email;
-        form.appendChild(emailInput);
+        //id
+        const id = document.getElementById('id').value;
+        const idInput = document.createElement('input');
+        idInput.type = 'hidden';
+        idInput.name = `email`;
+        idInput.value = id;
+        form.appendChild(idInput);
 
         //password
         const password = document.getElementById('password').value;

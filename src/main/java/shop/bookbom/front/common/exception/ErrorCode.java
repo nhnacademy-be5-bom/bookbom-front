@@ -13,7 +13,12 @@ public enum ErrorCode {
     COMMON_ENTITY_NOT_FOUND(400, "존재하지 않는 엔티티입니다."),
     COMMON_ILLEGAL_STATUS(400, "잘못된 상태값입니다."),
     BEFORE_ORDER_IS_FAILED(400, "주문 전, 책정보를 불러오지 못했습니다. 다시 시도해주세요."),
-    ORDER_IS_FAILED(400, "주문이 실패했습니다.");
+    ORDER_IS_FAILED(400, "주문이 실패했습니다."),
+    //order
+    LOW_STOCK(400, "해당 요쳥 책의 재고가 부족합니다. 다시 시도해주세요."),
+    //payment
+    PAYMENT_FAILED(400, "결제가 실패했습니다");
+
     private final int code;
     private final String message;
 }

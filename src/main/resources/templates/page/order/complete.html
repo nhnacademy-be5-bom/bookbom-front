@@ -19,7 +19,7 @@
     <script th:src="@{/js/page/order/complete.js}"></script>
 </th:block>
 <div layout:fragment="content" class="container">
-    <label style="font-size: 30px">주문 완료!</label>
+    <label style="font-size: 30px">주문 완료!</label><br>
     <label th:text="'주문번호 : '+${orderNumber}" style="font-size: 1.1em;"></label><br>
     <div class="order-container">
         <label class="order-label">주문상품</label>
@@ -59,6 +59,7 @@
             <label th:text="${deliveryAddress}"></label>
             <label th:text="${addressDetail}"></label>
         </div>
+
     </div>
     <br><br>
     <div class="button-container">

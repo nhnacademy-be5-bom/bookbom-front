@@ -1,0 +1,9 @@
+.order-cost {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.sub-cost {
+    font-size: 0.9em;
+    opacity: 0.8;
+}

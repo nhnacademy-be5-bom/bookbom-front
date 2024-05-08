@@ -47,7 +47,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -68,7 +68,7 @@ public class IndexAdapterImpl implements IndexAdapter {
 
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

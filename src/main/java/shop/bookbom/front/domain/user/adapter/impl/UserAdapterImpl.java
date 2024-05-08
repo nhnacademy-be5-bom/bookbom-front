@@ -50,7 +50,7 @@ public class UserAdapterImpl implements UserAdapter {
                         ORDER_INFO_RESPONSE)
                 .getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

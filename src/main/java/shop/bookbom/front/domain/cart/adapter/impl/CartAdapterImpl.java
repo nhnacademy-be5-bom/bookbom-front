@@ -55,7 +55,7 @@ public class CartAdapterImpl implements CartAdapter {
                         requestEntity,
                         CART_ITEM_IDS_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -79,7 +79,7 @@ public class CartAdapterImpl implements CartAdapter {
                         CART_INFO_RESPONSE)
                 .getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -102,7 +102,7 @@ public class CartAdapterImpl implements CartAdapter {
                         CART_UPDATE_RESPONSE)
                 .getBody();
 
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -124,7 +124,7 @@ public class CartAdapterImpl implements CartAdapter {
                         requestEntity,
                         COMMON_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

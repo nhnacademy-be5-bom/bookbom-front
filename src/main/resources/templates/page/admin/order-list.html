@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>책봄</title>
+</head>
+<!-- 메인 페이지 고유 CSS 추가 -->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin/order-list.css}">
+</th:block>
+<!-- 메인 페이지 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/admin/order-list.js}"></script>
+</th:block>
+
+<!-- Content -->
+<div class="container-fluid" layout:fragment="content">
+    <div class="row mb-3 d-flex flex-column">
+        <div class="col-md-10 d-flex">
+            <div class="btn-group" role="group" style="margin-right: 20px">
+                <button class="btn btn-outline-secondary me-2" onclick="setDateRange('year')" type="button">최근 1년
+                </button>
+                <button class="btn btn-outline-secondary me-2" onclick="setDateRange('week')" type="button">1주일</button>
+                <button class="btn btn-outline-secondary me-2" onclick="setDateRange('month')" type="button">1개월
+                </button>
+                <button class="btn btn-outline-secondary me-2" onclick="setDateRange('threeMonths')" type="button">3개월
+                </button>
+            </div>
+            <input class="form-control me-2" id="date_from" name="date_from" placeholder="시작 날짜" style="width: 200px;"
+                   type="date">
+            <input class="form-control me-2" id="date_to" name="date_to" placeholder="종료 날짜" style="width: 200px;"
+                   type="date">
+        </div>
+        <div class="col-md-5" style="margin-top: 20px">
+            <!-- 정렬 조건 -->
+            <div class="mb-3">
+                <label class="form-label">정렬 순서</label>
+                <div class="d-flex">
+                    <div class="form-check m-2">
+                        <input checked class="form-check-input" id="none" name="sort_order" type="radio"
+                               value="none">
+                        <label class="form-check-label" for="none">
+                            없음
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="recent" name="sort_order" type="radio"
+                               value="recent">
+                        <label class="form-check-label" for="recent">
+                            최근 주문순
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="old" name="sort_order" type="radio" value="old">
+                        <label class="form-check-label" for="old">
+                            오래된 주문순
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="expected_delivery" name="sort_order" type="radio"
+                               value="expected_delivery">
+                        <label class="form-check-label" for="expected_delivery">
+                            배송 예정일 순
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <!-- 목록 선택 -->
+            <div class="mb-3 justify-content-between align-items-center">
+                <label class="form-label">배송 상태</label>
+                <div class="d-flex">
+                    <div class="form-check m-2">
+                        <input checked class="form-check-input" id="all" name="delivery_status" type="radio"
+                               value="all">
+                        <label class="form-check-label" for="all">
+                            모두
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="before" name="delivery_status" type="radio" value="대기">
+                        <label class="form-check-label" for="before">
+                            배송 전
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="completed" name="delivery_status" type="radio"
+                               value="배송중">
+                        <label class="form-check-label" for="completed">
+                            배송 중
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="pending" name="delivery_status" type="radio"
+                               value="완료">
+                        <label class="form-check-label" for="pending">
+                            배송 완료
+                        </label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input class="form-check-input" id="cancel" name="delivery_status" type="radio"
+                               value="취소">
+                        <label class="form-check-label" for="cancel">
+                            취소
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-outline-primary" onclick="submitDates()" type="button">조회하기</button>
+        </div>
+    </div>
+    <div class="col-md-12 d-flex flex-column align-items-end">
+        <ul class="list-group list-group-horizontal" id="statusList">
+            <li class="list-group-item">배송중</li>
+            <li class="list-group-item">완료</li>
+            <li class="list-group-item">취소</li>
+            <li class="list-group-item">반품</li>
+        </ul>
+        <button class="btn btn-outline-primary my-3" id="updateButton" type="button">변경하기</button>
+    </div>
+    <!-- 테이블 -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">선택</th>
+            <th scope="col">주문번호</th>
+            <th scope="col">주문일자</th>
+            <th scope="col">주문자</th>
+            <th scope="col">상품명</th>
+            <th scope="col">배송예정일</th>
+            <th scope="col">배송완료일</th>
+            <th scope="col">진행상태</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orderPage.content}">
+            <td class="text-center"><input class="form-check-input" th:data-order-id="${order.id}" type="checkbox"/>
+            </td>
+            <td class="truncate-text" th:text="${order.orderNumber}">12345</td>
+            <td th:text="${order.orderDate}">2024-05-01</td>
+            <td class="truncate-text" th:text="${order.senderName}">John Doe</td>
+            <td th:text="${order.orderInfo}">Product ABC</td>
+            <td th:text="${order.expectedDeliveryDate}">2024-05-10</td>
+            <td th:text="${order.completeDeliveryDate == null ? '' : order.completeDeliveryDate}">2024-05-12</td>
+            <td class="order-status" th:text="${order.status}">배송중</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation" th:if="${orderPage.totalElements > 0}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${orderPage.number == 0} ? 'disabled'">
+                <th:block th:if="${dateFrom}">
+                    <a aria-label="Previous"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number - 1}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, date_from=${dateFrom}, date_to=${dateTo})}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a aria-label="Previous"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number - 1}, size=${orderPage.pageable.pageSize})}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </th:block>
+            </li>
+            <li class="page-item" th:classappend="${pageNum == orderPage .number} ? 'active'"
+                th:each="pageNum : ${#numbers.sequence(0, orderPage.totalPages - 1)}">
+                <th:block th:if="${dateFrom}">
+                    <a class="page-link"
+                       th:href="@{/admin/orders(page=${pageNum}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, date_from=${dateFrom}, date_to=${dateTo})}"
+                       th:text="${pageNum + 1}"></a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a class="page-link"
+                       th:href="@{/admin/orders(page=${pageNum}, size=${orderPage.pageable.pageSize})}"
+                       th:text="${pageNum + 1}"></a>
+                </th:block>
+            </li>
+            <li class="page-item" th:classappend="${orderPage.number + 1 == orderPage.totalPages} ? 'disabled'">
+                <th:block th:if="${dateFrom}">
+                    <a aria-label="Next"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number + 1}, size=${orderPage.pageable.pageSize}, sorted=${sorted}, status=${status}, dateFrom=${dateFrom}, date_to=${dateTo})}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${dateFrom}">
+                    <a aria-label="Next"
+                       class="page-link"
+                       th:href="@{/admin/orders(page=${orderPage.number + 1}, size=${orderPage.pageable.pageSize})}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </th:block>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>

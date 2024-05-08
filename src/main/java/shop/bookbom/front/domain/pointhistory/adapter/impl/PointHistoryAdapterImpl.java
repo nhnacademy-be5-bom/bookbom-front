@@ -48,7 +48,7 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
 
         CommonResponse<CommonPage<PointHistoryResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_HISTORY_RESPONSE).getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }

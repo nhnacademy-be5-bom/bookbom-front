@@ -6,20 +6,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
-import shop.bookbom.front.domain.order.dto.request.WrapperDto;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
-import shop.bookbom.front.domain.order.dto.response.BeforeOrderBookResponse;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
-import shop.bookbom.front.domain.order.dto.response.PreOrderResponse;
-import shop.bookbom.front.domain.order.dto.response.WrapperSelectBookResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
+import shop.bookbom.front.domain.order.util.OrderUtil;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,93 +30,69 @@ public class OrderController {
     @PostMapping("/order/wrapper")
     public String processSelectWrapperPage(@ModelAttribute BeforeOrderRequestList beforeOrderRequestList,
                                            RedirectAttributes redirectAttributes) {
-        PreOrderResponse preOrderResponse = orderService.beforeOrder(beforeOrderRequestList);
-        if (!preOrderResponse.isSuccessful()) {
-            redirectAttributes.addAttribute("errorMessage", preOrderResponse.getResultMessage());
-            return "redirect:/order/stockLow";
-        }
-        BeforeOrderResponse beforeOrderResponse =
-                (BeforeOrderResponse) preOrderResponse.getBeforeOrderResponse();
-        //redirectAttributes.addAttribute는 string만 전달가능해서
-        // 리스트를 콤마로 구분된 문자열로 변환하여 리다이렉트 매개변수로 전달
-        redirectAttributes.addAttribute("wrapperList",
-                BeforeOrderResponse.convertWrapperListToString(beforeOrderResponse.getWrapperList()));
-        // 리스트를 콤마로 구분된 문자열로 변환하여 리다이렉트 매개변수로 전달
-        redirectAttributes.addAttribute("beforeOrderBookResponseList",
-                BeforeOrderResponse.convertBookListToString(beforeOrderResponse.getBeforeOrderBookResponseList()));
-        redirectAttributes.addAttribute("totalOrderCount", beforeOrderResponse.getTotalOrderCount());
 
-        return "redirect:/order/selectWrapper";
+        String beforeOrderRequestsStr =
+                OrderUtil.convertBeforeOrderListToString(beforeOrderRequestList.getBeforeOrderRequests());
+        redirectAttributes.addAttribute("beforeOrderRequestsStr", beforeOrderRequestsStr);
+        return "redirect:/order/wrapper";
     }
 
     //prg 패턴으로 보여줌
-    @GetMapping("/order/selectWrapper")
-    public String showSelectWrapperPage(@RequestParam("totalOrderCount") int totalOrderCount,
-                                        @RequestParam("wrapperList") String wrapperListAsString,
-                                        @RequestParam("beforeOrderBookResponseList")
-                                        String beforeOrderBookResponseListAsString,
-                                        @ModelAttribute PreOrderResponse beforeOrderResponse,
-                                        Model model) {
+    @GetMapping("/order/wrapper")
+    public String showSelectWrapperPage(@RequestParam("beforeOrderRequestsStr") String beforeOrderRequestsStr,
+                                        Model model, RedirectAttributes redirectAttributes) {
+        List<BeforeOrderRequest> beforeOrderRequests = OrderUtil.convertStringToBeforeOrderList(beforeOrderRequestsStr);
+        BeforeOrderRequestList beforeOrderRequestList =
+                BeforeOrderRequestList.builder().beforeOrderRequests(beforeOrderRequests).build();
+        BeforeOrderResponse beforeOrderResponse = orderService.beforeOrder(beforeOrderRequestList);
 
-        // 콤마로 구분된 문자열을 다시 리스트로 변환
-        List<WrapperDto> wrapperList = BeforeOrderResponse.convertStringToWrapperList(wrapperListAsString);
-        List<BeforeOrderBookResponse> beforeOrderBookResponseList =
-                BeforeOrderResponse.convertStringToBookList(beforeOrderBookResponseListAsString);
-
-        model.addAttribute("totalOrderCount", totalOrderCount);
-        model.addAttribute("wrapperList", wrapperList);
-        model.addAttribute("beforeOrderBookResponseList", beforeOrderBookResponseList);
+        model.addAttribute("totalOrderCount", beforeOrderResponse.getTotalOrderCount());
+        model.addAttribute("wrapperList", beforeOrderResponse.getWrapperList());
+        model.addAttribute("beforeOrderBookResponseList", beforeOrderResponse.getBeforeOrderBookResponseList());
         return "page/order/selectWrapper";
     }
 
-    //재고 부족 페이지
-    @GetMapping("/order/stockLow")
-    public String stockLow(@RequestParam("errorMessage") String errorMessage,
-                           Model model) {
-        model.addAttribute("errorMessage", errorMessage);
-
-        return "page/order/exception/stockLow";
+    @GetMapping("/orders/{id}")
+    public String orderDetailPage(@PathVariable("id") Long id, Model model) {
+        OrderDetailResponse orderDetail = orderService.getOrderDetail(id);
+        model.addAttribute("order", orderDetail);
+        return "page/order/order-detail";
     }
+
+    //재고 부족 페이지
+//    @GetMapping("/order/stockLow")
+//    public String stockLow(@RequestParam("errorMessage") String errorMessage,
+//                           Model model) {
+//        model.addAttribute("errorMessage", errorMessage);
+//
+//        return "page/order/exception/stockLow";
+//    }
 
     //주문서 작성 페이지
     @PostMapping("/order/ordersheet")
     public String postOrdersheet(@ModelAttribute WrapperSelectRequest wrapperSelectRequest,
                                  RedirectAttributes redirectAttributes) {
-        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapper(wrapperSelectRequest);
-        redirectAttributes.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
-        redirectAttributes.addAttribute("deliveryCost", wrapperSelectResponse.getDeliveryCost());
-        redirectAttributes.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
-        redirectAttributes.addAttribute("wrapperSelectResponseList",
-                WrapperSelectResponse.convertWrapperSelectListToString(
-                        wrapperSelectResponse.getWrapperSelectResponseList()));
-        redirectAttributes.addAttribute("estimatedDateList",
-                WrapperSelectResponse.convertEstimatedDateListToString(wrapperSelectResponse.getEstimatedDateList()));
-
+        String wrapperSelectListToStr =
+                OrderUtil.convertWrapperSelectListToString(wrapperSelectRequest.getWrapperSelectBookRequestList());
+        redirectAttributes.addAttribute("wrapperSelectListToStr", wrapperSelectListToStr);
         return "redirect:/order/ordersheet";
     }
 
     //주문서 작성 페이지
     @GetMapping("/order/ordersheet")
-    public String getOrdersheet(@ModelAttribute WrapperSelectResponse wrapperSelectResponse,
-                                @RequestParam("totalOrderCount") int totalOrderCount,
-                                @RequestParam("deliveryCost") int deliveryCost,
-                                @RequestParam("wrapCost") int wrapCost,
-                                @RequestParam("wrapperSelectResponseList") String wrapperSelectResponseListToString,
-                                @RequestParam("estimatedDateList") String estimatedDateListToStirng,
+    public String getOrdersheet(@RequestParam("wrapperSelectListToStr") String wrapperSelectListToStr,
                                 Model model) {
+        WrapperSelectRequest wrapperSelectRequest = WrapperSelectRequest.builder()
+                .wrapperSelectBookRequestList(OrderUtil.convertStringToWrapperSelectList(wrapperSelectListToStr))
+                .build();
+        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapper(wrapperSelectRequest);
 
-        List<WrapperSelectBookResponse> wrapperSelectResponseList =
-                WrapperSelectResponse.convertStringToWrapperSelectList(wrapperSelectResponseListToString);
-        List<String> estimatedDateList =
-                WrapperSelectResponse.convertStringToEsitmatedDateList(estimatedDateListToStirng);
-
-        model.addAttribute("totalOrderCount", totalOrderCount);
-        model.addAttribute("deliveryCost", deliveryCost);
-        model.addAttribute("wrapCost", wrapCost);
-        model.addAttribute("wrapperSelectResponseList", wrapperSelectResponseList);
-        model.addAttribute("estimatedDateList", estimatedDateList);
-
-
+        model.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
+        model.addAttribute("deliveryCost", wrapperSelectResponse.getDeliveryCost());
+        model.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
+        model.addAttribute("wrapperSelectResponseList", wrapperSelectResponse.getWrapperSelectResponseList());
+        model.addAttribute("estimatedDateList", wrapperSelectResponse.getEstimatedDateList());
+        
         return "page/order/ordersheet_non_member";
     }
 
@@ -132,10 +108,7 @@ public class OrderController {
 
         return "redirect:/payment-method";
     }
-
-
 }
-
 
 
 

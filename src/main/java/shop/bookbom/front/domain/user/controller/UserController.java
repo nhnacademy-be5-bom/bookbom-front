@@ -48,8 +48,13 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "page/user/sign-up";
         }
-        if (signUpRequest.getBirthDate() != null && signUpRequest.getBirthDate().isAfter(LocalDate.now())) {
+        LocalDate today = LocalDate.now();
+        if (signUpRequest.getBirthDate() != null && signUpRequest.getBirthDate().isAfter(today)) {
             bindingResult.rejectValue("birthDate", "error.birthDate", "생년월일은 현재 날짜보다 이후일 수 없습니다.");
+            return "page/user/sign-up";
+        }
+        if (!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "비밀번호가 일치하지 않습니다.");
             return "page/user/sign-up";
         }
         if (!signUpRequest.isEmailCanUse()) {

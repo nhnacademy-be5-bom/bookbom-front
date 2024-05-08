@@ -26,6 +26,7 @@ public class SignUpRequest {
     @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다.")
     private String password;
 
+    @NotBlank(message = "비밀번호 확인을 입력하세요.")
     private String confirmPassword;
 
     @Size(min = 2, message = "이름은 최소 2자 이상이어야 합니다.")
@@ -41,9 +42,10 @@ public class SignUpRequest {
     @NotEmpty(message = "닉네임을 입력해주세요.")
     private String nickname;
 
-    @NotNull(message = "주소 찾기를 진행해주세요.")
+    @NotEmpty(message = "주소 찾기를 진행해주세요.")
     private String addressNumber;
 
+    @NotEmpty(message = "주소 찾기를 통해 주소를 입력해주세요.")
     private String address;
 
     @NotEmpty(message = "상세주소를 입력해주세요.")

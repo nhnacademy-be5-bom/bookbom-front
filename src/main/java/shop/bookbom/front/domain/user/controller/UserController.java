@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/sign-up")
-    public String signUpPage(@ModelAttribute("signUpDto") SignUpRequest member) {
+    public String signUpPage(@ModelAttribute("signUpRequest") SignUpRequest request) {
         return "page/user/sign-up";
     }
 
@@ -62,6 +62,11 @@ public class UserController {
             return "page/user/sign-up";
         }
         userService.signUp(signUpRequest);
-        return "redirect:/";
+        return "redirect:/sign-up/success";
+    }
+
+    @GetMapping("/sign-up/success")
+    public String signUpSuccess() {
+        return "page/user/sign-up-success";
     }
 }

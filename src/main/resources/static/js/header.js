@@ -46,7 +46,7 @@ async function updateChildCategory(e) {
 
     if (popoverInstance._config.content.length === 0) {
         const response = await fetch(
-            GATEWAY_URL + "/shop/categories" + this.id,
+            GATEWAY_URL + "/shop/open/categories" + this.id,
             {
                 method: "GET"
             });
@@ -71,7 +71,7 @@ async function setDefaultChildCategory(categoryElement) {
 
     if (popoverInstance._config.content.length === 0) {
         const response = await fetch(
-            GATEWAY_URL + "/shop/categories" + categoryElement.id,
+            GATEWAY_URL + "/shop/open/categories" + categoryElement.id,
             {
                 method: "GET"
             });

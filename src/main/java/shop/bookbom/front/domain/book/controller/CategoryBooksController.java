@@ -22,7 +22,7 @@ public class CategoryBooksController {
     private final BookService bookService;
     private final CategoryService categoryService;
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/categories/{id}")
     public String index(@PathVariable(value = "id") Long categoryId,
                         @PageableDefault(size = 5) Pageable pageable,
                         @RequestParam(required = false) String sorted,

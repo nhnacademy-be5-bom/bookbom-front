@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
+import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 
 public interface UserService {
@@ -13,4 +14,6 @@ public interface UserService {
     Page<OrderInfoResponse> getOrderList(LocalDate orderDateMin, LocalDate orderDateMax, Pageable pageable);
 
     EmailCheckResponse checkEmailCanUse(String email);
+
+    void signUp(SignUpRequest signUpRequest);
 }

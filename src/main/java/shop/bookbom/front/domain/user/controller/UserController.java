@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @GetMapping("/sign-up")
-    public String signUpPage(@ModelAttribute("signUpRequest") SignUpRequest member) {
+    public String signUpPage(@ModelAttribute("signUpDto") SignUpRequest member) {
         return "page/user/sign-up";
     }
 
@@ -61,6 +61,7 @@ public class UserController {
             bindingResult.reject("error.email", "이메일 중복체크를 진행해주세요.");
             return "page/user/sign-up";
         }
+        userService.signUp(signUpRequest);
         return "redirect:/";
     }
 }

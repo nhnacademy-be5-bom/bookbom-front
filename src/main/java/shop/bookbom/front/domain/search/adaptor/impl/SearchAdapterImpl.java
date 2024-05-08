@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.domain.search.adaptor.SearchAdapter;
 
@@ -37,7 +38,7 @@ public class SearchAdapterImpl implements SearchAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/search")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/search")
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("keyword", keyword)
@@ -49,8 +50,7 @@ public class SearchAdapterImpl implements SearchAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_SEARCH_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }

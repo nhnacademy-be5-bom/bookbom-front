@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.member.dto.request.OrderDateCondition;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.adapter.UserAdapter;
@@ -51,8 +52,7 @@ public class UserAdapterImpl implements UserAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>책 수정 페이지</title>
+
+    <!-- CSS -->
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/book/addbook.css}">
+    </th:block>
+    <!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/book/updatebook.js}"></script>
+    </th:block>
+
+</head>
+
+
+<div layout:fragment="content" class="container card-0 justify-content-center ">
+
+    <div class="col-md-6 offset-md-3 mt-5">
+
+        <form accept-charset="UTF-8"
+              th:action="@{/admin/updatebook/{bookId}(bookId = ${bookUpdateInfo.getId()})}"
+              th:method="post"
+              enctype="multipart/form-data">
+
+            <input type="hidden" name="id" class="form-control" required="required"
+                   th:value="${bookUpdateInfo.getId()}">
+
+            <div class="form-group mt-3">
+                <label for="thumbnail" class="mr-2">책 썸네일:</label>
+                <input type="file" id="thumbnail" name="thumbnail">
+
+                <p></p>
+                <span style="color: #0c63e4">현재 썸네일:</span>
+                <img th:if="${bookUpdateInfo.getThumbnail()} ne 'NONE'"
+                     th:src="${bookUpdateInfo.getThumbnail()}"
+                     alt="현재 썸네일">
+
+                <span th:if="${bookUpdateInfo.getThumbnail()} eq 'NONE'">썸네일 없음</span>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>책 제목
+                    <input autocapitalize="off" autofocus type="text" name="title" class="form-control"
+                           required="required"
+                           th:value="${bookUpdateInfo.getTitle()}">
+                </label>
+                <p style="color: #0c63e4">현재 제목: [[${bookUpdateInfo.getTitle()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+
+                <label for="category_depth1">카테고리</label>
+                <select class="form-control" id="category_depth1" name="categories"
+                        onchange="setChildCategory(this, this.options[this.selectedIndex].className)">
+                    <option class="0" value="none" disabled>카테고리 선택</option>
+                    <option th:each="category : ${categories_depth1}"
+                            th:text="${category.name}"
+                            th:class="${category.getId()}"></option>
+                </select>
+
+                <span style="color: #0c63e4">현재 카테고리: </span>
+                <span style="color: #0c63e4"
+                      th:unless="${#lists.isEmpty(bookUpdateInfo.getCategories())}"
+                      th:each="category, status : ${bookUpdateInfo.getCategories()}"
+                      th:text="${!status.last} ? ${category} + ' > ': ${category}">
+                </span>
+
+                <span style="color: #0c63e4"
+                      th:if="${#lists.isEmpty(bookUpdateInfo.getCategories())}">
+                    카테고리 없음
+                </span>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="taggenerator">책 태그</label>
+                <div id="taggenerator">
+                    <input type="text" id="taginput" name="taginput" class="taginput" size="50"
+                           placeholder="태그 입력">
+                    <i class="add" onclick="add()">+</i>
+                </div>
+                <p></p>
+                <span>현재 태그: </span>
+                <span th:unless="${#lists.isEmpty(bookUpdateInfo.getTags())}"
+                      th:text="|#${bookUpdateInfo.getTags()} |"></span>
+
+                <span th:if="${#lists.isEmpty(bookUpdateInfo.getTags())}">태그가 없습니다.</span>
+
+                <div id="generatedtags">
+                </div>
+            </div>
+
+            <hr>
+
+            <div id="authorForm" class="form-group">
+                <label>작가</label>
+                <div class="authorContainer">
+                    <th:block th:each="author, stat : ${bookUpdateInfo.getAuthor()}">
+                        <input autocapitalize="off" type="hidden" th:name="|authors[${stat.index}].id|"
+                               th:value="${author.id}" class="form-control" required="required">
+
+                        <label>역할
+                            <input autocapitalize="off" th:name="|authors[${stat.index}].role|"
+                                   th:value="${author.role}" type="text" class="form-control"
+                                   required="required"/>
+                        </label>
+
+                        <label>이름
+                            <input autocapitalize="off" th:name="|authors[${stat.index}].name|"
+                                   th:value="${author.name}" type="text" class="form-control"
+                                   required="required"/>
+                        </label>
+                    </th:block>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>출판사
+                    <input autocapitalize="none" type="text" name="publisher" class="form-control"
+                           required="required" style="text-transform: none !important;"
+                           th:value="${bookUpdateInfo.getPublisherName()}">
+                </label>
+                <p style="color: #0c63e4">현재 출판사: [[${bookUpdateInfo.getPublisherName()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>출판일
+                    <input type="date" name="pubDate" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getPubDate()}">
+                </label>
+                <p style="color: #0c63e4">현재 출판일: [[${bookUpdateInfo.getPubDate()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>10자리 ISBN
+                    <input type="text" name="isbn10" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getIsbn10()}">
+                </label>
+                <p style="color: #0c63e4">현재 ISBN10: [[${bookUpdateInfo.getIsbn10()}]]</p>
+            </div>
+
+            <div class="form-group">
+                <label>13자리 ISBN
+                    <input type="text" name="isbn13" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getIsbn13()}">
+                </label>
+                <p style="color: #0c63e4">현재 ISBN13: [[${bookUpdateInfo.getIsbn13()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>목차
+                    <input autocapitalize="off" type="text" name="index" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getIndex()}">
+                </label>
+                <p style="color: #0c63e4">현재 목차: [[${bookUpdateInfo.getIndex()}]]</p>
+            </div>
+
+            <hr>
+            <label for="editor">설명</label>
+            <div id="editor" onfocusout="setDescription()"></div>
+
+            <div class="form-group">
+                <input autocapitalize="off" type="hidden" id="description" name="description" class="form-control"
+                       required="required"
+                       th:value="${bookUpdateInfo.getDescription()}">
+            </div>
+
+            <p style="color: #0c63e4">현재 설명: [[${bookUpdateInfo.getDescription()}]]</p>
+            <hr>
+
+            <div class="form-group">
+                <label>정가
+                    <input type="number" name="cost" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getCost()}">
+                </label>
+                <p style="color: #0c63e4">현재 정가: [[${bookUpdateInfo.getCost()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>판매가
+                    <input type="number" name="discountCost" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getDiscountCost()}">
+                </label>
+                <p style="color: #0c63e4">현재 판매가: [[${bookUpdateInfo.getDiscountCost()}]]</p>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <p>포장여부</p>
+                <input type="radio" id="packagablechoice1" name="packagable" value="true" checked/>
+                <label for="packagablechoice1">가능</label>
+
+                <input type="radio" id="packagablechoice2" name="packagable" value="false"/>
+                <label for="packagablechoice2">불가능</label>
+                <p></p>
+
+                <span>현재 포장여부: </span>
+                <span style="color: #0c63e4"
+                      th:text="${bookUpdateInfo.getPackagable()} ? 가능 : 불가능">
+                </span>
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label for="status">상태</label>
+                <select class="form-control" id="status" name="status" required="required">
+                    <option value="" selected>선택하세요</option>
+                    <option value="FOR_SALE">판매중</option>
+                    <option value="END_OF_SALE">판매종료</option>
+                    <option value="SOLD_OUT">품절</option>
+                    <option value="DEL">삭제됨</option>
+                </select>
+
+                <span>현재 상태: </span>
+                <th:block th:switch="${bookUpdateInfo.getStatus()}">
+                    <span style="color: #0c63e4" th:case="FOR_SALE">판매중</span>
+                    <span style="color: #0c63e4" th:case="END_OF_SALE">판매종료</span>
+                    <span style="color: #0c63e4" th:case="SOLD_OUT">품절</span>
+                    <span style="color: red" th:case="DEL">삭제됨</span>
+                </th:block>
+
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label>재고
+                    <input type="number" name="stock" class="form-control" required="required"
+                           th:value="${bookUpdateInfo.getStock()}">
+                </label>
+                <p style="color: #0c63e4">현재 재고: [[${bookUpdateInfo.getStock()}]]</p>
+            </div>
+
+            <hr>
+
+            <button type="submit" class="btn btn-primary">등록</button>
+            <button type="reset" class="btn btn-primary">취소</button>
+        </form>
+    </div>
+</div>
+
+<link id="gateWayURL" th:data-contextPath="${@environment.getProperty('bookbom.gateway-url')}"/>
+<script>
+    const GATEWAY_URL = document.querySelector("#gateWayURL").getAttribute("data-contextPath");
+</script>
+
+</html>

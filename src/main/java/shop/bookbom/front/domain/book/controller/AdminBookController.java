@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.dto.request.BookUpdateRequest;
@@ -75,18 +76,18 @@ public class AdminBookController {
     public String updateBook(@RequestPart("thumbnail") MultipartFile thumbnail,
                              @PathVariable("bookId") Long bookId,
                              @ModelAttribute("bookAddRequest") BookUpdateRequest bookUpdateRequest,
-                             Model model) throws IOException {
+                             RedirectAttributes redirectAttributes) throws IOException {
 
         CommonResponse<Void> response = bookService.updateBook(thumbnail, bookUpdateRequest, bookId);
 
-        if (response.getHeader().getIsSuccessful()) {
-            model.addAttribute("success", true);
-            model.addAttribute("message", response.getHeader().getResultMessage());
-            return "page/book/result/updatesuccess";
-        } else {
-            model.addAttribute("success", false);
-            model.addAttribute("message", response.getHeader().getResultMessage());
-            return "page/book/result/updatefail";
-        }
+        redirectAttributes.addFlashAttribute("success", response.getHeader().isSuccessful());
+        redirectAttributes.addFlashAttribute("message", response.getHeader().getResultMessage());
+
+        return "redirect:/admin/updatebook/result";
+    }
+
+    @GetMapping("/updatebook/result")
+    public String updateBookResultPage() {
+        return "page/book/result/updatebook_result";
     }
 }

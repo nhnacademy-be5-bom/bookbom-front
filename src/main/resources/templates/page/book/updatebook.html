@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/admin_layout}">
 <head>
     <meta charset="UTF-8">
     <title>책 수정 페이지</title>
@@ -23,10 +23,6 @@
 <div layout:fragment="content" class="container card-0 justify-content-center ">
 
     <div class="col-md-6 offset-md-3 mt-5">
-
-        <th:block th:if="${success eq null}">
-            <h1>책 수정</h1>
-        </th:block>
 
         <form accept-charset="UTF-8"
               th:action="@{/admin/updatebook/{bookId}(bookId = ${bookUpdateInfo.getId()})}"
@@ -235,14 +231,15 @@
                     <option value="" selected>선택하세요</option>
                     <option value="FOR_SALE">판매중</option>
                     <option value="END_OF_SALE">판매종료</option>
-                    <option value="DEL">삭제됨</option>
                     <option value="SOLD_OUT">품절</option>
+                    <option value="DEL">삭제됨</option>
                 </select>
 
                 <span>현재 상태: </span>
                 <th:block th:switch="${bookUpdateInfo.getStatus()}">
                     <span style="color: #0c63e4" th:case="FOR_SALE">판매중</span>
-                    <span style="color: #0c63e4" th:case="END_OF_SALE">재고없음</span>
+                    <span style="color: #0c63e4" th:case="END_OF_SALE">판매종료</span>
+                    <span style="color: #0c63e4" th:case="SOLD_OUT">품절</span>
                     <span style="color: red" th:case="DEL">삭제됨</span>
                 </th:block>
 

@@ -5,24 +5,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
+@Getter
 @NoArgsConstructor
 @Setter
 public class ResponseHeader {
-    private boolean isSuccessful;
-    @Getter
+    private boolean successful;
     private int resultCode;
-    @Getter
     private String resultMessage;
 
     @Builder
-    public ResponseHeader(boolean isSuccessful, int resultCode, String resultMessage) {
-        this.isSuccessful = isSuccessful;
+    public ResponseHeader(boolean successful, int resultCode, String resultMessage) {
+        this.successful = successful;
         this.resultCode = resultCode;
         this.resultMessage = resultMessage;
-    }
-
-    public boolean getIsSuccessful() {
-        return isSuccessful;
     }
 }

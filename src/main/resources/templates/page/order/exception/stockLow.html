@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .centered-text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 50vh; /* 페이지의 높이를 전체 뷰포트 높이로 설정합니다. */
+        }
+
+        .centered-text span {
+            font-size: 30px;
+        }
+    </style>
+
+</head>
+<!-- 메인 페이지 고유 CSS 추가-->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/selectWrapper.css}">
+</th:block>
+<!-- 메인 페이지 고유 스크립트 추가-->
+<!--<th:block layout:fragment="script">-->
+<!--    <script th:src="@{https://code.jquery.com/jquery-latest.js}"></script>-->
+<!--    <script th:src="@{/js/page/selectWrapper.js}"></script>-->
+<!--</th:block>-->
+<div layout:fragment="content" class="container">
+    <div class="centered-text">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+</div>
+</html>

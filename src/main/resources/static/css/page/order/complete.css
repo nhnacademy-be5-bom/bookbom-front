@@ -1,0 +1,79 @@
+
+.container {
+    margin: auto;
+    text-align: center;
+    position: relative;
+}
+
+.order-container {
+    display: inline-block;
+    text-align: left; /* order-container 안의 요소들을 왼쪽 정렬 */
+    max-width: 800px; /* order-container의 최대 너비 */
+    margin-top: 50px; /* 위쪽 여백 조절 */
+    margin-bottom: 50px; /* 아래쪽 여백 조절 */
+    padding: 20px;
+    width: 60%;
+    background-color: #adb5bd;
+    border-radius: 10px;
+}
+
+.button-container {
+    display: inline-block; /* Flexbox 사용 */
+    /*justify-content: space-between; !* 요소들을 수평으로 나열하고 가장자리에 정렬 *!*/
+    width: 60%;
+    max-width: 800px;
+    gap: 100px;
+}
+
+
+.order-label {
+    font-size: 1.2em; /* 글자 크기 */
+    font-weight: bold; /* 굵은 글자 */
+    margin: 10px;
+    padding: 5px;
+    color: #fff;;
+
+}
+
+.order-info {
+    border-radius: 10px; /* 둥글게 만들기 */
+    padding: 20px; /* 내부 여백 추가 */
+    margin: 10px;
+    width: 98%;
+    background-color: #fff;;
+    border: none;
+
+}
+
+.order-sub-label {
+    margin-right: 50%;
+}
+
+.order-table {
+    border-collapse: separate;
+    border-spacing: 5px;
+}
+
+td {
+    padding: 15px;
+}
+
+.pink-button {
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff69b4;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    width: 280px;
+    height: 70px;
+    margin: 5%;
+}
+
+.pink-button:hover {
+    background-color: #ff4f9f;
+}
+

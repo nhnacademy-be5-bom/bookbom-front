@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+
+<head>
+    <meta charset="UTF-8">
+
+
+</head>
+<!-- 메인 페이지 고유 CSS 추가-->
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/order/complete.css}">
+</th:block>
+<!-- 메인 페이지 고유 스크립트 추가-->
+<th:block layout:fragment="script">
+    <script th:src="@{https://code.jquery.com/jquery-latest.js}"></script>
+    <script th:src="@{/js/page/order/complete.js}"></script>
+</th:block>
+<div layout:fragment="content" class="container">
+    <label style="font-size: 30px">주문 완료!</label><br>
+    <label th:text="'주문번호 : '+${orderNumber}" style="font-size: 1.1em;"></label><br>
+    <div class="order-container">
+        <label class="order-label">주문상품</label>
+        <div class="order-info">
+            <label th:text="${orderInfo}" style="margin-right: 30%"></label>
+            <button style="border: none; width: 50px" onclick="toggleTable()">보기</button>
+            <hr>
+            <table class="order-table" style="display: block">
+                <tbody>
+                <tr th:each="bookInfo : ${orderBookInfoDtoList}">
+                    <td class="order-table-td"><img
+                            th:src="${bookInfo.imgUrl}"
+                            alt="Book Image" width="80px" height="120px"></td>
+                    <td class="order-table-td" th:text="${bookInfo.title}"></td>
+                    <td class="order-table-td" th:text="${bookInfo.quantity}+'개'"></td>
+                    <td class="order-table-td">
+                        <span th:text="${bookInfo.cost}+'원'"></span><br>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <label class="order-label">결제정보</label>
+        <div class="order-info">
+            <label class="order-sub-label">최종결제금액</label>
+            <label th:text="${totalAmount}+'원'" style="margin-right: 50px"></label>
+            <label th:text="${paymentMethodName}"></label>
+        </div>
+        <label class="order-label">배송지정보</label>
+        <div class="order-info">
+            <label class="order-sub-label">받는 사람</label>
+            <label th:text="${deliveryName}+'/'"></label>
+            <label th:text="${deliveryPhoneNumber}"></label><br>
+            <label class="order-sub-label">받는 주소</label>
+            <label th:text="'['+${zipCode}+']'">받는 주소</label>
+            <label th:text="${deliveryAddress}"></label>
+            <label th:text="${addressDetail}"></label>
+        </div>
+
+    </div>
+    <br><br>
+    <div class="button-container">
+        <button class="pink-button" onclick="goToMainPage()">쇼핑 계속</button>
+        <button class="pink-button">주문 내역 상세</button>
+    </div>
+
+
+</div>
+</html>

@@ -47,7 +47,7 @@ public class AdminBookController {
 
         CommonResponse<Void> response = bookService.addBook(thumbnail, bookAddRequest);
 
-        if (response.getHeader().getIsSuccessful()) {
+        if (response.getHeader().isSuccessful()) {
             model.addAttribute("success", true);
             model.addAttribute("message", response.getHeader().getResultMessage());
         } else {

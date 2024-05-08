@@ -21,7 +21,7 @@ public interface CategoryAdapter {
     @GetMapping("/open/categories/{parentId}")
     CommonListResponse<CategoryDTO> getChildCategoriesOf(@PathVariable("parentId") Long parentId);
 
-    @GetMapping("/open/categories/nameandchild/{parentId}")
+    @GetMapping("/open/categories/name-and-child/{parentId}")
     CommonResponse<CategoryNameAndChildResponse> getNameAndChildCategoriesOf(
             @PathVariable("parentId") Long parentId);
 

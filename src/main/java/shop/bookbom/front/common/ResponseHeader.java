@@ -3,11 +3,9 @@ package shop.bookbom.front.common;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
-@Setter
 public class ResponseHeader {
     private boolean successful;
     private int resultCode;

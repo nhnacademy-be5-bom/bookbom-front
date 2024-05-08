@@ -1,6 +1,7 @@
 package shop.bookbom.front.domain.book.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,16 +9,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 import shop.bookbom.front.domain.author.dto.AuthorSimpleInfo;
 import shop.bookbom.front.domain.book.entity.BookStatus;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class BookAddRequest {
-    @JsonIgnore
-    private MultipartFile thumbnail;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class BookAddRequest implements Serializable {
     private String title;
     private List<String> categories = new ArrayList<>();
     private List<String> tags = new ArrayList<>();

@@ -30,7 +30,7 @@ public class CategoryBooksController {
         String sortCondition = getSortCondition(sorted);
 
         Page<BookSearchResponse> bookResponse =
-                bookService.getBooksByCategoryId(categoryId, pageable, sortCondition).getResult();
+                bookService.getBooksByCategoryId(categoryId, pageable, sortCondition);
 
         CategoryNameAndChildResponse categoryResponse =
                 categoryService.getCategoryNameAndChildCategoriesByCategoryId(categoryId);

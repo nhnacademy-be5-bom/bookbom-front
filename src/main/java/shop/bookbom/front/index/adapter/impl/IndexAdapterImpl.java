@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 
@@ -48,8 +49,7 @@ public class IndexAdapterImpl implements IndexAdapter {
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }
@@ -69,8 +69,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }

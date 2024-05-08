@@ -53,22 +53,6 @@ public class IndexController {
         return "page/latest-books";
     }
 
-    @GetMapping("/selectWrapper")
-    public String showSelectWrpperPage() {
-        return "page/order/selectWrapper";
-    }
-
-    @GetMapping("/ordersheet")
-    public String showOrderPage() {
-        return "page/order/ordersheet_member";
-    }
-
-    @GetMapping("/ordersheet_non_member")
-    public String showOrderPage_non_member() {
-        return "page/order/ordersheet_non_member";
-
-    }
-
     @GetMapping("/signin")
     public String signIn(HttpServletRequest request, Model model) {
         String ip = request.getHeader("x-forwarded-for");
@@ -87,16 +71,6 @@ public class IndexController {
     @GetMapping("/myCouponDetail")
     public String showMyCouponDetailPage() {
         return "page/coupon/myCoupon_detail";
-    }
-
-    @GetMapping("/tosspay")
-    public String showtosspay() {
-        return "page/payment/tosspay";
-    }
-
-    @GetMapping("/toss/success")
-    public String showtosspay_success() {
-        return "page/payment/tosssuccess";
     }
 
 }

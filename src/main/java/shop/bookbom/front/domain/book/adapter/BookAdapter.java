@@ -69,7 +69,7 @@ public class BookAdapter {
 
         CommonResponse<BookDetailResponse> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_DETAIL_RESPONSE).getBody();
-        if (response == null || !response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -86,7 +86,7 @@ public class BookAdapter {
 
         CommonResponse<BookUpdateResponse> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_UPDATE_RESPONSE).getBody();
-        if (response == null || !response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -107,7 +107,7 @@ public class BookAdapter {
 
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, CATEGORY_BOOKS_RESPONSE).getBody();
-        if (response == null || !response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             // todo 예외처리
             throw new RuntimeException();
         }
@@ -146,7 +146,7 @@ public class BookAdapter {
         CommonResponse<Void> response =
                 multiPartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
 
-        if (response == null || !(response.getHeader().getIsSuccessful())) {
+        if (response == null || !(response.getHeader().isSuccessful())) {
             // todo 예외처리
             throw new RuntimeException();
         }

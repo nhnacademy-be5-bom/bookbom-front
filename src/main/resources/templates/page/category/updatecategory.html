@@ -28,7 +28,9 @@
 
         <div class="d-flex p-2 bd-highlight">
 
-            <div class="list-group" style=" max-height: 50em; overflow-y: scroll;">
+            <div class="list-group" style=" max-height: 30em; overflow-y: scroll;">
+                <a class="list-group-item list-group-item-dark disabled" tabindex="0"
+                   aria-disabled="true">1차 카테고리</a>
                 <a class="list-group-item list-group-item-action"
                    th:each="category : ${categories_depth1}"
                    th:text="${category.name}"
@@ -36,26 +38,33 @@
             </div>
 
             <div class="list-group">
-
-            </div>
-
-            <div class="list-group">
+                <a class="list-group-item list-group-item-dark disabled" tabindex="0"
+                   aria-disabled="true">2차 카테고리</a>
                 <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
                     The current link item
                 </a>
                 <a href="#" class="list-group-item list-group-item-action">A second link item</a>
                 <a href="#" class="list-group-item list-group-item-action">A third link item</a>
                 <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1"
-                   aria-disabled="true">A disabled link item</a>
+            </div>
+
+            <div class="list-group">
+                <a class="list-group-item list-group-item-dark disabled" tabindex="0"
+                   aria-disabled="true">3차 카테고리</a>
+                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                    The current link item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
             </div>
 
         </div>
 
         <hr>
 
-        <button type="submit" class="btn btn-primary">확인</button>
-        <button type="reset" class="btn btn-primary">취소</button>
+        <button type="submit" class="btn btn-secondary">확인</button>
+        <button type="reset" class="btn btn-secondary">취소</button>
     </form>
 </div>
 

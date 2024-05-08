@@ -1,29 +1,26 @@
 package shop.bookbom.front.domain.book.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.multipart.MultipartFile;
 import shop.bookbom.front.domain.author.dto.AuthorSimpleInfo;
 import shop.bookbom.front.domain.book.entity.BookStatus;
 
 @Getter
+@Setter
 @NoArgsConstructor
-public class BookAddRequest {
-    // 관리자 책 등록에 사용하는 책 등록 요청 DTO
-    // Book 의 필드 중 id, view 는 등록 페이지에서 사용하지 않으므로 제외
-    // front 에서 사용하는 버전에는 작가 필드를 스트링으로 받음
-
-    @JsonIgnore
-    private MultipartFile thumbnail;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class BookAddRequest implements Serializable {
     private String title;
-    private List<String> categories;
-    private List<String> tags;
-    private List<AuthorSimpleInfo> authors;
+    private List<String> categories = new ArrayList<>();
+    private List<String> tags = new ArrayList<>();
+    private List<AuthorSimpleInfo> authors = new ArrayList<>();
     private String publisher;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -38,39 +35,4 @@ public class BookAddRequest {
     private Boolean packagable;
     private BookStatus status;
     private Integer stock;
-
-    @Builder
-    public BookAddRequest(MultipartFile thumbnail,
-                          String title,
-                          List<String> categories,
-                          List<String> tags,
-                          List<AuthorSimpleInfo> authors,
-                          String publisher,
-                          String description,
-                          String index,
-                          LocalDate pubDate,
-                          String isbn10,
-                          String isbn13,
-                          Integer cost,
-                          Integer discountCost,
-                          Boolean packagable,
-                          BookStatus status,
-                          Integer stock) {
-        this.thumbnail = thumbnail;
-        this.title = title;
-        this.categories = categories;
-        this.tags = tags;
-        this.authors = authors;
-        this.publisher = publisher;
-        this.description = description;
-        this.index = index;
-        this.pubDate = pubDate;
-        this.isbn10 = isbn10;
-        this.isbn13 = isbn13;
-        this.cost = cost;
-        this.discountCost = discountCost;
-        this.packagable = packagable;
-        this.status = status;
-        this.stock = stock;
-    }
 }

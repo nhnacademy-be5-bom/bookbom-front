@@ -59,15 +59,16 @@
             previewStyle: 'vertical',             // 마크다운 프리뷰 스타일 (tab || vertical)
             hideModeSwitch: true
         });
-    }
 
-    function setDescription() {
-        const description = document.getElementById('description');
+        function setDescription() {
+            const description = document.getElementById('description');
 
-        if (document.querySelector('#editor') !== null) {
-            description.value = document.querySelector('#editor').getHTML();
+            if (document.querySelector('#editor') !== null) {
+                description.value = editor.getHTML();
+            }
         }
     }
+
 </script>
 </body>
 </html>

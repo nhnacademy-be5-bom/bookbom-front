@@ -89,3 +89,23 @@ function createCategorySelectBox(depth) {
 
     return newSelect;
 }
+
+function addAuthor() {
+    const authorDiv = document.querySelector('.authorContainer0').cloneNode(true);
+    const authorFormDiv = document.getElementById('authorForm');
+    const addButton = document.getElementById('addAuthorButton');
+
+    let currentAuthorIndex = Number(
+        addButton.previousElementSibling.className.replace("authorContainer", ""));
+    currentAuthorIndex++;
+
+    authorDiv.className = 'authorContainer' + currentAuthorIndex;
+
+    authorDiv.querySelector('input[name="authors[0].role"]').value = '';
+    authorDiv.querySelector('input[name="authors[0].role"]').name = 'authors[' + currentAuthorIndex + '].role';
+
+    authorDiv.querySelector('input[name="authors[0].name"]').value = '';
+    authorDiv.querySelector('input[name="authors[0].name"]').name = 'authors[' + currentAuthorIndex + '].name';
+
+    authorFormDiv.insertBefore(authorDiv, addButton);
+}

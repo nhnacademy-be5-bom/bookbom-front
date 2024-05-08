@@ -18,101 +18,94 @@
 <div layout:fragment="content">
     <div class="main">
         <div class="order-table">
-            <b style="margin-right: 200px;" >주문 상품</b>
-            <span style="margin-right: 300px">총 8 개</span>
+            <b style="margin-right: 200px;">주문 상품</b>
+            <span style="margin-right: 300px" th:text="'총 '+ ${totalOrderCount}+'개'"></span>
             <!--            보기 버튼을 누르면 주문 상품 보여지고, 다시 누르면 안 보여짐-->
             <button onclick="toggleTable()">보기</button>
 
             <table style="display: block">
                 <tbody>
-                <tr>
-                    <td class="order-table-td"><img src="https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791188331796.jpg"
-                                                    alt="돈의 속성 이미지" width="80px" height="120px"></td>
-                    <td class="order-table-td">[국내도서] 돈의 속성(300쇄 리커버에디션)</td>
-                    <td class="order-table-td">3개</td>
-                    <td class="order-table-td">48,060원</td>
+                <tr class="book-info"
+                    th:each="wrapperResponse : ${wrapperSelectResponseList}">
+                    <td><img
+                            th:src="${wrapperResponse.imgUrl}"
+                            alt="Book Image" width="80px" height="120px"></td>
+                    <td class="book-title" th:id="${wrapperResponse.bookId}"
+                        th:text="${wrapperResponse.bookTitle}"></td>
+                    <td class="quantity" th:id="${wrapperResponse.wrapperName}"
+                        th:text="${wrapperResponse.quantity}+'개'"></td>
+                    <td>
+                        <span class="bookCost" style="text-decoration: line-through;"
+                              th:text="${wrapperResponse.cost}+'원'"></span><br>
+                        <span class="bookDiscountCost"
+                              th:text="${wrapperResponse.discountCost}+'원'"></span>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="delivery">
-            <b style="font-size: large">배송 주소</b><hr>
+            <b style="font-size: large">배송 주소</b>
+            <hr>
             <div class="delivery-info">
                 <label>이름</label><br>
-                <label>배송 주소</label><br><br><br><br>
+                <label>배송 주소</label><br><br><br><br><br>
                 <label>휴대폰</label><br>
             </div>
             <div class="delivery-input">
-                <input type="text"><br>
-                <input type="text">
-                <button>주소 찾기</button><button>내 주소록</button><br>
+                <input id="name" type="text" onblur="validateName()">
+                <span id="name-error" class="error" style="color: red; display: none"></span><br>
+                <input id="zip-code" type="text" onblur="validateDelivery()">
+                <button>주소 찾기</button>
+                <br>
+                <span id="delivery-error" class="error" style="color: red; display: none"></span>
+                <br>
                 <label style="width: 75px; text-align:center;">도로명 주소</label>
-                <input type="text"><br>
+                <input id="delivery-address" type="text" onblur="validateDelivery()"><br>
                 <label style="width: 75px; text-align:center;">상세 주소</label>
-                <input type="text"><br>
-                <input type="tel" id="phone" pattern="[0-9]{3}-[0-9]{3,4}-[0-9]{4}" required>
-                <span id="phone-error" style="color: red; display: none;">전화번호 형식이 올바르지 않습니다. 다시 입력해주세요.</span>
+                <input id="address-detail" type="text" onblur="validateDelivery()"><br>
+                <input id="phone-number" type="text" placeholder="- 없이 입력해주세요" onblur="validatePhoneNumber()">
+                <span id="phone-error" class="error" style="color: red; display: none"></span><br>
             </div>
             <div class="non-member-info">
                 <b>비회원 주문고객</b><br>
                 <hr>
-                <label>이메일</label><input type="email"><br>
-                <label>비밀번호</label><input type="text"><br>
-
+                <label>아이디</label><br><input id="id" type="text" onblur="validateId()"><br>
+                <span id="id-error" class="error" style="color: red; display: none"></span><br>
+                <label>비밀번호</label><br><input id="password" type="text" onblur="validatePassword()"
+                                              placeholder="영어, 특수문자 포함 8자리 이상"><br>
+                <span id="password-error" class="error" style="color: red; display: none"></span><br>
+                <!--비밀번호는 영어,특수문자 포함 8자리 이상-->
             </div>
             <hr>
         </div>
         <div class="delivery-select">
             <b>배송일 선택(도착 예상일)</b><br>
-            <button onclick="selectDeliveryDate(this)">내일(3/22)</button>
-            <button onclick="selectDeliveryDate(this)">토(3/23)</button>
-            <button onclick="selectDeliveryDate(this)">월(3/25)</button>
-            <button onclick="selectDeliveryDate(this)">화(3/26)</button>
-            <button onclick="selectDeliveryDate(this)">수(3/27)</button>
-        </div>
-        <div class="coupon-select">
-            <label style="margin-right: 310px">할인 쿠폰</label>
-            <select id="coupon" style="width: 300px">
-                <option value="">선택하세요</option>
-                <option value="birth-coupon">생일 쿠폰</option>
-                <option value="welcom-coupon">웰컴 쿠폰</option>
-            </select>
-        </div>
-        <div class="point-use">
-            <label style="margin-right: 140px" >포인트</label>
-            <label>보유 0원</label>
-            <input type="number" style="margin-left: 130px"><label style="margin-left: 20px">원</label>
-            <button style="margin-left: 50px">사용</button>
-        </div>
-        <div class="payment">
-            <label>결제 수단</label><br>
-            <hr>
-            <button onclick="selectPaymentMethod(this); showCreditCardSelect();" id="creditCardBtn">신용 카드</button>
-            <button onclick="selectPaymentMethod(this); hideCreditCardSelect();">toss pay</button>
-            <button onclick="selectPaymentMethod(this); hideCreditCardSelect();">계좌 이체</button><br>
-            <div id="creditCardSelect" style="display: none">
-                <label style="margin-right: 310px">카드 선택</label>
-                <select style="width: 300px;">
-                    <option value="NH">농협</option>
-                    <option value="GY">기업</option>
-                    <option value="GM">국민</option>
-                    <option value="DG">대구</option>
-                    <option value="SH">신한</option>
-                </select>
+            <div th:each="estimatedDate : ${estimatedDateList}">
+                <button onclick="selectDeliveryDate(this)" th:text="${estimatedDate}"
+                        th:value="${estimatedDate}"></button>
             </div>
+            <div>
+                <button onclick="selectDeliveryDate(this)" value="none">선택 안 함</button>
+            </div>
+            <br>
         </div>
+        <span style="font-size: smaller; margin-left: 70%">선택안함 선택 시 가장 빠른 배송일에 배송</span>
     </div>
 
     <div class="side">
         <br>
-        <label class="info">상품 금액</label><label class="price">78,800  원</label><br>
-        <label class="info">배송비</label><label class="price">0  원</label><br>
-        <label class="info">쿠폰 할인</label><label class="price">0  원</label><br>
-        <label class="info">포인트 사용</label><label class="price">0  원</label><br>
-        <hr><br>
-        <label class="info">최종 결제 금액</label><label class="price">0  원</label><br>
-        <label class="info">적립 예정 포인트</label><label class="price">0 P</label><br><br>
-        <button type="button" class="pink-button" onclick="redirectToURL('/pay')">결제 하기</button>
+        <label class="info">상품 금액</label><label class="price" id="productAmount">0 원</label><br>
+        <label class="info">포장비</label><label class="price" id="wrapCost" th:text="${wrapCost}+'원'"></label><br>
+        <label class="info">배송비</label><label class="price" id="deliveryCost"
+                                              th:text="${deliveryCost}+'원'"></label><br>
+        <label class="info">할인 금액</label><label class="price" id="discountCost">0 원</label><br>
+
+        <hr>
+        <br>
+        <label class="info">최종 결제 금액</label><label class="price" id="finalPayment">0 원</label><br><br>
+
+        <button type="button" class="pink-button" onclick="validateDeliveryAndProceed()">결제 하기</button>
     </div>
 </div>
 </html>

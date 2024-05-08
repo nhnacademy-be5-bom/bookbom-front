@@ -19,7 +19,7 @@ public class BookDetailController {
                         Model model,
                         @PathVariable("id") Long bookId) {
 
-        BookDetailResponse bookDetail = bookService.getBook(bookId).getResult();
+        BookDetailResponse bookDetail = bookService.getBook(bookId);
         model.addAttribute("bookDetail", bookDetail);
         return "page/book/bookdetail";
     }

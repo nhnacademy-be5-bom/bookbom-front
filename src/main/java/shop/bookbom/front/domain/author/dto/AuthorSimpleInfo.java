@@ -1,9 +1,8 @@
 package shop.bookbom.front.domain.author.dto;
 
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * packageName    : shop.bookbom.front.domain.author.dto
@@ -17,14 +16,9 @@ import lombok.NoArgsConstructor;
  * 2024-04-17        UuLaptop       최초 생성
  */
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 public class AuthorSimpleInfo {
     private String role;
     private String name;
-
-    @Builder
-    public AuthorSimpleInfo(String role, String name) {
-        this.role = role;
-        this.name = name;
-    }
 }

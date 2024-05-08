@@ -3,7 +3,7 @@
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/default_layout}">
+      layout:decorate="~{layouts/admin_layout}">
 <head>
     <meta charset="UTF-8">
     <title>책 등록 페이지</title>
@@ -20,25 +20,33 @@
 </head>
 
 
-<div layout:fragment="content" class="container card-0 justify-content-center ">
+<div class="container-fluid card-0 justify-content-center" layout:fragment="content">
 
     <div class="col-md-6 offset-md-3 mt-5">
 
-        <h1>책 등록</h1>
+        <th:block th:if="${success eq null}">
+            <h1>책 등록</h1>
+        </th:block>
 
-        <form accept-charset="UTF-8" th:object="${bookAddRequest}" th:action="@{/admin/addbook}" th:method="put"
+        <th:block th:unless="${success eq null}">
+            <h1 th:if="${success eq true}" style="color: blue">등록에 성공하였습니다.</h1>
+            <h1 th:if="${success eq false}" style="color: red">등록에 실패하였습니다: [[${message}]]</h1>
+        </th:block>
+
+
+        <form accept-charset="UTF-8" th:object="${bookAddRequest}" th:action="@{/admin/addbook}" th:method="post"
               enctype="multipart/form-data">
 
             <div class="form-group mt-3">
                 <label for="thumbnail" class="mr-2">책 썸네일:</label>
-                <input type="file" id="thumbnail" name="thumbnail" autofocus th:value="${thumbnail}">
+                <input type="file" id="thumbnail" name="thumbnail">
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="title">책 제목</label>
-                <input autofocus type="text" id="title" name="title" class="form-control" required="required">
+                <label th:for="*{title}">책 제목</label>
+                <input autofocus type="text" th:field="*{title}" class="form-control" required="required">
             </div>
 
             <hr>
@@ -72,74 +80,83 @@
 
             <hr>
 
+            <div id="authorForm" class="form-group">
+                <label>작가</label>
+                <div class="authorContainer0">
+                    <label>역할
+                        <input name="authors[0].role" type="text" class="form-control" required="required"/>
+                    </label>
+
+                    <label>이름
+                        <input name="authors[0].name" type="text" class="form-control" required="required"/>
+                    </label>
+                </div>
+                <div id="addAuthorButton" style="padding-top: 1em;" class="add" onclick="addAuthor()">
+                    작가 추가하기
+                </div>
+            </div>
+
+            <hr>
+
             <div class="form-group">
-                <label for="authors">작가</label>
-                <input type="text" id="authors" name="authors" th:value="${authors}" class="form-control"
+                <label th:for="*{publisher}">출판사</label>
+                <input type="text" th:field="*{publisher}" class="form-control" required="required">
+            </div>
+
+            <hr>
+
+            <div class="form-group">
+                <label th:for="pubDate">출판일</label>
+                <input type="date" th:field="*{pubDate}" class="form-control"
                        required="required">
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="publisher">출판사</label>
-                <input type="text" id="publisher" name="publisher" class="form-control" required="required">
+                <label th:for="*{isbn10}">10자리 ISBN</label>
+                <input type="text" th:field="*{isbn10}" class="form-control" required="required">
+            </div>
+
+            <div class="form-group">
+                <label th:for="*{isbn13}">13자리 ISBN</label>
+                <input type="text" th:field="*{isbn13}" class="form-control" required="required">
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="pubDate">출판일</label>
-                <input type="date" id="pubDate" name="pubDate" th:value="${pubDate}" class="form-control"
-                       required="required">
-            </div>
-
-            <hr>
-
-            <div class="form-group">
-                <label for="isbn10">10자리 ISBN</label>
-                <input type="text" id="isbn10" name="isbn10" class="form-control" required="required">
-            </div>
-
-            <div class="form-group">
-                <label for="isbn13">13자리 ISBN</label>
-                <input type="text" id="isbn13" name="isbn13" class="form-control" required="required">
-            </div>
-
-            <hr>
-
-            <div class="form-group">
-                <label for="index">목차</label>
-                <input type="text" id="index" name="index" class="form-control" required="required">
+                <label th:for="*{index}">목차</label>
+                <input type="text" th:field="*{index}" class="form-control" required="required">
             </div>
 
             <hr>
             <label for="editor">설명</label>
-            <div id="editor" onsubmit="setDescription()"></div>
+            <div id="editor" onfocusout="setDescription()"></div>
 
             <div class="form-group">
-                <label for="description" style="display: none"></label>
-                <input type="hidden" id="description" name="description" class="form-control" required="required">
+                <label th:for="description" style="display: none"></label>
+                <input type="hidden" th:field="*{description}" class="form-control" required="required">
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="cost">정가</label>
-                <input type="number" id="cost" name="cost" class="form-control" required="required">
+                <label th:for="cost">정가</label>
+                <input type="number" th:field="*{cost}" class="form-control" required="required">
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="discountCost">판매가</label>
-                <input type="number" id="discountCost" name="discountCost" class="form-control" required="required">
+                <label th:for="discountCost">판매가</label>
+                <input type="number" th:field="*{discountCost}" class="form-control" required="required">
             </div>
 
             <hr>
 
             <div class="form-group">
                 <span>포장여부</span>
-
                 <input type="radio" id="packagablechoice1" name="packagable" value="true" checked/>
                 <label for="packagablechoice1">가능</label>
 
@@ -150,19 +167,19 @@
             <hr>
 
             <div class="form-group">
-                <label for="status">상태</label>
-                <select class="form-control" id="status" name="status">
+                <label th:for="status">상태</label>
+                <select class="form-control" th:field="*{status}">
                     <option value="" selected>선택하세요</option>
-                    <option value="FS">판매중</option>
-                    <option value="EOS">판매종료</option>
+                    <option value="FOR_SALE">판매중</option>
+                    <option value="END_OF_SALE">판매종료</option>
                 </select>
             </div>
 
             <hr>
 
             <div class="form-group">
-                <label for="stock">재고</label>
-                <input type="number" id="stock" name="stock" class="form-control" required="required">
+                <label th:for="stock">재고</label>
+                <input type="number" th:field="*{stock}" class="form-control" required="required">
             </div>
 
             <hr>

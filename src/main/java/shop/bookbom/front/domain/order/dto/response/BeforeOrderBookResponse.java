@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.order.dto;
+package shop.bookbom.front.domain.order.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +13,6 @@ public class BeforeOrderBookResponse {
     private String title;
     private Integer quantity;
     private Integer cost;
+    private Integer discountCost;
 
 }

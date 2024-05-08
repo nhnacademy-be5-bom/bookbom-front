@@ -1,16 +1,42 @@
 // '다음' 버튼을 클릭할 때 validateRadioButtonSelection 함수를 호출합니다.
 function selectWrapperSubmit() {
-    document.querySelector('.pink-button').addEventListener('click', function () {
-        // validateRadioButtonSelection 함수의 반환값에 따라 이벤트를 처리합니다.
-        var isValid = validateRadioButtonSelection();
-        if (!isValid) {
-            // 모든 라디오 버튼이 선택되었으면 다음 이벤트를 진행합니다
-            alert("포장지 선택을 진행해주세요");
-        } else {
-            alert("선택한 포장지가 유효합니다!");
-        }
+    var isValid = validateRadioButtonSelection();
+    if (!isValid) {
+        // 모든 라디오 버튼이 선택되었으면 다음 이벤트를 진행합니다
+        alert("포장지 선택을 진행해주세요");
+    } else {
+        const checkedItems = document.querySelectorAll('input[type="radio"]:checked');
 
-    });
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order/ordersheet';
+        checkedItems.forEach((item, index) => {
+            const quantity = item.value;
+            const bookId = item.name;
+            const wrapperName = $(item).siblings('label').text();
+
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `wrapperSelectBookRequestList[${index}].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
+
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'hidden';
+            quantityInput.name = `wrapperSelectBookRequestList[${index}].quantity`;
+            quantityInput.value = quantity;
+            form.appendChild(quantityInput);
+
+            const wrapperNameInput = document.createElement('input');
+            wrapperNameInput.type = 'hidden';
+            wrapperNameInput.name = `wrapperSelectBookRequestList[${index}].wrapperName`;
+            wrapperNameInput.value = wrapperName;
+            form.appendChild(wrapperNameInput);
+        });
+        document.body.appendChild(form);
+        form.submit();
+    }
+
 }
 
 function validateRadioButtonSelection() {
@@ -51,29 +77,6 @@ function validateRadioButtonSelection() {
 
 }
 
-// // 모든 라디오 버튼에 대해 그룹별로 업데이트 함수 호출
-// var radioButtons = document.querySelectorAll('input[type="radio"]');
-//
-// // 각 라디오 버튼에 대해 확인합니다.
-// for (var i = 0; i < radioButtons.length; i++) {
-//     var radioButton = radioButtons[i];
-//
-//     var groupNames = new Set(); // 중복을 허용하지 않는 name을 저장할 Set
-//
-//     // 각 라디오 버튼에 대해 확인합니다.
-//     for (var j = 0; j < radioButtons.length; j++) {
-//         var radioButton = radioButtons[j]; // 여기서 변수명을 바꿔줍니다.
-//
-//         // 현재 라디오 버튼의 name 속성값을 가져와서 Set에 추가합니다.
-//         var groupName = radioButton.getAttribute('name');
-//         groupNames.add(groupName);
-//     }
-// }
-// for (var groupName of groupNames.values()) {
-//     // 라디오 버튼이 변경될 때마다 업데이트 함수 호출
-//     $('input[name="' + groupName + '"]').on('change', updateWrapCountAndCost);
-// }
-
 function updateWrapCountAndCost() {
 
     // wrapBookCount 및 totalWrapCost 업데이트를 위해 필요한 변수 초기화
@@ -84,14 +87,16 @@ function updateWrapCountAndCost() {
     // 체크된 라디오 버튼에 대해 확인합니다.
     $('input[type="radio"]:checked').each(function () {
         // 각 체크된 라디오 버튼의 id와 value 값을 가져와서 계산합니다.
-        var id = parseFloat($(this).attr('id'));
-        var value = parseFloat($(this).val());
-        if (id !== 0) {
+        var cost = parseFloat($(this).attr('id'));
+        var quantity = parseFloat($(this).val());
+        // var wrapperName = $(this).siblings('label').text(); // 체크된 라디오 버튼의 라벨 텍스트를 가져옵니다.
+        // var bookId = $(this).attr('name');
+        if (cost !== 0) {
             // totalQuantity를 id 값으로부터 계산합니다.
-            totalQuantity += value;
+            totalQuantity += quantity;
         }
         // totalCost를 id와 value를 곱한 값을 더하여 계산합니다.
-        totalCost += id * value;
+        totalCost += cost * quantity;
     });
 
     // wrapBookCount 및 totalWrapCost 업데이트

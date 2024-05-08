@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.order.dto;
+package shop.bookbom.front.domain.order.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,4 +11,5 @@ public class WrapperDto {
     private Long id;
     private String name;
     private int cost;
+    private String imgUrl;
 }

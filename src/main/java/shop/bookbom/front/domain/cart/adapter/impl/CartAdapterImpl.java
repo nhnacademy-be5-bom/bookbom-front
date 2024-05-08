@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.cart.adapter.CartAdapter;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
 import shop.bookbom.front.domain.cart.dto.request.CartUpdateRequest;
@@ -56,8 +57,7 @@ public class CartAdapterImpl implements CartAdapter {
                         CART_ITEM_IDS_RESPONSE)
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }
@@ -80,8 +80,7 @@ public class CartAdapterImpl implements CartAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return response.getResult();
     }
@@ -103,8 +102,7 @@ public class CartAdapterImpl implements CartAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return response.getResult();
     }
@@ -125,8 +123,7 @@ public class CartAdapterImpl implements CartAdapter {
                         COMMON_RESPONSE)
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
     }
 }

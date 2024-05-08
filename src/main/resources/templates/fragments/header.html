@@ -136,7 +136,7 @@
                                                 data-bs-toggle="popover"
                                                 th:title="|${category_d1.name} 하위 카테고리 목록|"
                                                 th:text="${category_d1.name}"
-                                                th:href="@{/category/{categoryId}(categoryId=${category_d1.getId()})}"
+                                                th:href="@{/categories/{categoryId}(categoryId=${category_d1.getId()})}"
                                                 th:id="${category_d1.getId()}">
                                         </button>
                                     </li>

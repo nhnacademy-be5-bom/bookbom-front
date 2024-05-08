@@ -59,7 +59,7 @@
                         </div>
                         <!-- 이미지 -->
                         <div class="col-md-2 text-center thumbnail">
-                            <a th:href="@{'/book/detail/' + ${book.id}}">
+                            <a th:href="@{'/books/detail/' + ${book.id}}">
                                 <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
                                      th:src="${book.thumbnail}"
                                      class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
@@ -71,7 +71,7 @@
                         <!-- 도서 정보 -->
                         <div class="col-md-7">
                             <div class="card-body m-lg-3">
-                                <a th:href="@{'/book/detail/' + ${book.id}}">
+                                <a th:href="@{'/books/detail/' + ${book.id}}">
                                     <h5 class="card-title book-title" th:text="${book.title}">오늘부터 나를 고쳐 쓰기로 했다 - 다시
                                         태어나지 않고도 삶을
                                         바꾸는 매일의 작은 습관들</h5>

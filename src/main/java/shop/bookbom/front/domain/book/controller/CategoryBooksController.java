@@ -45,7 +45,7 @@ public class CategoryBooksController {
         model.addAttribute("size", bookResponse.getSize());
         model.addAttribute("sorted", sorted);
 
-        return "page/category/categorybooks";
+        return "page/categories/category-books";
     }
 
 }

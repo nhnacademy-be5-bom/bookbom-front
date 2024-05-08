@@ -64,7 +64,7 @@ public class BookAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/book/detail/" + bookId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/detail/" + bookId)
                 .toUriString();
 
         CommonResponse<BookDetailResponse> response =
@@ -81,7 +81,7 @@ public class BookAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/book/update/" + bookId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/update/" + bookId)
                 .toUriString();
 
         CommonResponse<BookUpdateResponse> response =
@@ -100,7 +100,7 @@ public class BookAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop//books/category/" + categoryId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/categories/" + categoryId)
                 .queryParam("pageable", pageable)
                 .queryParam("sortCondition", sortCondition)
                 .toUriString();
@@ -133,7 +133,7 @@ public class BookAdapter {
         httpHeadersForDto.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<BookAddRequest> dtoEntity = new HttpEntity<>(bookAddRequest, httpHeadersForDto);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/book/update/new")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/update/new")
                 .toUriString();
 
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
@@ -174,7 +174,7 @@ public class BookAdapter {
         httpHeadersForDto.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<BookUpdateRequest> dtoEntity = new HttpEntity<>(bookUpdateRequest, httpHeadersForDto);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/book/update/" + bookId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/update/" + bookId)
                 .toUriString();
 
         MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();

@@ -37,7 +37,7 @@ public class SearchAdapterImpl implements SearchAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/search")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/search")
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("keyword", keyword)

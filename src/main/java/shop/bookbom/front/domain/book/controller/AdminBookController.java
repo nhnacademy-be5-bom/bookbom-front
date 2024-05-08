@@ -31,16 +31,16 @@ public class AdminBookController {
     private final BookService bookService;
     private final CategoryService categoryService;
 
-    @GetMapping("/addbook")
+    @GetMapping("/add-books")
     public String addBookPage(HttpServletRequest request, Model model) {
         List<CategoryDTO> list_depth1 = categoryService.getDepthOneCategories();
         model.addAttribute("categories_depth1", list_depth1);
         model.addAttribute("bookAddRequest", new BookAddRequest());
 
-        return "page/book/addbook";
+        return "page/books/add-books";
     }
 
-    @PostMapping(value = "/addbook", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/add-books", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Headers("Content-Type: multipart/form-data")
     public String addBook(@RequestPart("thumbnail") MultipartFile thumbnail,
                           @ModelAttribute("bookAddRequest") BookAddRequest bookAddRequest,
@@ -56,10 +56,10 @@ public class AdminBookController {
             model.addAttribute("message", response.getHeader().getResultMessage());
         }
 
-        return "page/book/addbook";
+        return "page/books/add-books";
     }
 
-    @GetMapping("/updatebook/{bookId}")
+    @GetMapping("/update-books/{bookId}")
     public String updateBookPage(@PathVariable("bookId") Long bookId,
                                  Model model) {
         List<CategoryDTO> list_depth1 = categoryService.getDepthOneCategories();
@@ -68,10 +68,10 @@ public class AdminBookController {
         BookUpdateResponse bookUpdateResponse = bookService.getBookUpdateInfo(bookId);
         model.addAttribute("bookUpdateInfo", bookUpdateResponse);
 
-        return "page/book/updatebook";
+        return "page/books/update-books";
     }
 
-    @PostMapping(value = "/updatebook/{bookId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/update-books/{bookId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Headers("Content-Type: multipart/form-data")
     public String updateBook(@RequestPart("thumbnail") MultipartFile thumbnail,
                              @PathVariable("bookId") Long bookId,
@@ -83,11 +83,11 @@ public class AdminBookController {
         redirectAttributes.addFlashAttribute("success", response.getHeader().isSuccessful());
         redirectAttributes.addFlashAttribute("message", response.getHeader().getResultMessage());
 
-        return "redirect:/admin/updatebook/result";
+        return "redirect:/admin/update-books/result";
     }
 
-    @GetMapping("/updatebook/result")
+    @GetMapping("/update-books/result")
     public String updateBookResultPage() {
-        return "page/book/result/updatebook_result";
+        return "page/books/result/update-books-result";
     }
 }

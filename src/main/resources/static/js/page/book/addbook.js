@@ -45,7 +45,7 @@ async function setChildCategory(selectBox, categoryId) {
     const currentDepth = Number(selectBox.id.slice(-1));
 
     const response = await fetch(
-        GATEWAY_URL + "/shop/category/" + categoryId,
+        GATEWAY_URL + "/shop/open/category/" + categoryId,
         {
             method: "GET"
         });

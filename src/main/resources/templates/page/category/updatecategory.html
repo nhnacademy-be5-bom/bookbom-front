@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>카테고리 관리 페이지</title>
+
+    <!-- CSS -->
+    <th:block layout:fragment="css">
+        <link rel="stylesheet" th:href="@{/css/page/category/updatecategory.css}">
+    </th:block>
+    <!-- 자바스크립트 -->
+    <th:block layout:fragment="script">
+        <script th:src="@{/js/page/category/updatecategory.js}"></script>
+    </th:block>
+
+</head>
+
+<div layout:fragment="content" class="container card-0 justify-content-center ">
+
+    <form accept-charset="UTF-8"
+          enctype="application/x-www-form-urlencoded"
+          th:action="@{/admin/category/update}"
+          th:method="post">
+
+        <div class="d-flex p-2 bd-highlight">
+
+            <div class="list-group" style=" max-height: 50em; overflow-y: scroll;">
+                <a class="list-group-item list-group-item-action"
+                   th:each="category : ${categories_depth1}"
+                   th:text="${category.name}"
+                   th:id="|category_${category.getId()}|"></a>
+            </div>
+
+            <div class="list-group">
+
+            </div>
+
+            <div class="list-group">
+                <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                    The current link item
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">A second link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A third link item</a>
+                <a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+                <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1"
+                   aria-disabled="true">A disabled link item</a>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-primary">확인</button>
+        <button type="reset" class="btn btn-primary">취소</button>
+    </form>
+</div>
+
+
+<link id="gateWayURL" th:data-contextPath="${@environment.getProperty('bookbom.gateway-url')}"/>
+<script>
+    const GATEWAY_URL = document.querySelector("#gateWayURL").getAttribute("data-contextPath");
+</script>
+
+</html>

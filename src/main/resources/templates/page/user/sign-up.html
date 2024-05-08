@@ -22,12 +22,14 @@
             <p class="field-error" th:each="err : ${#fields.globalErrors()}"
                th:text="${err}">전체 오류 메시지</p>
         </div>
+        <input id="emailCanUse" th:field="*{emailCanUse}" type="hidden">
         <div>
             <label class="form-label" for="email">이메일</label>
             <div class="d-flex">
                 <input class="form-control" id="email" th:errorclass="field-error" th:field="*{email}"
                        type="text">
-                <button class="btn btn-outline-secondary mx-4 col-md-2" type="button">중복체크</button>
+                <button class="btn btn-outline-secondary mx-4 col-md-2" onclick="checkEmail()" type="button">중복체크
+                </button>
             </div>
             <div class="field-error" th:errors="*{email}"></div>
         </div>
@@ -66,7 +68,7 @@
                 <input class="form-control" id="addressNumber" readonly th:errorclass="field-error"
                        th:field="*{addressNumber}"
                        type="text">
-                <button class="btn btn-outline-secondary mx-3 col-md-3" onclick="sample4_execDaumPostcode()"
+                <button class="btn btn-outline-secondary mx-3 col-md-3" onclick="daumPostCode()"
                         type="button">찾기
                 </button>
             </div>

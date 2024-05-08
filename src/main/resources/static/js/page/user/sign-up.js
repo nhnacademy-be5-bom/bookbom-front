@@ -1,4 +1,4 @@
-function sample4_execDaumPostcode() {
+function daumPostCode() {
     new daum.Postcode({
         oncomplete: function (data) {
             // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -27,4 +27,32 @@ function sample4_execDaumPostcode() {
             document.getElementById("address").value = roadAddr;
         }
     }).open();
+}
+
+function checkEmail() {
+    const email = document.getElementById('email').value;
+    console.log(email);
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+    if (email === '') {
+        alert("이메일을 입력하세요.");
+        return;
+    }
+    if (!emailPattern.test(email)) {
+        alert("올바른 이메일 양식으로 입력하세요.");
+        return;
+    }
+    fetch('/users/check-email?email=' + encodeURIComponent(email))
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.canUse) {
+                alert("사용 가능한 이메일입니다.");
+                document.getElementById('emailCanUse').value = true;
+            } else {
+                alert("이미 사용중인 이메일입니다.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("에러가 발생했습니다. 관리자에게 문의 주세요.")
+        });
 }

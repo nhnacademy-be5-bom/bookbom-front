@@ -52,6 +52,10 @@ public class UserController {
             bindingResult.rejectValue("birthDate", "error.birthDate", "생년월일은 현재 날짜보다 이후일 수 없습니다.");
             return "page/user/sign-up";
         }
+        if (!signUpRequest.isEmailCanUse()) {
+            bindingResult.reject("error.email", "이메일 중복체크를 진행해주세요.");
+            return "page/user/sign-up";
+        }
         return "redirect:/";
     }
 }

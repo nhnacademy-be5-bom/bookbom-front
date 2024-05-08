@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/sign-up.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/sign-up.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
+
+<!-- Content -->
+<div class="container col-md-8 d-flex flex-column align-items-center" layout:fragment="content">
+    <div class="py-5 text-center">
+        <h2>회원 가입</h2>
+    </div>
+    <form action="" class="col-md-8" method="post" th:action th:object="${signUpRequest}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p>
+        </div>
+        <div>
+            <label class="form-label" for="email">이메일</label>
+            <div class="d-flex">
+                <input class="form-control" id="email" th:errorclass="field-error" th:field="*{email}"
+                       type="text">
+                <button class="btn btn-outline-secondary mx-4 col-md-2" type="button">중복체크</button>
+            </div>
+            <div class="field-error" th:errors="*{email}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="password">비밀번호</label>
+            <input class="form-control" id="password" th:errorclass="field-error"
+                   th:field="*{password}"
+                   type="password">
+            <div class="field-error" th:errors="*{password}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="name">이름</label>
+            <input class="form-control" id="name" th:errorclass="field-error" th:field="*{name}"
+                   type="text">
+            <div class="field-error" th:errors="*{name}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="nickname">닉네임</label>
+            <input class="form-control" id="nickname" th:errorclass="field-error" th:field="*{nickname}" type="text">
+            <div class="field-error" th:errors="*{nickname}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="birthDate">생년월일</label>
+            <input class="form-control" id="birthDate" th:errorclass="field-error" th:field="*{birthDate}" type="date">
+            <div class="field-error" th:errors="*{birthDate}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="phoneNumber">전화번호</label>
+            <input class="form-control" id="phoneNumber" th:errorclass="field-error" th:field="*{phoneNumber}"
+                   type="text">
+            <div class="field-error" th:errors="*{phoneNumber}"></div>
+        </div>
+        <div class="col-md-8">
+            <label class="form-label" for="addressNumber">우편번호</label>
+            <div class="d-flex">
+                <input class="form-control" id="addressNumber" readonly th:errorclass="field-error"
+                       th:field="*{addressNumber}"
+                       type="text">
+                <button class="btn btn-outline-secondary mx-3 col-md-3" onclick="sample4_execDaumPostcode()"
+                        type="button">찾기
+                </button>
+            </div>
+            <div class="field-error" th:errors="*{addressNumber}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="address">주소</label>
+            <input class="form-control" id="address" readonly th:errorclass="field-error" th:field="*{address}"
+                   type="text">
+            <div class="field-error" th:errors="*{address}"></div>
+        </div>
+        <div>
+            <label class="form-label" for="addressDetail">상세 주소</label>
+            <input class="form-control" id="addressDetail" th:errorclass="field-error" th:field="*{addressDetail}"
+                   type="text">
+            <div class="field-error" th:errors="*{addressDetail}"></div>
+        </div>
+        <hr class="my-4">
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-primary btn-lg" type="submit">회원 가입</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg"
+                        onclick="location.href='/'"
+                        th:onclick="|location.href='@{/}'|"
+                        type="button">취소
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+</html>

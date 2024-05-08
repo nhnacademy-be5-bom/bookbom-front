@@ -129,17 +129,21 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown"
                                 style=" max-height: 20em; overflow-y: scroll;">
                                 <th:block th:if="${@CategoryService ne null}"
-                                          th:each="category_d1 : ${@CategoryService.getDepthOneCategories()}">
+                                          th:with="depthOneCategories=${@CategoryService.getDepthOneCategories()}">
+                                    
+                                    <th:block th:each="category_d1 : ${depthOneCategories}">
+                                        <li id="category_depth1">
+                                            <button type="button" class="dropdown-item categorypop"
+                                                    data-bs-toggle="popover"
+                                                    th:unless="${category_d1.getId() eq 1}"
+                                                    th:title="|${category_d1.name} 하위 카테고리 목록|"
+                                                    th:text="${category_d1.name}"
+                                                    th:href="@{/category/{categoryId}(categoryId=${category_d1.getId()})}"
+                                                    th:id="${category_d1.getId()}">
+                                            </button>
+                                        </li>
+                                    </th:block>
 
-                                    <li id="category_depth1">
-                                        <button type="button" class="dropdown-item categorypop"
-                                                data-bs-toggle="popover"
-                                                th:title="|${category_d1.name} 하위 카테고리 목록|"
-                                                th:text="${category_d1.name}"
-                                                th:href="@{/category/{categoryId}(categoryId=${category_d1.getId()})}"
-                                                th:id="${category_d1.getId()}">
-                                        </button>
-                                    </li>
                                 </th:block>
 
                                 <th:block th:if="${@CategoryService eq null}">

@@ -17,7 +17,7 @@ window.onload = function () {
         category.addEventListener("mouseover", updateChildCategory);
 
         category.addEventListener("click", function (e) {
-            document.location.href = "/category/" + this.id;
+            document.location.href = "/categories/" + this.id;
         });
 
         setDefaultChildCategory(category);
@@ -56,7 +56,7 @@ async function updateChildCategory(e) {
         if (childList.result.length !== 0) {
 
             for (const child of childList.result) {
-                const content1 = "<p><a href='/category/";
+                const content1 = "<p><a href='/categories/";
                 const content2 = "'>";
                 const content3 = "</a></p>"
 
@@ -81,7 +81,7 @@ async function setDefaultChildCategory(categoryElement) {
         if (childList.result.length !== 0) {
 
             for (const child of childList.result) {
-                const content1 = "<p><a href='/category/";
+                const content1 = "<p><a href='/categories/";
                 const content2 = "'>";
                 const content3 = "</a></p>"
 

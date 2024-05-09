@@ -38,10 +38,9 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/member/point-history")
+                UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/point-history")
                         .queryParam("page", pageable.getPageNumber())
-                        .queryParam("size", pageable.getPageSize())
-                        .queryParam("userId", 1L); // todo 회원 처리
+                        .queryParam("size", pageable.getPageSize());
         if (reason != null) {
             uriBuilder.queryParam("reason", reason);
         }

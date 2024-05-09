@@ -30,7 +30,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/users/order")
+    @GetMapping("/users/orders")
     public String orderList(
             Model model,
             @PageableDefault Pageable pageable,

@@ -9,19 +9,19 @@ import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildResponse;
 
-@FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-url}")
+@FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-feign-url}")
 public interface CategoryAdapter {
 
-    @GetMapping("/category/all")
+    @GetMapping("/open/categories/all")
     CommonResponse<CategoryDepthResponse> getAllCategories();
 
-    @GetMapping("/category/depth1")
+    @GetMapping("/open/categories/depth1")
     CommonListResponse<CategoryDTO> getDepthOneCategories();
 
-    @GetMapping("/category/{parentId}")
+    @GetMapping("/open/categories/{parentId}")
     CommonListResponse<CategoryDTO> getChildCategoriesOf(@PathVariable("parentId") Long parentId);
 
-    @GetMapping("/category/nameandchild/{parentId}")
+    @GetMapping("/open/categories/name-and-child/{parentId}")
     CommonResponse<CategoryNameAndChildResponse> getNameAndChildCategoriesOf(
             @PathVariable("parentId") Long parentId);
 

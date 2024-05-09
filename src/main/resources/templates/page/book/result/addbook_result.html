@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>책봄</title>
+</head>
+
+<div class="container-fluid" layout:fragment="content">
+    <th:block th:if="${success eq true}">
+        <p>책 등록에 성공하였습니다.</p>
+    </th:block>
+
+    <th:block th:if="${success eq false}">
+        <p>책 등록에 실패하였습니다.</p>
+    </th:block>
+
+    <p>서버로부터의 상태 메시지: [[${message}]]</p>
+
+    <div class="button-container">
+        <a class="btn btn-primary" th:href="@{/admin/addbook}">책 등록 페이지로 돌아가기</a>
+        <a class="btn btn-primary" th:href="@{/admin/admin_main}">관리자 메인 페이지로 돌아가기</a>
+    </div>
+
+</div>
+
+</html>
+

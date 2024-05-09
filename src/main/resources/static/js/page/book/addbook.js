@@ -45,7 +45,7 @@ async function setChildCategory(selectBox, categoryId) {
     const currentDepth = Number(selectBox.id.slice(-1));
 
     const response = await fetch(
-        GATEWAY_URL + "/shop/category/" + categoryId,
+        GATEWAY_URL + "/shop/open/categories" + categoryId,
         {
             method: "GET"
         });
@@ -88,4 +88,24 @@ function createCategorySelectBox(depth) {
     newSelect.appendChild(newCategory);
 
     return newSelect;
+}
+
+function addAuthor() {
+    const authorDiv = document.querySelector('.authorContainer0').cloneNode(true);
+    const authorFormDiv = document.getElementById('authorForm');
+    const addButton = document.getElementById('addAuthorButton');
+
+    let currentAuthorIndex = Number(
+        addButton.previousElementSibling.className.replace("authorContainer", ""));
+    currentAuthorIndex++;
+
+    authorDiv.className = 'authorContainer' + currentAuthorIndex;
+
+    authorDiv.querySelector('input[name="authors[0].role"]').value = '';
+    authorDiv.querySelector('input[name="authors[0].role"]').name = 'authors[' + currentAuthorIndex + '].role';
+
+    authorDiv.querySelector('input[name="authors[0].name"]').value = '';
+    authorDiv.querySelector('input[name="authors[0].name"]').name = 'authors[' + currentAuthorIndex + '].name';
+
+    authorFormDiv.insertBefore(authorDiv, addButton);
 }

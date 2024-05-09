@@ -31,7 +31,7 @@
             <div th:each="book : ${latestBooks}" class="col-md-4 mb-4 d-flex flex-column">
                 <div class="card flex-grow-1 book-info" th:data-book-id="${book.id}">
                     <div class="aspect-ratio aspect-ratio-16x9">
-                        <a th:href="@{'/book/detail/' + ${book.id}}">
+                        <a th:href="@{'/books/detail/' + ${book.id}}">
                             <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
                                  th:src="${book.thumbnail}" style="height: 550px"
                                  class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
@@ -41,7 +41,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <a th:href="@{'/book/detail/' + ${book.id}}">
+                        <a th:href="@{'/books/detail/' + ${book.id}}">
                             <h5 class="card-title" th:text="${book.title}"></h5>
                         </a>
                         <p class="card-text">

@@ -39,7 +39,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/best")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/latest")
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .build()

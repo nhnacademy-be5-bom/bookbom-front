@@ -73,7 +73,7 @@ async function setDefaultChildCategory(categoryElement) {
         const response = await fetch(
             "/rest/categories/" + categoryElement.id,
             {
-                method: "GET",
+                method: "GET"
             });
 
         const childList = await response.json();

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+<!-- Content -->
+<div class="container d-flex flex-column align-items-center justify-content-center my-5" layout:fragment="content">
+    <h1 class="my-5 fw-bold">회원가입이 완료되었습니다!</h1>
+    <a class="btn btn-primary my-5" href="/">메인 페이지로 이동</a>
+</div>
+</html>

@@ -19,6 +19,8 @@ import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.member.dto.request.OrderDateCondition;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.adapter.UserAdapter;
+import shop.bookbom.front.domain.user.dto.SignUpDto;
+import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +28,13 @@ public class UserAdapterImpl implements UserAdapter {
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<OrderInfoResponse>>> ORDER_INFO_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
+    private static final ParameterizedTypeReference<CommonResponse<EmailCheckResponse>> EMAIL_CHECK_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
     private final RestTemplate restTemplate;
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
@@ -55,5 +64,51 @@ public class UserAdapterImpl implements UserAdapter {
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
+    }
+
+
+    @Override
+    public EmailCheckResponse checkEmailCanUse(String email) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/users/check-email")
+                .queryParam("email", email)
+                .toUriString();
+
+        CommonResponse<EmailCheckResponse> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestEntity,
+                        EMAIL_CHECK_RESPONSE)
+                .getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new RestTemplateException();
+        }
+        return Objects.requireNonNull(response).getResult();
+    }
+
+    @Override
+    public void signUp(SignUpDto request) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SignUpDto> requestEntity = new HttpEntity<>(request, httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/sign-up")
+                .toUriString();
+
+        CommonResponse<Void> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        requestEntity,
+                        COMMON_RESPONSE
+                )
+                .getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new RestTemplateException();
+        }
     }
 }

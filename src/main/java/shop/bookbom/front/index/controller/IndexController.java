@@ -1,4 +1,4 @@
-package shop.bookbom.front.index;
+package shop.bookbom.front.index.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -60,5 +60,10 @@ public class IndexController {
     @GetMapping("/myCouponDetail")
     public String showMyCouponDetailPage() {
         return "page/coupon/myCoupon_detail";
+    }
+
+    @GetMapping("/admin")
+    public String showAdminMainPage() {
+        return "page/admin/admin_main";
     }
 }

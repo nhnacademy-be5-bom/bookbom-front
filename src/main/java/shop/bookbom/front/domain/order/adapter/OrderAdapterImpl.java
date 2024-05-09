@@ -21,6 +21,7 @@ import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OpenWrapperSelectResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
@@ -43,8 +44,13 @@ public class OrderAdapterImpl implements OrderAdapter {
     private static final ParameterizedTypeReference<CommonResponse<OrderDetailResponse>> ORDER_DETAIL_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
-    private static final ParameterizedTypeReference<CommonResponse<WrapperSelectResponse>>
+    private static final ParameterizedTypeReference<CommonResponse<OpenWrapperSelectResponse>>
             WRAPPER_SELECT_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+
+    private static final ParameterizedTypeReference<CommonResponse<WrapperSelectResponse>>
+            WRAPPER_SELECT_MEMBER_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -101,7 +107,7 @@ public class OrderAdapterImpl implements OrderAdapter {
      * @return
      */
     @Override
-    public WrapperSelectResponse wrapperSelect(WrapperSelectRequest wrapperSelectRequest) {
+    public OpenWrapperSelectResponse wrapperSelect(WrapperSelectRequest wrapperSelectRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -109,8 +115,27 @@ public class OrderAdapterImpl implements OrderAdapter {
                 new HttpEntity<>(wrapperSelectRequest, httpHeaders);
 
 
-        CommonResponse<WrapperSelectResponse> response = restTemplate.exchange(gatewayUrl + "/shop/open/orders/wrapper"
-                , HttpMethod.POST, requestEntity, WRAPPER_SELECT_RESPONSE).getBody();
+        CommonResponse<OpenWrapperSelectResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/open/orders/wrapper"
+                        , HttpMethod.POST, requestEntity, WRAPPER_SELECT_RESPONSE).getBody();
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new BeforeOrderException();
+        }
+        return Objects.requireNonNull(response).getResult();
+    }
+
+    @Override
+    public WrapperSelectResponse wrapperSelectForMember(WrapperSelectRequest wrapperSelectRequest, Long userId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<WrapperSelectRequest> requestEntity =
+                new HttpEntity<>(wrapperSelectRequest, httpHeaders);
+
+
+        CommonResponse<WrapperSelectResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/orders/wrapper/{userId}"
+                        , HttpMethod.POST, requestEntity, WRAPPER_SELECT_MEMBER_RESPONSE, userId).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new BeforeOrderException();
         }

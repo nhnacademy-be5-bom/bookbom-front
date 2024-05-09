@@ -15,6 +15,7 @@ import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OpenWrapperSelectResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
@@ -59,14 +60,6 @@ public class OrderController {
         return "page/order/order-detail";
     }
 
-    //재고 부족 페이지
-//    @GetMapping("/order/stockLow")
-//    public String stockLow(@RequestParam("errorMessage") String errorMessage,
-//                           Model model) {
-//        model.addAttribute("errorMessage", errorMessage);
-//
-//        return "page/order/exception/stockLow";
-//    }
 
     //주문서 작성 페이지
     @PostMapping("/order/ordersheet")
@@ -75,24 +68,49 @@ public class OrderController {
         String wrapperSelectListToStr =
                 OrderUtil.convertWrapperSelectListToString(wrapperSelectRequest.getWrapperSelectBookRequestList());
         redirectAttributes.addAttribute("wrapperSelectListToStr", wrapperSelectListToStr);
+        //회원이면
+        //return "redirect:/order/member-ordersheet
         return "redirect:/order/ordersheet";
     }
+
+    //회원 주문 페이지
+    @GetMapping("/order/member-ordersheet")
+    public String getMemberOrderSheet(@RequestParam(name = "userId") Long userId,
+                                      @RequestParam("wrapperSelectListToStr") String wrapperSelectListToStr,
+                                      Model model) {
+        WrapperSelectRequest wrapperSelectRequest = WrapperSelectRequest.builder()
+                .wrapperSelectBookRequestList(OrderUtil.convertStringToWrapperSelectList(wrapperSelectListToStr))
+                .build();
+
+        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapperForMember(wrapperSelectRequest, userId);
+        model.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
+        model.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
+        model.addAttribute("wrapperSelectResponseList", wrapperSelectResponse.getWrapperSelectResponseList());
+        model.addAttribute("estimatedDateList", wrapperSelectResponse.getEstimatedDateList());
+        model.addAttribute("point", wrapperSelectResponse.getPoint());
+        model.addAttribute("availableMemberCoupons", wrapperSelectResponse.getAvailableMemberCoupons());
+        model.addAttribute("unavailableMemberCoupons", wrapperSelectResponse.getUnavailableMemberCoupons());
+
+        return "page/order/ordersheet_member";
+    }
+
 
     //주문서 작성 페이지
     @GetMapping("/order/ordersheet")
     public String getOrdersheet(@RequestParam("wrapperSelectListToStr") String wrapperSelectListToStr,
                                 Model model) {
+
         WrapperSelectRequest wrapperSelectRequest = WrapperSelectRequest.builder()
                 .wrapperSelectBookRequestList(OrderUtil.convertStringToWrapperSelectList(wrapperSelectListToStr))
                 .build();
-        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapper(wrapperSelectRequest);
+        OpenWrapperSelectResponse openWrapperSelectResponse = orderService.selectWrapper(wrapperSelectRequest);
 
-        model.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
-        model.addAttribute("deliveryCost", wrapperSelectResponse.getDeliveryCost());
-        model.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
-        model.addAttribute("wrapperSelectResponseList", wrapperSelectResponse.getWrapperSelectResponseList());
-        model.addAttribute("estimatedDateList", wrapperSelectResponse.getEstimatedDateList());
-        
+        model.addAttribute("totalOrderCount", openWrapperSelectResponse.getTotalOrderCount());
+        model.addAttribute("deliveryCost", openWrapperSelectResponse.getDeliveryCost());
+        model.addAttribute("wrapCost", openWrapperSelectResponse.getWrapCost());
+        model.addAttribute("wrapperSelectResponseList", openWrapperSelectResponse.getWrapperSelectResponseList());
+        model.addAttribute("estimatedDateList", openWrapperSelectResponse.getEstimatedDateList());
+
         return "page/order/ordersheet_non_member";
     }
 

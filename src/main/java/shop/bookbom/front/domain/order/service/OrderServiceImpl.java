@@ -12,6 +12,7 @@ import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OpenWrapperSelectResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
@@ -33,9 +34,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public WrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest) {
+    public OpenWrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest) {
         return orderAdapter.wrapperSelect(wrapperSelectRequest);
 
+    }
+
+    @Override
+    public WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest, Long userId) {
+        return orderAdapter.wrapperSelectForMember(wrapperSelectRequest, userId);
     }
 
     @Override

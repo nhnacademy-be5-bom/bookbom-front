@@ -115,32 +115,31 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 주문 폼 생성
-    document.querySelector('.order-btn').addEventListener('click', function () {
-        console.log('hi');
-        const bookInfo = this.closest('.book-info');
-        const bookId = bookInfo.getAttribute('data-book-id');
-        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
-        const quantity = parseInt(quantityInput.value);
+    document.querySelectorAll('.order-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const bookInfo = this.closest('.book-info');
+            const bookId = bookInfo.getAttribute('data-book-id');
+            const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value);
 
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = '/order/wrapper';
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/order/wrapper';
 
-        const bookIdInput = document.createElement('input');
-        bookIdInput.type = 'hidden';
-        bookIdInput.name = `beforeOrderRequests[0].bookId`;
-        bookIdInput.value = bookId;
-        form.appendChild(bookIdInput);
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `beforeOrderRequests[0].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
 
 
-        const quantityInputHidden = document.createElement('input');
-        quantityInputHidden.type = 'hidden';
-        quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
-        quantityInputHidden.value = quantity;
-        form.appendChild(quantityInputHidden);
-        document.body.appendChild(form);
-        console.log(form)
-
-        form.submit();
+            const quantityInputHidden = document.createElement('input');
+            quantityInputHidden.type = 'hidden';
+            quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
+            quantityInputHidden.value = quantity;
+            form.appendChild(quantityInputHidden);
+            document.body.appendChild(form);
+            form.submit();
+        });
     });
 });

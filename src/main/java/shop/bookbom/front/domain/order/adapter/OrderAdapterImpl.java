@@ -150,13 +150,13 @@ public class OrderAdapterImpl implements OrderAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/orders/{id}")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/orders/{id}")
                 .buildAndExpand(id)
                 .toUriString();
 
         CommonResponse<OrderDetailResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
                 ORDER_DETAIL_RESPONSE).getBody();
-        if (response == null || response.getHeader().isSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
@@ -191,7 +191,7 @@ public class OrderAdapterImpl implements OrderAdapter {
         CommonResponse<CommonPage<OrderManagementResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, ORDER_MANAGEMENT_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().isSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
@@ -217,7 +217,7 @@ public class OrderAdapterImpl implements OrderAdapter {
         CommonResponse<Void> response =
                 restTemplate.exchange(url, HttpMethod.PUT, requestEntity, COMMON_RESPONSE).getBody();
 
-        if (response == null || response.getHeader().isSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }

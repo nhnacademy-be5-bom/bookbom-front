@@ -3,7 +3,7 @@
 
 <header th:fragment="headerFragment">
     <div class="container py-2">
-        <div class="row py-4 pb-0 pb-sm-4 align-items-center ">
+        <div class="row py-4 pb-0 pb-sm-4 align-items-center">
 
             <!--로고-->
             <div class="col-sm-2 col-lg-3 text-center text-sm-start">
@@ -134,9 +134,10 @@
                                     <li id="category_depth1">
                                         <button type="button" class="dropdown-item categorypop"
                                                 data-bs-toggle="popover"
+                                                th:if="${category_d1.getId() ne 1}"
                                                 th:title="|${category_d1.name} 하위 카테고리 목록|"
                                                 th:text="${category_d1.name}"
-                                                th:href="@{/category/{categoryId}(categoryId=${category_d1.getId()})}"
+                                                th:href="@{/categories/{categoryId}(categoryId=${category_d1.getId()})}"
                                                 th:id="${category_d1.getId()}">
                                         </button>
                                     </li>
@@ -163,7 +164,7 @@
                             <a href="index.html" class="nav-link active">로그인</a>
                         </li>
                         <li class="nav-item">
-                            <a href="shop.html" class="nav-link">회원가입</a>
+                            <a class="nav-link" href="/sign-up">회원가입</a>
                         </li>
                     </ul>
 

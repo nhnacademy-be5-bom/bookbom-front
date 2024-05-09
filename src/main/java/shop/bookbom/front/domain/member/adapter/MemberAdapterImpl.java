@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.member.dto.response.MemberInfoResponse;
 
 @Component
@@ -40,8 +41,7 @@ public class MemberAdapterImpl implements MemberAdapter {
                 requestEntity,
                 MEMBER_INFO).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return response.getResult();
     }

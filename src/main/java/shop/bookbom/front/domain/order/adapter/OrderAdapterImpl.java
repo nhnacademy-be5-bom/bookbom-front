@@ -16,6 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
@@ -154,8 +155,7 @@ public class OrderAdapterImpl implements OrderAdapter {
         CommonResponse<OrderDetailResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
                 ORDER_DETAIL_RESPONSE).getBody();
         if (response == null || response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return response.getResult();
     }

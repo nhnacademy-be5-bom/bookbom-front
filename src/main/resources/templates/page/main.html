@@ -100,14 +100,14 @@
                 <div class="swiper-wrapper">
                     <div th:each="book : ${bestBooks}" class="swiper-slide">
                         <div class="card position-relative">
-                            <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
+                            <a class="book-link" th:href="@{'/books/detail/' + ${book.id}}">
                                 <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
                                      th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
                                 <img th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}"
                                      th:src="@{/images/no-image.jpg}" class="rounded-4 book-thumbnail" alt="image">
                             </a>
                             <div class="card-body p-0">
-                                <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
+                                <a class="h-100" th:href="@{'/books/detail/' + ${book.id}}">
                                     <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
                                 </a>
                                 <div class="card-text">
@@ -219,11 +219,11 @@
             <div class="isotope-container row">
                 <div th:each="book : ${latestBooks}" class="item cat col-md-4 col-lg-3 my-4">
                     <div class="card position-relative">
-                        <a th:href="@{'/book/detail/' + ${book.id}}" class="book-link">
+                        <a class="book-link" th:href="@{'/books/detail/' + ${book.id}}">
                             <img th:src="${book.thumbnail}" class="rounded-4 book-thumbnail" alt="image">
                         </a>
                         <div class="card-body p-0">
-                            <a th:href="@{'/book/detail/' + ${book.id}}" class="h-100">
+                            <a class="h-100" th:href="@{'/books/detail/' + ${book.id}}">
                                 <h3 class="card-title pt-4 m-0" th:text="${book.title}">Grey hoodie</h3>
                             </a>
                             <div class="card-text">

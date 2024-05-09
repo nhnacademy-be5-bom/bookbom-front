@@ -17,7 +17,7 @@ window.onload = function () {
         category.addEventListener("mouseover", updateChildCategory);
 
         category.addEventListener("click", function (e) {
-            document.location.href = "/category/" + this.id;
+            document.location.href = "/categories/" + this.id;
         });
 
         setDefaultChildCategory(category);
@@ -46,7 +46,7 @@ async function updateChildCategory(e) {
 
     if (popoverInstance._config.content.length === 0) {
         const response = await fetch(
-            GATEWAY_URL + "/shop/category/" + this.id,
+            "/rest/categories/" + this.id,
             {
                 method: "GET"
             });
@@ -56,7 +56,7 @@ async function updateChildCategory(e) {
         if (childList.result.length !== 0) {
 
             for (const child of childList.result) {
-                const content1 = "<p><a href='/category/";
+                const content1 = "<p><a href='/categories/";
                 const content2 = "'>";
                 const content3 = "</a></p>"
 
@@ -71,7 +71,7 @@ async function setDefaultChildCategory(categoryElement) {
 
     if (popoverInstance._config.content.length === 0) {
         const response = await fetch(
-            GATEWAY_URL + "/shop/category/" + categoryElement.id,
+            "/rest/categories/" + categoryElement.id,
             {
                 method: "GET"
             });
@@ -81,7 +81,7 @@ async function setDefaultChildCategory(categoryElement) {
         if (childList.result.length !== 0) {
 
             for (const child of childList.result) {
-                const content1 = "<p><a href='/category/";
+                const content1 = "<p><a href='/categories/";
                 const content2 = "'>";
                 const content3 = "</a></p>"
 
@@ -112,4 +112,4 @@ const observer = new MutationObserver(function (mutations) {
 });
 
 function fn_noop() {
-};
+}

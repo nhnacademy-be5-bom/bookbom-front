@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
@@ -17,6 +18,7 @@ import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequ
 import shop.bookbom.front.domain.admin.coupon.service.AdminCouponService;
 
 @RestController
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminCouponRestController {
     private final AdminCouponService adminCouponService;

@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/page/admin_coupon.css">
     <title>쿠폰 정책</title>
 </head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin_coupon.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/coupon_policy.js}"></script>
+</th:block>
 <body>
-<div class="container">
+<div layout:fragment="content">
     <div class="createPolicyModal">
         <h4>정책 등록</h4>
         할인 방식: <select name="discountType" class="form-select-sm">
@@ -17,17 +24,17 @@
     </select><br/>
         할인금액: <input name="discountAmount" type="text" class="form-control-sm"><br/>
         최소주문금액: <input name="minOrderAmount" type="text" class="form-control-sm"><br/>
-        최대할인금액: <input name="maxDiscountAmount" type="text" class="form-control-sm">
-        <button class="createBtn">등록</button>
+        최대할인금액: <input name="maxDiscountAmount" type="text" class="form-control-sm"><br/>
+        <button class="createCancelBtn" onclick="createCancel()">취소</button>
+        <button class="createBtn" onclick="create()">등록</button>
 
     </div>
-
-    <div class="row justify-content-center">
+    <div>
         <div class="titleContainer">
             <h2>쿠폰 정책</h2>
             <div class="topButtonContainer">
-                <button class="btn btn-primary showModalBtn">정책 등록</button>
-                <button class="btn btn-danger selectDeleteBtn">선택 삭제</button>
+                <button class="btn btn-primary showModalBtn" onclick="showModal()">정책 등록</button>
+                <button class="btn btn-danger selectDeleteBtn" onclick="deleteSelectedContainers()">선택 삭제</button>
             </div>
         </div>
     </div>
@@ -45,24 +52,22 @@
                         <option value="cost">COST</option>
                         <option value="rate">RATE</option>
                     </select><br/>
-                        할인금액: <input type="text" class="form-control-sm" readonly
+                        할인금액: <input type="text" name="discountCost" class="form-control-sm" readonly
                                      th:value="${policy.discountCost}"><br/>
-                        최소주문금액: <input type="text" class="form-control-sm" readonly
+                        최소주문금액: <input type="text" class="form-control-sm" name="minOrderCost" readonly
                                        th:value="${policy.minOrderCost}"><br/>
-                        최대할인금액: <input type="text" class="form-control-sm" readonly
+                        최대할인금액: <input type="text" class="form-control-sm" name="maxDiscountCost" readonly
                                        th:value="${policy.maxDiscountCost}">
                     </div>
-                    <div class="col-md-2 policyButtonContainer">
-                        <button class="btn btn-success editBtn">수정</button>
+                    <div class="col-md-3 policyButtonContainer">
+                        <button class="btn btn-success editBtn" onclick="toggleFields(event)">수정</button>
                         <br/>
-                        <button class="btn btn-danger deleteBtn">삭제</button>
+                        <button class="btn btn-danger deleteBtn" onclick="deletePolicy(event)">삭제</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script src="/js/page/admin_coupon.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

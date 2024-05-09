@@ -4,6 +4,8 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -12,13 +14,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonListResponse;
+import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
-import shop.bookbom.front.domain.admin.coupon.dto.request.AddBookCouponRequest;
-import shop.bookbom.front.domain.admin.coupon.dto.request.AddCategoryCouponRequest;
-import shop.bookbom.front.domain.admin.coupon.dto.request.AddCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
+import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
 
 @Slf4j
 @Component
@@ -34,6 +35,10 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
             };
     private static final ParameterizedTypeReference<CommonListResponse<CouponPolicyInfoDto>>
             COUPONPOLICY_INFO_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<CouponInfoResponse>>>
+            COUPON_INFO_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -59,7 +64,7 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         requestHttpEntity,
                         COMMON_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             //예외처리
             throw new RuntimeException();
         }
@@ -87,7 +92,7 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         requestHttpEntity,
                         COMMON_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             //예외처리
             throw new RuntimeException();
         }
@@ -115,7 +120,7 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         requestHttpEntity,
                         COMMON_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             //예외처리
             throw new RuntimeException();
         }
@@ -143,7 +148,7 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         requestHttpEntity,
                         COUPONPOLICY_INFO_RESPONSE)
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }
         return response.getResult();
@@ -165,15 +170,15 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
 
         String url = "";
         if (type.equals("general")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/generalCoupon/{userId}")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/generalCoupon/{userId}")
                     .buildAndExpand(userId)
                     .toUriString();
         } else if (type.equals("book")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/bookCoupon/{userId}")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/bookCoupon/{userId}")
                     .buildAndExpand(userId)
                     .toUriString();
         } else if (type.equals("category")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/categoryCoupon/{userId}")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/categoryCoupon/{userId}")
                     .buildAndExpand(userId)
                     .toUriString();
         }
@@ -185,8 +190,40 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         COMMON_RESPONSE
                 )
                 .getBody();
-        if (response == null || response.getHeader().getIsSuccessful()) {
+        if (response == null || !response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }
+    }
+
+    /**
+     * 쿠폰 정보를 가져옵니다.
+     *
+     * @param pageable
+     * @param type
+     * @param userId
+     * @return
+     */
+    @Override
+    public Page<CouponInfoResponse> getConponInfo(Pageable pageable, String type, Long userId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Page<CouponInfoResponse>> requestHttpEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/{type}/{userId}")
+                .queryParam("pageable", pageable)
+                .buildAndExpand(type, userId)
+                .toUriString();
+
+        CommonResponse<CommonPage<CouponInfoResponse>> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestHttpEntity,
+                        COUPON_INFO_RESPONSE
+                )
+                .getBody();
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new RuntimeException();
+        }
+        return response.getResult();
     }
 }

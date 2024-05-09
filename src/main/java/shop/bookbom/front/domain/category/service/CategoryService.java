@@ -28,10 +28,8 @@ public class CategoryService {
         return response.getResult();
     }
 
-    public List<CategoryDTO> getChildCategoriesById(Long categoryId) {
-        CommonListResponse<CategoryDTO> response = categoryAdaptor.getChildCategoriesOf(categoryId);
-        // null 없으므로 체크하지 않음
-        return Objects.requireNonNull(response).getResult();
+    public CommonListResponse<CategoryDTO> getChildCategoriesById(Long categoryId) {
+        return categoryAdaptor.getChildCategoriesOf(categoryId);
     }
 
     public CategoryNameAndChildResponse getCategoryNameAndChildCategoriesByCategoryId(Long categoryId) {

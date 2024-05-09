@@ -134,6 +134,7 @@
                                     <li id="category_depth1">
                                         <button type="button" class="dropdown-item categorypop"
                                                 data-bs-toggle="popover"
+                                                th:if="${category_d1.getId() ne 1}"
                                                 th:title="|${category_d1.name} 하위 카테고리 목록|"
                                                 th:text="${category_d1.name}"
                                                 th:href="@{/categories/{categoryId}(categoryId=${category_d1.getId()})}"

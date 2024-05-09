@@ -15,9 +15,9 @@
     <h2 class="mb-5">포인트 적립/사용 내역</h2>
     <div class="d-flex justify-content-start mb-3">
         <div class="btn-group" role="group" aria-label="Sort">
-            <a th:href="@{/member/point-history}" class="btn btn-link">전체</a>
-            <a th:href="@{/member/point-history(reason='EARN')}" class="btn btn-link">적립</a>
-            <a th:href="@{/member/point-history(reason='USE')}" class="btn btn-link">사용</a>
+            <a class="btn btn-link" th:href="@{/users/point-history}">전체</a>
+            <a class="btn btn-link" th:href="@{/users/point-history(reason='EARN')}">적립</a>
+            <a class="btn btn-link" th:href="@{/users/point-history(reason='USE')}">사용</a>
         </div>
     </div>
     <table class="table">
@@ -45,14 +45,14 @@
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                 <th:block th:if="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(page=${currentPage - 1}, size=${pageSize})}"
+                       th:href="@{/users/point-history(page=${currentPage - 1}, size=${pageSize})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </th:block>
                 <th:block th:unless="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(reason=${reason}, page=${currentPage - 1}, size=${pageSize})}"
+                       th:href="@{/users/point-history(reason=${reason}, page=${currentPage - 1}, size=${pageSize})}"
                        aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
@@ -62,13 +62,13 @@
                 th:classappend="${pageNum == currentPage} ? 'active'">
                 <th:block th:if="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(page=${pageNum}, size=${pageSize})}"
+                       th:href="@{/users/point-history(page=${pageNum}, size=${pageSize})}"
                        th:text="${pageNum + 1}">
                     </a>
                 </th:block>
                 <th:block th:unless="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(reason=${reason}, page=${pageNum}, size=${pageSize})}"
+                       th:href="@{/users/point-history(reason=${reason}, page=${pageNum}, size=${pageSize})}"
                        th:text="${pageNum + 1}">
                     </a>
                 </th:block>
@@ -76,14 +76,14 @@
             <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                 <th:block th:if="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(page=${currentPage + 1}, size=${pageSize})}"
+                       th:href="@{/users/point-history(page=${currentPage + 1}, size=${pageSize})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </th:block>
                 <th:block th:unless="${reason == null}">
                     <a class="page-link"
-                       th:href="@{/member/point-history(page=${currentPage + 1}, size=${pageSize}, reason=${reason})}"
+                       th:href="@{/users/point-history(page=${currentPage + 1}, size=${pageSize}, reason=${reason})}"
                        aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>

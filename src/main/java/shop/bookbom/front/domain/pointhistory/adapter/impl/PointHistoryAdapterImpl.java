@@ -39,6 +39,7 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
 
         UriComponentsBuilder uriBuilder =
                 UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/point-history")
+                        .queryParam("userId", 931L)
                         .queryParam("page", pageable.getPageNumber())
                         .queryParam("size", pageable.getPageSize());
         if (reason != null) {

@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.order.adapter;
 import java.time.LocalDate;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,7 @@ import shop.bookbom.front.domain.order.exception.BeforeOrderException;
 import shop.bookbom.front.domain.order.exception.LowStockException;
 import shop.bookbom.front.domain.order.exception.OrderFailException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class OrderAdapterImpl implements OrderAdapter {
@@ -148,13 +150,14 @@ public class OrderAdapterImpl implements OrderAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/orders/{id}")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/orders/{id}")
                 .buildAndExpand(id)
                 .toUriString();
 
         CommonResponse<OrderDetailResponse> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity,
                 ORDER_DETAIL_RESPONSE).getBody();
         if (response == null || response.getHeader().isSuccessful()) {
+            log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return response.getResult();
@@ -189,7 +192,8 @@ public class OrderAdapterImpl implements OrderAdapter {
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, ORDER_MANAGEMENT_RESPONSE).getBody();
 
         if (response == null || response.getHeader().isSuccessful()) {
-            throw new RuntimeException();
+            log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }
@@ -214,7 +218,8 @@ public class OrderAdapterImpl implements OrderAdapter {
                 restTemplate.exchange(url, HttpMethod.PUT, requestEntity, COMMON_RESPONSE).getBody();
 
         if (response == null || response.getHeader().isSuccessful()) {
-            throw new RuntimeException();
+            log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response);
     }

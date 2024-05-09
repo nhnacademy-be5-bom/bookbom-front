@@ -5,7 +5,7 @@ public class RestTemplateException extends BaseException {
         super(ErrorCode.COMMON_SYSTEM_ERROR);
     }
 
-    public RestTemplateException(ErrorCode errorCode, String message) {
-        super(errorCode, message);
+    public RestTemplateException(String message) {
+        super(ErrorCode.COMMON_SYSTEM_ERROR, message);
     }
 }

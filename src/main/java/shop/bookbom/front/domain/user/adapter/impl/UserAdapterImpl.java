@@ -2,6 +2,7 @@ package shop.bookbom.front.domain.user.adapter.impl;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserAdapterImpl implements UserAdapter {
@@ -50,7 +52,7 @@ public class UserAdapterImpl implements UserAdapter {
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/orders")
                 // todo userId 제거
-                .queryParam("userId", 779)
+                .queryParam("userId", 931L)
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("date_from", orderDateCondition.getOrderDateMin())
@@ -65,6 +67,7 @@ public class UserAdapterImpl implements UserAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
@@ -77,6 +80,7 @@ public class UserAdapterImpl implements UserAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/my-page")
+                .queryParam("userId", 931L)
                 .toUriString();
 
         CommonResponse<UserInfoResponse> response = restTemplate.exchange(
@@ -85,6 +89,7 @@ public class UserAdapterImpl implements UserAdapter {
                 requestEntity,
                 MEMBER_INFO).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return response.getResult();
@@ -109,6 +114,7 @@ public class UserAdapterImpl implements UserAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
@@ -132,6 +138,7 @@ public class UserAdapterImpl implements UserAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
     }

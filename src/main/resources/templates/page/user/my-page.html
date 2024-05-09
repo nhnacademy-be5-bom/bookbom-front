@@ -62,8 +62,8 @@
                 <tbody>
                 <tr class="order-detail" th:data-order-id="${order.id}" th:each="order : ${user.lastOrders}">
                     <td th:text="${order.orderDate}">2024-04-25</td>
-                    <td th:text="${order.orderNumber}">ORD123456</td>
-                    <td th:text="${order.name}">상품명</td>
+                    <td class="truncate-text" th:text="${order.orderNumber}">ORD123456</td>
+                    <td class="truncate-text" th:text="${order.name}">상품명</td>
                     <td data-th-text="${#numbers.formatInteger(order.totalCost, 0, 'COMMA') + '원'}">25,000원</td>
                     <td th:text="${order.status}">배송중</td>
                 </tr>

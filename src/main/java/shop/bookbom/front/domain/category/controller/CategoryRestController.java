@@ -1,9 +1,11 @@
 package shop.bookbom.front.domain.category.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import shop.bookbom.front.common.CommonListResponse;
+import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.service.CategoryService;
 
 /**
@@ -17,14 +19,14 @@ import shop.bookbom.front.domain.category.service.CategoryService;
  * -----------------------------------------------------------
  * 2024-04-26        UuLaptop       최초 생성
  */
-@Controller
+@RestController
 @RequiredArgsConstructor
-public class CategoryController {
+public class CategoryRestController {
     public final CategoryService categoryService;
 
-    @RequestMapping("admin/category/update")
-    public String updateCategoryPage(Model model) {
-        model.addAttribute("categories_depth1", categoryService.getDepthOneCategories());
-        return "page/category/updatecategory";
+    @RequestMapping("rest/categories/{parentId}")
+    public CommonListResponse<CategoryDTO> getCategoriesByParentId(@PathVariable("parentId") Long id) {
+        return categoryService.getChildCategoriesById(id);
     }
+
 }

@@ -9,7 +9,7 @@ import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.category.dto.response.CategoryDepthResponse;
 import shop.bookbom.front.domain.category.dto.response.CategoryNameAndChildResponse;
 
-@FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-url}")
+@FeignClient(value = "BOOKBOM-FRONT-CATEGORY", path = "/shop", url = "${bookbom.gateway-feign-url}")
 public interface CategoryAdapter {
 
     @GetMapping("/open/categories/all")

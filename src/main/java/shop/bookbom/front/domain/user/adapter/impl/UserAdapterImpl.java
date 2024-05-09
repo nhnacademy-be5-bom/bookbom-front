@@ -51,8 +51,6 @@ public class UserAdapterImpl implements UserAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/orders")
-                // todo userId 제거
-                .queryParam("userId", 931L)
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .queryParam("date_from", orderDateCondition.getOrderDateMin())
@@ -80,7 +78,6 @@ public class UserAdapterImpl implements UserAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/my-page")
-                .queryParam("userId", 931L)
                 .toUriString();
 
         CommonResponse<UserInfoResponse> response = restTemplate.exchange(

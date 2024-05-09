@@ -22,6 +22,14 @@ import shop.bookbom.front.domain.user.service.UserService;
 public class UserController {
     private final UserService userService;
 
+
+    @GetMapping("/users/my-page")
+    public String myPage(Model model) {
+        model.addAttribute("user", userService.getUserInfo());
+        return "page/user/my-page";
+    }
+
+
     @GetMapping("/users/order")
     public String orderList(
             Model model,

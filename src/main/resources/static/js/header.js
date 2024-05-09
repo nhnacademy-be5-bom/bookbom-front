@@ -112,4 +112,4 @@ const observer = new MutationObserver(function (mutations) {
 });
 
 function fn_noop() {
-};
+}

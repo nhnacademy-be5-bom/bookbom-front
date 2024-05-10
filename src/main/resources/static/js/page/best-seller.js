@@ -103,59 +103,61 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 주문 폼 생성
-    document.querySelector('.order-btn').addEventListener('click', function () {
-        const bookInfo = this.closest('.book-info');
-        const bookId = bookInfo.getAttribute('data-book-id');
-        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
-        const quantity = parseInt(quantityInput.value);
+    document.querySelectorAll('.order-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const bookInfo = this.closest('.book-info');
+            const bookId = bookInfo.getAttribute('data-book-id');
+            const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value);
 
-        const form = document.createElement('form');
-        form.method = 'post';
-        form.action = '/order/wrapper';
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/order/wrapper';
 
-        const bookIdInput = document.createElement('input');
-        bookIdInput.type = 'hidden';
-        bookIdInput.name = `beforeOrderRequests[0].bookId`;
-        bookIdInput.value = bookId;
-        form.appendChild(bookIdInput);
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `beforeOrderRequests[0].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
 
 
-        const quantityInputHidden = document.createElement('input');
-        quantityInputHidden.type = 'hidden';
-        quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
-        quantityInputHidden.value = quantity;
-        form.appendChild(quantityInputHidden);
-        document.body.appendChild(form);
-        form.submit();
+            const quantityInputHidden = document.createElement('input');
+            quantityInputHidden.type = 'hidden';
+            quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
+            quantityInputHidden.value = quantity;
+            form.appendChild(quantityInputHidden);
+            document.body.appendChild(form);
+            form.submit();
+        });
     });
 
-    // 장바구니에 담기 요청
-    function addToCart(requestData) {
-        // AJAX를 사용하여 POST 요청 전송
-        fetch('/cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(requestData),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('네트워크 에러가 발생했습니다.');
-                }
-                return response.json();
+        // 장바구니에 담기 요청
+        function addToCart(requestData) {
+            // AJAX를 사용하여 POST 요청 전송
+            fetch('/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestData),
             })
-            .then(data => {
-                let myModal = new bootstrap.Modal(document.getElementById('successModal'), {
-                    keyboard: false
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('네트워크 에러가 발생했습니다.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let myModal = new bootstrap.Modal(document.getElementById('successModal'), {
+                        keyboard: false
+                    });
+                    myModal.show();
+                    document.getElementById('goToCart').addEventListener('click', () => {
+                        window.location.href = '/cart';
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
-                myModal.show();
-                document.getElementById('goToCart').addEventListener('click', () => {
-                    window.location.href = '/cart';
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-    }
-});
+        }
+    });

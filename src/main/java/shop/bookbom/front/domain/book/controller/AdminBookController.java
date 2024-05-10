@@ -44,19 +44,19 @@ public class AdminBookController {
     @Headers("Content-Type: multipart/form-data")
     public String addBook(@RequestPart("thumbnail") MultipartFile thumbnail,
                           @ModelAttribute("bookAddRequest") BookAddRequest bookAddRequest,
-                          Model model) throws IOException {
+                          RedirectAttributes redirectAttributes) throws IOException {
 
         CommonResponse<Void> response = bookService.addBook(thumbnail, bookAddRequest);
 
-        if (response.getHeader().isSuccessful()) {
-            model.addAttribute("success", true);
-            model.addAttribute("message", response.getHeader().getResultMessage());
-        } else {
-            model.addAttribute("success", false);
-            model.addAttribute("message", response.getHeader().getResultMessage());
-        }
+        redirectAttributes.addFlashAttribute("success", response.getHeader().isSuccessful());
+        redirectAttributes.addFlashAttribute("message", response.getHeader().getResultMessage());
 
-        return "page/book/addbook";
+        return "redirect:/admin/addbook/result";
+    }
+
+    @GetMapping("/addbook/result")
+    public String addBookResultPage() {
+        return "page/book/result/addbook-result";
     }
 
     @GetMapping("/updatebook/{bookId}")
@@ -88,6 +88,6 @@ public class AdminBookController {
 
     @GetMapping("/updatebook/result")
     public String updateBookResultPage() {
-        return "page/book/result/updatebook_result";
+        return "page/book/result/updatebook-result";
     }
 }

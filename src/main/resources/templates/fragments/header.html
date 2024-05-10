@@ -34,7 +34,7 @@
                 <div class="d-none d-lg-flex align-items-end">
                     <ul class="d-flex justify-content-end list-unstyled m-0">
                         <li>
-                            <a href="account.html" class="mx-3">
+                            <a class="mx-3" href="/users/my-page">
                                 <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                             </a>
                         </li>
@@ -134,6 +134,7 @@
                                     <li id="category_depth1">
                                         <button type="button" class="dropdown-item categorypop"
                                                 data-bs-toggle="popover"
+                                                th:if="${category_d1.getId() ne 1}"
                                                 th:title="|${category_d1.name} 하위 카테고리 목록|"
                                                 th:text="${category_d1.name}"
                                                 th:href="@{/categories/{categoryId}(categoryId=${category_d1.getId()})}"
@@ -160,7 +161,7 @@
 
                     <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link active">로그인</a>
+                            <a href="/signin" class="nav-link active">로그인</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/sign-up">회원가입</a>

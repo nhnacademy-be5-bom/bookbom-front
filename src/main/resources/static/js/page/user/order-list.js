@@ -51,5 +51,5 @@ function submitDates() {
         return;
     }
 
-    window.location.href = `/users/order?date_from=${dateFrom}&date_to=${dateTo}`;
+    window.location.href = `/users/orders?date_from=${dateFrom}&date_to=${dateTo}`;
 }

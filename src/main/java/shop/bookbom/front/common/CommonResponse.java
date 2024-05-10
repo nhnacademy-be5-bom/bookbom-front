@@ -1,12 +1,13 @@
 package shop.bookbom.front.common;
 
-
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import shop.bookbom.front.common.exception.ErrorCode;
 
+@Data
 @Getter
 @NoArgsConstructor
 public class CommonResponse<T> {
@@ -48,3 +49,4 @@ public class CommonResponse<T> {
                 .build();
     }
 }
+

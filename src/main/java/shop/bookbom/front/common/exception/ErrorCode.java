@@ -17,8 +17,10 @@ public enum ErrorCode {
     //order
     LOW_STOCK(400, "해당 요쳥 책의 재고가 부족합니다. 다시 시도해주세요."),
     //payment
-    PAYMENT_FAILED(400, "결제가 실패했습니다");
-
+    PAYMENT_FAILED(400, "결제가 실패했습니다"),
+    JWT_NOT_VALIDATE(400, "유효하지 않은 상태입니다. 다시 로그인해주세요."),
+    TOKEN_NOT_EXIST(400, "토큰을 생성하지 못했습니다"),
+    REDIRECT_FAILED(400, "페이지 이동을 실패했습니다.");
     private final int code;
     private final String message;
 }

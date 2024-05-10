@@ -16,7 +16,7 @@ import shop.bookbom.front.domain.pointhistory.service.PointHistoryService;
 public class PointHistoryController {
     private final PointHistoryService pointHistoryService;
 
-    @GetMapping("/member/point-history")
+    @GetMapping("/users/point-history")
     public String pointHistory(
             Model model,
             @PageableDefault Pageable pageable,

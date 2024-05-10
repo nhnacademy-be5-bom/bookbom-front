@@ -4,7 +4,6 @@ package shop.bookbom.front.security.filter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,6 @@ import shop.bookbom.front.security.token.UserEmailJwtAuthenticationToken;
  * -> 토큰 요청은 UserEmailPasswordAuthenticationProvider에서
  * SecurityAdapter가 진행
  */
-@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Autowired
@@ -34,10 +32,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
-//        String password = passwordEncoder.encode(
-//                String.valueOf(authentication.getCredentials()) + "bom" + authentication.getName());
-        log.info("now doing jwtAuthenticationFilter");
-
         // UserEmailPasswordAuthenticationProvider를 통해 UserIdRoleAuthentication Token을 얻는다
         AccessNRefreshTokenDto accessNRefreshTokenDto =
                 securityAdapter.getTokens(SignInDTO.builder().email(request.getParameter("email"))

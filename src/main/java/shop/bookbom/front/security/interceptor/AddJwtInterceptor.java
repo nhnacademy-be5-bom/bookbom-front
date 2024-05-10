@@ -34,31 +34,26 @@ public class AddJwtInterceptor implements ClientHttpRequestInterceptor {
             IOException {
         HttpHeaders headers = request.getHeaders();
 
-        log.debug("now requesting uri is : " + request.getURI().getPath());
         if (!request.getURI().getPath().equals("auth/token")
                 || !request.getURI().getPath().startsWith("/shop/open")) { // token을 발급받는 경우가 아니면 header에 jwt를 넣으려고 시도
-            log.debug("try to set jwt header");
             String jwt = getToken("accessToken");
 
             if (jwt != null && jwtConfig.validateToken(jwt)) { // jwt가 존재하고 만료되지 않았을 경우 header에 넣어줌
-                log.debug("accessToken exist! set jwt header");
                 headers.add("Authorization", "Bearer " + jwt);
 
             } else if (!jwtConfig.validateToken(jwt)) { // jwt가 존재하지만 만료되었을 경우 refresh token을 통해 요청을 보냄.
-                log.debug("accessToken have to refresh");
                 String refreshToken = getToken("refreshToken");
                 CommonResponse commonResponse = refreshToken == null ? null : securityAdapter.refresh(refreshToken);
 
                 if (commonResponse != null
                         && commonResponse.getHeader().isSuccessful()
                         && commonResponse.getResult() != null) {
-                    log.debug("refresh success");
                     jwt = (String) commonResponse.getResult();
                     headers.add("Authorization", "Bearer " + jwt);
                     ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse()
                             .addCookie(new Cookie("accessToken", jwt));
                 } else {
-                    log.debug("refresh not success, clear context");
+                    log.error("refresh not success, clear context");
                     SecurityContextHolder.clearContext(); // refresh token도 만료되었을 경우 context를 초기화
                     // TODO 로그인페이지로 REDIRECT?
                 }
@@ -78,7 +73,7 @@ public class AddJwtInterceptor implements ClientHttpRequestInterceptor {
                 }
             }
         } else {
-            log.info("no cookies");
+            log.error("no cookies");
         }
         return null;
     }

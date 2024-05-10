@@ -2,7 +2,6 @@ package shop.bookbom.front.security.adapter;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -16,7 +15,6 @@ import shop.bookbom.front.domain.signin.dto.SignInDTO;
 import shop.bookbom.front.security.dto.AccessNRefreshTokenDto;
 import shop.bookbom.front.security.exception.TokenNotExistException;
 
-@Slf4j
 @RequiredArgsConstructor
 public class SecurityAdapter {
     private static final ParameterizedTypeReference<CommonResponse<AccessNRefreshTokenDto>> ACCESS_N_REFRESH_TOKEN =
@@ -39,7 +37,6 @@ public class SecurityAdapter {
                 .build()
                 .toUri();
 
-        log.info(signInDTO.getPassword());
         RequestEntity<SignInDTO> requestEntity = RequestEntity.post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(signInDTO);
@@ -48,13 +45,9 @@ public class SecurityAdapter {
         ResponseEntity<CommonResponse<AccessNRefreshTokenDto>> responseEntity = restTemplate.exchange(
                 requestEntity, ACCESS_N_REFRESH_TOKEN);
 
-        log.info(responseEntity.getBody().getHeader().getResultMessage());
-
         if (!responseEntity.hasBody() || !responseEntity.getBody().getHeader().isSuccessful()) {
             throw new TokenNotExistException(ErrorCode.TOKEN_NOT_EXIST);
         }
-
-        log.info(responseEntity.getBody().getResult().getAccessToken());
 
         return responseEntity.getBody().getResult();
     }
@@ -79,8 +72,6 @@ public class SecurityAdapter {
                 responseEntity.getBody().getResult().isBlank()) {
             return CommonResponse.fail(ErrorCode.TOKEN_NOT_EXIST);
         }
-
-        log.info(responseEntity.getBody().getResult());
 
         return responseEntity.getBody();
     }

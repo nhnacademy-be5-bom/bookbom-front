@@ -4,21 +4,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import shop.bookbom.front.common.exception.BaseException;
 import shop.bookbom.front.common.exception.ErrorCode;
 import shop.bookbom.front.security.entity.UserIdRole;
 
-@Slf4j
 @RequiredArgsConstructor
 public class JwtConfig {
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
-//
-//    public String resolveToken(HttpServletRequest request) {
-//        return request.getHeader("Authorization");
-//    }
 
     public UserIdRole getUserIdRole(String accessToken) {
         if (!validateToken(accessToken)) {

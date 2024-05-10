@@ -2,7 +2,6 @@ package shop.bookbom.front.security.provider;
 
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -20,10 +19,6 @@ public class UserEmailPasswordAuthenticationProvider implements AuthenticationPr
 
     @Autowired
     private JwtConfig jwtConfig;
-
-
-    @Value("${bookbom.front-url}")
-    String frontUrl;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

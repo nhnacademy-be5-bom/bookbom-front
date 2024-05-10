@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
+import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
 public interface UserService {
     /**
@@ -16,4 +17,9 @@ public interface UserService {
     EmailCheckResponse checkEmailCanUse(String email);
 
     void signUp(SignUpRequest signUpRequest);
+
+    /**
+     * 마이페이지 회원 정보를 조회하는 메서드입니다.
+     */
+    UserInfoResponse getUserInfo();
 }

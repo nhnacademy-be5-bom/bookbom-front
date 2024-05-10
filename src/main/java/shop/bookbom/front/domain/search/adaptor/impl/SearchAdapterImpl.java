@@ -2,6 +2,7 @@ package shop.bookbom.front.domain.search.adaptor.impl;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.domain.search.adaptor.SearchAdapter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SearchAdapterImpl implements SearchAdapter {
@@ -50,6 +52,7 @@ public class SearchAdapterImpl implements SearchAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_SEARCH_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[SearchAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();

@@ -11,7 +11,7 @@ import shop.bookbom.front.security.entity.UserIdRole;
 
 @RequiredArgsConstructor
 public class JwtConfig {
-    @Value("${JWT_SECRET_KEY}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
 
     public UserIdRole getUserIdRole(String accessToken) {

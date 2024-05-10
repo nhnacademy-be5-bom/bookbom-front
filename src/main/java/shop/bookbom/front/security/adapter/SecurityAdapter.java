@@ -59,3 +59,30 @@ public class SecurityAdapter {
         return responseEntity.getBody().getResult();
     }
 
+    public CommonResponse refresh(String refreshToken) {
+        URI uri = UriComponentsBuilder
+                .fromUriString(gatewayUrl)
+                .path("/auth/token/refresh")
+                .encode()
+                .build()
+                .toUri();
+
+        RequestEntity<String> requestEntity = RequestEntity.post(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(refreshToken);
+
+        // 토큰 요청 전송
+        ResponseEntity<CommonResponse<String>> responseEntity = restTemplate.exchange(
+                requestEntity, USER_RESPONSE);
+
+        if (!responseEntity.hasBody() || !responseEntity.getBody().getHeader().isSuccessful() ||
+                responseEntity.getBody().getResult().isBlank()) {
+            return CommonResponse.fail(ErrorCode.TOKEN_NOT_EXIST);
+        }
+
+        log.info(responseEntity.getBody().getResult());
+
+        return responseEntity.getBody();
+    }
+
+}

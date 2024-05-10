@@ -13,7 +13,7 @@ import shop.bookbom.front.domain.user.service.UserService;
 public class UserRestController {
     private final UserService userService;
 
-    @GetMapping("/users/check-email")
+    @GetMapping("/check-email")
     public CommonResponse<EmailCheckResponse> checkEmailCanUse(@RequestParam("email") String email) {
         return CommonResponse.successWithData(userService.checkEmailCanUse(email));
     }

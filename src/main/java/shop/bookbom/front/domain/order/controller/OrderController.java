@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
+import shop.bookbom.front.domain.order.dto.request.OrderRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
 import shop.bookbom.front.domain.order.dto.response.OpenWrapperSelectResponse;
@@ -123,6 +124,19 @@ public class OrderController {
         redirectAttributes.addAttribute("orderId", orderResponse.getOrderId());
         redirectAttributes.addAttribute("orderName", orderResponse.getOrderName());
         redirectAttributes.addAttribute("amount", orderResponse.getAmount());
+
+        return "redirect:/payment-method";
+    }
+
+    //결제 수단페이지 - 멤버
+    @PostMapping("/order-member")
+    public String submitOrder_member(@ModelAttribute OrderRequest orderRequest,
+                                     RedirectAttributes redirectAttributes) {
+//        OrderResponse orderResponse = orderService.
+
+//                redirectAttributes.addAttribute("orderId", orderResponse.getOrderId());
+//        redirectAttributes.addAttribute("orderName", orderResponse.getOrderName());
+//        redirectAttributes.addAttribute("amount", orderResponse.getAmount());
 
         return "redirect:/payment-method";
     }

@@ -60,6 +60,10 @@ function couponNameByDiscountType() {
         const discountType = Uoption.id;
         // 옵션의 텍스트 값을 가져옵니다.
         let text = Uoption.textContent;
+        // 선택된 텍스트가 '원'이나 '%'으로 끝나는 경우 함수를 종료합니다.
+        if (text.endsWith('원') || text.endsWith('%')) {
+            return;
+        }
         // 할인 타입에 따라 텍스트를 조정합니다.
         if (discountType === 'COST') {
             text += ' 원 할인';
@@ -92,11 +96,13 @@ function couponNameByDiscountType() {
 
 function handleCouponSelection(target) {
     var selectedText = target.options[target.selectedIndex].text; // 선택된 옵션의 텍스트를 가져옵니다.
+    var couponCostElement = document.getElementById('usedCouponCost');
+
     if (selectedText === '선택 안함') {
-        return;
-    }
-    // 선택된 텍스트가 '원'이나 '%'으로 끝나는 경우 함수를 종료합니다.
-    if (selectedText.endsWith('원') || selectedText.endsWith('%')) {
+        couponCostElement.innerText = '- 0 원';
+        calculateFinalPayment();
+        updateDeliveryCost();
+        calculateFinalPayment();
         return;
     }
     var selectedDiscountType = target.options[target.selectedIndex].id;
@@ -104,15 +110,21 @@ function handleCouponSelection(target) {
     var couponDiscount = selectedText.replace(/[^0-9.-]+/g, "");
 
     var discountCost = document.getElementById('discountCost').textContent.replace(/[^0-9.-]+/g, "");
+    var finalPayment = parseFloat(document.getElementById('finalPayment').textContent.replace(/[^0-9.-]+/g, ""));
 
-    var couponCostElement = document.getElementById('usedCouponCost');
     if (selectedDiscountType === 'COST') {
-        if (discountCost - couponDiscount > selectedMaxCost) {
+        if (couponDiscount > selectedMaxCost) {
             alert('쿠폰 최대 할인 금액을 초과했습니다. 다른 쿠폰을 사용해주세요.');
             couponCostElement.innerText = '- 0 원';
             return;
+        } else if (couponDiscount > finalPayment) {
+            alert('쿠폰 최대 할인 금액이 주문 금액을 초과했습니다. 최대 할인 금액을 적용합니다');
+            couponCostElement.innerText = '- ' + finalPayment + ' 원';
+            return;
         }
+
         couponCostElement.innerText = '- ' + couponDiscount + ' 원';
+
 
     } else if (selectedDiscountType === 'RATE') {
 
@@ -385,8 +397,8 @@ function usePoint() {
     var myPointSpan = document.getElementById('my-point');
     var myPointText = myPointSpan.textContent.replace('P', ''); // "P" 부분을 제거
     var myPoint = parseInt(myPointText.trim()); // 공백 제거 후 숫자로 변환
-    var discountAmount = parseFloat(document.getElementById('discountCost').textContent.replace(/[^0-9.-]+/g, ""));
-
+    var finalPayment = parseFloat(document.getElementById('finalPayment').textContent.replace(/[^0-9.-]+/g, ""));
+    var usedPointElement = document.getElementById('usedPoint');
 
     if (pointInput.value.trim() === '') {
         alert('포인트를 입력해주세요');
@@ -400,12 +412,16 @@ function usePoint() {
         alert('보유 포인트 이하로 입력해주세요');
         pointInput.value = '0'; // 보유 포인트 이상의 값이 입력된 경우 0으로 설정
         return false;
-    } else if (parseInt(pointInput.value) > discountAmount) {
-        alert('주문 가격 이하로 입력해주세요');
-        pointInput.value = '0'; // 보유 포인트 이상의 값이 입력된 경우 0으로 설정
+    } else if (parseInt(pointInput.value) > finalPayment) {
+        alert('주문 가격을 초과했습니다. 최대 할인 금액을 적용합니다.');
+        pointInput.value = finalPayment;
+        usedPointElement.innerText = '- ' + finalPayment + ' P';
+        calculateFinalPayment();
+        updateDeliveryCost();
+        calculateFinalPayment();
         return false;
     } else {
-        var usedPointElement = document.getElementById('usedPoint');
+
         usedPointElement.innerText = '- ' + pointInput.value + ' P';
         calculateFinalPayment();
         updateDeliveryCost();
@@ -423,7 +439,7 @@ function validateDeliveryAndProceed() {
     } else {
         const form = document.createElement('form');
         form.method = 'post';
-        form.action = '/order';
+        form.action = '/order-member';
 
         const bookInfos = document.querySelectorAll('.book-info');
         bookInfos.forEach((bookInfo, index) => {
@@ -520,36 +536,6 @@ function validateDeliveryAndProceed() {
         discountCostInput.value = discountCost;
         form.appendChild(discountCostInput);
 
-        //email
-        const email = document.getElementById('email').value;
-        if (email.trim() === '') {
-            alert('이메일을 입력해주세요');
-            return false;
-        } else if (!validateEmail()) {
-            alert('올바른 이메일을 입력하세요');
-            return false;
-        }
-        const emailInput = document.createElement('input');
-        emailInput.type = 'hidden';
-        emailInput.name = `email`;
-        emailInput.value = email;
-        form.appendChild(emailInput);
-
-        //password
-        const password = document.getElementById('password').value;
-        if (password.trim() === '') {
-            alert('비밀번호을 입력해주세요');
-            return false;
-        } else if (!validatePassword()) {
-            alert('올바른 비밀번호를 입력하세요');
-            return false;
-        }
-        const passwordInput = document.createElement('input');
-        passwordInput.type = 'hidden';
-        passwordInput.name = `password`;
-        passwordInput.value = password;
-        form.appendChild(passwordInput);
-
         //estimatedDateTostring
         const button = document.querySelector('.delivery-select button.selected');
         const estimatedDateTostring = button.value;
@@ -561,10 +547,6 @@ function validateDeliveryAndProceed() {
 
         //deliveryCost
         const deliveryCost = parseInt(document.getElementById('deliveryCost').textContent.trim().replace('원', ''));
-        if (deliveryCost === 0) {
-            alert('할인 금액이 0원입니다. 새로고침 후 다시 시도해주세요.');
-            return false;
-        }
         const deliveryCostInput = document.createElement('input');
         deliveryCostInput.type = 'hidden';
         deliveryCostInput.name = `deliveryCost`;
@@ -607,6 +589,33 @@ function validateDeliveryAndProceed() {
         addressDetailInput.value = addressDetail;
         form.appendChild(addressDetailInput);
 
+        //usedPoint
+        const usedPointElement = document.getElementById('usedPoint').textContent.replace(/[^0-9.-]+/g, "");
+        const usedPoint = parseInt(usedPointElement.replace('-', ''));
+        const usedPointInput = document.createElement('input');
+        usedPointInput.type = 'hidden';
+        usedPointInput.name = `usedPoint`;
+        usedPointInput.value = usedPoint;
+        form.appendChild(usedPointInput);
+
+        //usedCouponCost
+        const usedCouponCostElement = document.getElementById('usedCouponCost').textContent.replace(/[^0-9.-]+/g, "");
+        const usedCouponCost = parseInt(usedCouponCostElement.replace('-', ''));
+        const usedCouponCostInput = document.createElement('input');
+        usedCouponCostInput.type = 'hidden';
+        usedCouponCostInput.name = `usedCouponCost`;
+        usedCouponCostInput.value = usedCouponCost;
+        form.appendChild(usedCouponCostInput);
+
+        //couponId
+        const selectElement = document.getElementById('selected-coupon');
+        const selectedOption = selectElement.options[selectElement.selectedIndex];
+        const couponId = selectedOption.value;
+        const couponIdInput = document.createElement('input');
+        couponIdInput.type = 'hidden';
+        couponIdInput.name = `couponId`;
+        couponIdInput.value = couponId;
+        form.appendChild(couponIdInput);
 
         document.body.appendChild(form);
         form.submit();

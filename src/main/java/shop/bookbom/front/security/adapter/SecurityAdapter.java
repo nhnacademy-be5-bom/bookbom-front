@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.signin.adaptor.impl;
+package shop.bookbom.front.security.adapter;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -8,19 +8,21 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonResponse;
-import shop.bookbom.front.domain.signin.adaptor.SignInAdaptor;
+import shop.bookbom.front.common.exception.ErrorCode;
 import shop.bookbom.front.domain.signin.dto.SignInDTO;
 import shop.bookbom.front.security.dto.AccessNRefreshTokenDto;
+import shop.bookbom.front.security.exception.TokenNotExistException;
 
 @Slf4j
-@Component
 @RequiredArgsConstructor
-public class SignInAdapterImpl implements SignInAdaptor {
+public class SecurityAdapter {
     private static final ParameterizedTypeReference<CommonResponse<AccessNRefreshTokenDto>> ACCESS_N_REFRESH_TOKEN =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<String>> USER_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -29,8 +31,7 @@ public class SignInAdapterImpl implements SignInAdaptor {
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
 
-    @Override
-    public AccessNRefreshTokenDto signIn(SignInDTO signInDTO) {
+    public AccessNRefreshTokenDto getTokens(SignInDTO signInDTO) {
         URI uri = UriComponentsBuilder
                 .fromUriString(gatewayUrl)
                 .path("/auth/token")
@@ -38,7 +39,7 @@ public class SignInAdapterImpl implements SignInAdaptor {
                 .build()
                 .toUri();
 
-        log.info(uri.toString());
+        log.info(signInDTO.getPassword());
         RequestEntity<SignInDTO> requestEntity = RequestEntity.post(uri)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(signInDTO);
@@ -47,8 +48,14 @@ public class SignInAdapterImpl implements SignInAdaptor {
         ResponseEntity<CommonResponse<AccessNRefreshTokenDto>> responseEntity = restTemplate.exchange(
                 requestEntity, ACCESS_N_REFRESH_TOKEN);
 
-        log.info(requestEntity.getBody().getEmail());
+        log.info(responseEntity.getBody().getHeader().getResultMessage());
+
+        if (!responseEntity.hasBody() || !responseEntity.getBody().getHeader().isSuccessful()) {
+            throw new TokenNotExistException(ErrorCode.TOKEN_NOT_EXIST);
+        }
+
+        log.info(responseEntity.getBody().getResult().getAccessToken());
 
         return responseEntity.getBody().getResult();
     }
-}
+

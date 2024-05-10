@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import shop.bookbom.front.security.config.JwtConfig;
 import shop.bookbom.front.security.filter.JwtAuthenticationFilter;
 import shop.bookbom.front.security.provider.UserEmailPasswordAuthenticationProvider;
 
@@ -41,13 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtConfig jwtConfig() {
-        return new JwtConfig();
-    }
-
-    @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+        JwtAuthenticationFilter jwtAuthenticationFilter =
+                new JwtAuthenticationFilter();
         jwtAuthenticationFilter.setFilterProcessesUrl("/dosignin");
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager());
         jwtAuthenticationFilter.afterPropertiesSet();

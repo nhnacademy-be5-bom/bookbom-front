@@ -3,17 +3,19 @@ package shop.bookbom.front.security.provider;
 import java.util.Collections;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import shop.bookbom.front.domain.signin.adaptor.SignInAdaptor;
-import shop.bookbom.front.domain.signin.dto.SignInDTO;
+import org.springframework.web.client.RestTemplate;
+import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.security.config.JwtConfig;
 import shop.bookbom.front.security.dto.AccessNRefreshTokenDto;
 import shop.bookbom.front.security.entity.UserIdRole;
-import shop.bookbom.front.security.token.UserEmailPasswordAuthenticationToken;
+import shop.bookbom.front.security.token.UserEmailJwtAuthenticationToken;
 import shop.bookbom.front.security.token.UserIdPasswordAuthenticationToken;
 
 /**
@@ -22,6 +24,9 @@ import shop.bookbom.front.security.token.UserIdPasswordAuthenticationToken;
  */
 @Slf4j
 public class UserEmailPasswordAuthenticationProvider implements AuthenticationProvider {
+    private static final ParameterizedTypeReference<CommonResponse<AccessNRefreshTokenDto>> ACCESS_N_REFRESH_TOKEN =
+            new ParameterizedTypeReference<>() {
+            };
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -30,28 +35,21 @@ public class UserEmailPasswordAuthenticationProvider implements AuthenticationPr
     private JwtConfig jwtConfig;
 
     @Autowired
-    private SignInAdaptor signInAdaptor;
+    private RestTemplate restTemplate;
+
+    @Value("${bookbom.front-url}")
+    String frontUrl;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String email = authentication.getName();
-        String rawPassword = String.valueOf(authentication.getCredentials());
-//        String password = passwordEncoder.encode(
-//                String.valueOf(authentication.getCredentials()) + "bom" + authentication.getName());
-//        log.info(password);
-//                passwordEncoder.encode(rawPassword));
-        // gateway로 요청을 보내 jwt 토큰을 받아온다.
-        SignInDTO build = SignInDTO.builder().email(email).password(rawPassword).build();
-        AccessNRefreshTokenDto accessNRefreshTokenDto
-                = signInAdaptor.signIn(build);
 
-        return getUserIdRoleToken(accessNRefreshTokenDto.getAccessToken());
+        String jwt = String.valueOf(authentication.getCredentials());
+        return getUserIdRoleToken(jwt);
     }
 
     public Authentication getUserIdRoleToken(String accessToken) {
 
         UserIdRole userIdRole = jwtConfig.getUserIdRole(accessToken);
-        log.debug("now doing UserIdRole. now request is : " + userIdRole.getUserId());
 
         return new UserIdPasswordAuthenticationToken(userIdRole.getUserId(), null,
                 Collections.singleton(new SimpleGrantedAuthority(
@@ -60,7 +58,7 @@ public class UserEmailPasswordAuthenticationProvider implements AuthenticationPr
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return UserEmailPasswordAuthenticationToken.class.isAssignableFrom(authentication);
+        return UserEmailJwtAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
 

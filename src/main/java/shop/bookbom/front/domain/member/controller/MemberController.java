@@ -16,12 +16,6 @@ import shop.bookbom.front.domain.member.service.MemberService;
 public class MemberController {
     private final MemberService memberService;
 
-    @GetMapping("/my-page")
-    public String myPage(Model model) {
-        model.addAttribute("member", memberService.myPage());
-        return "page/user/my-page";
-    }
-
     @GetMapping("/member/withdraw")
     public String getDeletePage(Model model) {
         // 공통화 작업 완료 시 memberId를 받아서 넣어주기

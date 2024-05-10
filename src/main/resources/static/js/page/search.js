@@ -179,6 +179,78 @@ document.addEventListener('DOMContentLoaded', function () {
         addToCart(checkedBooks);
     });
 
+    // 주문 폼 생성
+    document.querySelector('.order-all').addEventListener('click', function () {
+        const checkedItems = document.querySelectorAll('.book-checkbox:checked');
+
+        if (checkedItems.length === 0) {
+            alert("주문하실 상품을 선택해주세요.");
+            return;
+        }
+
+        let myModal = new bootstrap.Modal(document.getElementById('orderModal'), {
+            keyboard: false
+        });
+        myModal.show();
+    });
+
+    document.getElementById('goOrder').addEventListener('click', () => {
+        const checkedItems = document.querySelectorAll('.book-checkbox:checked');
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order/wrapper';
+
+        checkedItems.forEach((item, index) => {
+            const bookId = item.getAttribute("data-id");
+            const quantityInput = document.querySelector(`.quantity-input[data-item='${bookId}']`);
+            const quantity = quantityInput.value;
+
+
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `beforeOrderRequests[${index}].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
+
+
+            const quantityInputHidden = document.createElement('input');
+            quantityInputHidden.type = 'hidden';
+            quantityInputHidden.name = `beforeOrderRequests[${index}].quantity`;
+            quantityInputHidden.value = quantity;
+            form.appendChild(quantityInputHidden);
+        });
+        document.body.appendChild(form);
+        form.submit();
+    });
+
+    document.querySelectorAll('.order-one').forEach(button => {
+        button.addEventListener('click', function () {
+
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/order/wrapper';
+
+            const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+            const quantity = parseInt(quantityInput.value);
+            const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
+
+            const bookIdInput = document.createElement('input');
+            bookIdInput.type = 'hidden';
+            bookIdInput.name = `beforeOrderRequests[0].bookId`;
+            bookIdInput.value = bookId;
+            form.appendChild(bookIdInput);
+
+            const quantityInputHidden = document.createElement('input');
+            quantityInputHidden.type = 'hidden';
+            quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
+            quantityInputHidden.value = quantity;
+            form.appendChild(quantityInputHidden);
+
+            document.body.appendChild(form);
+            form.submit();
+        });
+    });
+
     // 장바구니에 담기 요청
     function addToCart(requestData) {
         // AJAX를 사용하여 POST 요청 전송

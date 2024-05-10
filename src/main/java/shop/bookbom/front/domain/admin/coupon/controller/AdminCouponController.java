@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
+import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 import shop.bookbom.front.domain.admin.coupon.service.AdminCouponService;
 
 @Controller
@@ -41,5 +42,12 @@ public class AdminCouponController {
         model.addAttribute("selectType", type);
         model.addAttribute("couponInfoList", couponInfoList);
         return "page/admin/coupon/coupon_admin";
+    }
+
+    @GetMapping("/coupons/issue")
+    public String getCouponIssuePage(Model model) {
+        List<CouponIssueResponse> couponIssueResponses = adminCouponService.getCouponNameList(userId);
+        model.addAttribute("couponNames", couponIssueResponses);
+        return "page/admin/coupon/coupon_issuance";
     }
 }

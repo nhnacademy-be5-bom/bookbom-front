@@ -11,7 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/page/admin_coupon.css}">
 </th:block>
 <th:block layout:fragment="script">
-    <script th:src="@{/js/page/admin_coupon.js}"></script>
+    <script th:src="@{/js/page/admin/admin_coupon.js}"></script>
 </th:block>
 <body>
 <div layout:fragment="content">
@@ -26,7 +26,7 @@
                 </select>
             </div>
             <div class="topButtonContainer">
-                <button class="btn btn-primary couponIssueBtn">쿠폰 발급</button>
+                <button class="btn btn-primary couponIssueBtn"><a href="/admin/coupons/issue">쿠폰 발급</a></button>
                 <button class="btn btn-primary couponRegistBtn"><a href="/admin/coupons/register">쿠폰 등록</a></button>
                 <button class="btn btn-danger selectDeleteBtn">선택 삭제</button>
             </div>

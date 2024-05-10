@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.admin.coupon.adapter.AdminCouponAdapter;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
-import shop.bookbom.front.domain.admin.coupon.dto.request.CouponInfoRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
+import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -46,4 +46,10 @@ public class AdminCouponServiceImpl implements AdminCouponService {
     public Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type, Long userId) {
         return adminCouponAdapter.getConponInfo(pageable, type, userId);
     }
+
+    @Override
+    public List<CouponIssueResponse> getCouponNameList(Long userId) {
+        return adminCouponAdapter.getCouponNameList(userId);
+    }
+
 }

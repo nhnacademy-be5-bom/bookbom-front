@@ -20,6 +20,7 @@ import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
+import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
 @Slf4j
 @Component
@@ -39,6 +40,10 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
             };
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<CouponInfoResponse>>>
             COUPON_INFO_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonListResponse<CouponIssueResponse>>
+            COUPON_ISSUE_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -219,6 +224,29 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         HttpMethod.GET,
                         requestHttpEntity,
                         COUPON_INFO_RESPONSE
+                )
+                .getBody();
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new RuntimeException();
+        }
+        return response.getResult();
+    }
+
+    //쿠폰 발급을 위해 전체 쿠폰의 이름, 타입 정보을 가져옵니다.
+    @Override
+    public List<CouponIssueResponse> getCouponNameList(Long userId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<List<CouponIssueResponse>> requestHttpEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/issue/{userId}")
+                .buildAndExpand(userId)
+                .toUriString();
+        CommonListResponse<CouponIssueResponse> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.GET,
+                        requestHttpEntity,
+                        COUPON_ISSUE_RESPONSE
                 )
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {

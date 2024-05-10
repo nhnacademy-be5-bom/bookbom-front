@@ -1,11 +1,13 @@
-package shop.bookbom.front.domain.member.dto.response;
+package shop.bookbom.front.domain.user.dto.response;
 
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 
 @Getter
-public class MemberInfoResponse {
+@NoArgsConstructor
+public class UserInfoResponse {
     private Long id;
     private String nickname;
     private String rank;

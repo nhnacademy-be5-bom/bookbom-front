@@ -43,9 +43,13 @@
                         </label>
                         <label class="custom-control-label" th:for="${item.bookId}"></label>
                     </div>
-                    <img th:src="${item.thumbnail}" class="img-thumbnail me-3" th:alt="${item.title}">
+                    <a th:href="@{/books/detail/{bookId}(bookId=${item.bookId})}">
+                        <img class="img-thumbnail me-3" th:alt="${item.title}" th:src="${item.thumbnail}">
+                    </a>
                     <div>
-                        <div th:text="${item.title}"></div>
+                        <a th:href="@{/books/detail/{bookId}(bookId=${item.bookId})}">
+                            <div th:text="${item.title}"></div>
+                        </a>
                         <div>
                             <span class="fw-bold book-discount-cost"
                                   data-th-text="${#numbers.formatInteger(item.discountPrice, 3, 'COMMA') + '원'}"></span>
@@ -53,6 +57,7 @@
                                   data-th-text="${#numbers.formatInteger(item.price, 3, 'COMMA') + '원'}"></span>
                         </div>
                     </div>
+
                 </div>
             </td>
             <td class="text-center align-middle">

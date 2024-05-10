@@ -14,12 +14,12 @@ import shop.bookbom.front.domain.book.service.BookService;
 public class BookDetailController {
     private final BookService bookService;
 
-    @GetMapping("/book/detail/{id}")
+    @GetMapping("/books/detail/{id}")
     public String index(HttpServletRequest request,
                         Model model,
                         @PathVariable("id") Long bookId) {
 
-        BookDetailResponse bookDetail = bookService.getBook(bookId).getResult();
+        BookDetailResponse bookDetail = bookService.getBook(bookId);
         model.addAttribute("bookDetail", bookDetail);
         return "page/book/bookdetail";
     }

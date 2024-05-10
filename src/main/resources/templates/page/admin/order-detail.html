@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>주문/배송 상세 조회</title>
+</head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/order/order-detail.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/admin/order-detail.js}"></script>
+</th:block>
+
+<div layout:fragment="content">
+
+    <!-- 주문 정보 (Nav) -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+        <div class="order-info">
+                <span style="font-weight: bold" th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm:ss')}">2024.03.20</span>
+            <span>주문번호 <span th:text="${order.orderNumber}">O24309828</span></span>
+            <span style="font-weight: bold" th:text="${order.orderInfo}">기술 면접 노트 외 1건</span>
+
+        </div>
+    </nav>
+    <div class="col-md-12 d-flex flex-column align-items-end">
+        <span>주문 상태 : <span class="order-status" style="font-weight: bold" th:text="${order.status}">주문 상태</span></span>
+        <ul class="list-group list-group-horizontal" id="statusList">
+            <li class="list-group-item">배송중</li>
+            <li class="list-group-item">완료</li>
+            <li class="list-group-item">취소</li>
+            <li class="list-group-item">반품</li>
+        </ul>
+        <button class="btn btn-outline-primary my-3" id="updateButton" th:data-order-id="${order.id}" type="button">변경하기</button>
+    </div>
+
+    <!-- 배송 정보 (Card) -->
+    <div class="card mb-3">
+        <div class="card-header fw-bold">배송
+        </div>
+        <div class="card-body" th:each="book : ${order.books}">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <img alt="..." class="product-thumbnail"
+                         th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}" th:src="${book.thumbnail}">
+                    <img alt="..."
+                         class="product-thumbnail"
+                         th:src="@{/images/no-image.jpg}" th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}">
+                </div>
+                <div class="col-md-4">
+                    <p class="fw-bold mb-0" th:text="${book.title}">기술 면접 노트</p>
+                    <span>수량: <span th:text="${book.quantity}">3</span></span>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold"
+                     data-th-text="${#numbers.formatInteger(book.bookPrice * book.quantity, 0, 'COMMA') + '원'}">15,000원
+                </div>
+                <div class="col-md-2 d-flex justify-content-center fw-bold"
+                     th:text="${book.status == 'NONE' ? order.status : book.status}">
+                    배송중
+                </div>
+                <div class="col-md-1 d-flex flex-column">
+                    <button class="btn btn-outline-secondary btn-sm mb-1"
+                            th:if="${order.status.equals('완료')}">반품 신청
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">구매자 정보</div>
+        <div class="card-body">
+            <span th:text="${order.senderName}">홍길동</span> / <span
+                th:text="${order.senderPhoneNumber}">010-1234-5678</span>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header fw-bold">배송 정보</div>
+        <div class="card-body">
+            <div>
+                <span th:text="${order.recipientName}">홍길동</span> / <span th:text="${order.recipientPhoneNumber}">010-1234-5678</span>
+            </div>
+            <div>[<span th:text="${order.recipientAddress.zipCode}">54140</span>] <span
+                    th:text="${order.recipientAddress.address}">서울특별시 어딘가 123번지</span> <span
+                    th:text="${order.recipientAddress.detailAddress}"></span></div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header fw-bold">결제 정보</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">주문 금액</span>
+                        <span data-th-text="${#numbers.formatInteger(order.totalPrice, 0, 'COMMA') + '원'}">44,200원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>상품 금액</span>
+                        <span data-th-text="${#numbers.formatInteger(order.discountPrice, 0, 'COMMA') + '원'}">36,000원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>포장비</span>
+                        <span data-th-text="${#numbers.formatInteger(order.wrapperPrice, 0, 'COMMA') + '원'}">3,200원</span>
+                    </div>
+                    <div class="d-flex justify-content-between sub-cost">
+                        <span>배송비</span>
+                        <span data-th-text="${#numbers.formatInteger(order.deliveryFee, 0, 'COMMA') + '원'}">5,000원</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">할인/포인트 금액</span>
+                        <span data-th-text="${#numbers.formatInteger(order.usedPoint, 0, 'COMMA') + '원'}">0원</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="d-flex justify-content-between order-cost">
+                        <span class="fw-bold">결제 금액</span>
+                        <span data-th-text="${#numbers.formatInteger(order.paymentPrice, 0, 'COMMA') + '원'}">44,200원</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="orderCancelLabel" class="modal fade" id="orderCancel" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="orderCancelLabel">주문 취소</h1>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    주문을 취소하시겠습니까?
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success confirm-delete" type="button">예</button>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

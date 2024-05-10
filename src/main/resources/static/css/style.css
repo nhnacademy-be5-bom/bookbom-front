@@ -157,7 +157,6 @@ body {
 }
 
 .btn-primary {
-    padding: 1.2rem 3rem;
     --bs-btn-color: #fff;
     --bs-btn-bg: #DEAD6F;
     --bs-btn-border-color: transparent;
@@ -259,7 +258,6 @@ h6 {
     font-family: var(--heading-font);
     color: var(--bs-body-color);
     font-weight: 400;
-    text-transform: capitalize;
 }
 
 a {
@@ -457,7 +455,6 @@ iconify-icon.quote-icon {
     color: #908F8D;
     line-height: normal;
     letter-spacing: 0.02125rem;
-    text-transform: capitalize;
     border-radius: 0.25rem;
     border: 1px solid rgba(65, 64, 62, 0.20);
     background: #FFF;
@@ -486,7 +483,6 @@ iconify-icon.quote-icon {
     color: #908F8D;
     font-size: 1rem;
     letter-spacing: 0.02rem;
-    text-transform: uppercase;
 }
 
 a.blog-read {

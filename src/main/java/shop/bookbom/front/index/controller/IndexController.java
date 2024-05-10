@@ -1,4 +1,4 @@
-package shop.bookbom.front.index;
+package shop.bookbom.front.index.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -73,4 +73,8 @@ public class IndexController {
         return "page/coupon/myCoupon_detail";
     }
 
+    @GetMapping("/admin")
+    public String showAdminMainPage() {
+        return "page/admin/admin_main";
+    }
 }

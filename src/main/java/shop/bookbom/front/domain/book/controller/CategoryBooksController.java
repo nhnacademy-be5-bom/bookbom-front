@@ -22,7 +22,7 @@ public class CategoryBooksController {
     private final BookService bookService;
     private final CategoryService categoryService;
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/categories/{id}")
     public String index(@PathVariable(value = "id") Long categoryId,
                         @PageableDefault(size = 5) Pageable pageable,
                         @RequestParam(required = false) String sorted,
@@ -30,7 +30,7 @@ public class CategoryBooksController {
         String sortCondition = getSortCondition(sorted);
 
         Page<BookSearchResponse> bookResponse =
-                bookService.getBooksByCategoryId(categoryId, pageable, sortCondition).getResult();
+                bookService.getBooksByCategoryId(categoryId, pageable, sortCondition);
 
         CategoryNameAndChildResponse categoryResponse =
                 categoryService.getCategoryNameAndChildCategoriesByCategoryId(categoryId);

@@ -10,7 +10,7 @@ import shop.bookbom.front.domain.user.adapter.UserAdapter;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
-import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
+import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 import shop.bookbom.front.domain.user.service.UserService;
 
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public EmailCheckResponse checkEmailCanUse(String email) {
+    public SignupCheckResponse checkEmailCanUse(String email) {
         return userAdapter.checkEmailCanUse(email);
     }
 
@@ -41,5 +41,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoResponse getUserInfo() {
         return userAdapter.getUserInfo();
+    }
+
+    @Override
+    public SignupCheckResponse checkNicknameCanUse(String nickname) {
+        return userAdapter.checkNicknameCanUse(nickname);
     }
 }

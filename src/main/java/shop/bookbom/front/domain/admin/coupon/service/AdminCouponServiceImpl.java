@@ -9,6 +9,7 @@ import shop.bookbom.front.domain.admin.coupon.adapter.AdminCouponAdapter;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
+import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
@@ -48,8 +49,8 @@ public class AdminCouponServiceImpl implements AdminCouponService {
     }
 
     @Override
-    public List<CouponIssueResponse> getCouponNameList(Long userId) {
-        return adminCouponAdapter.getCouponNameList(userId);
+    public void issueCoupon(IssueCouponRequest issueCouponRequest, Long userId) {
+        adminCouponAdapter.issue(issueCouponRequest, userId);
     }
 
 }

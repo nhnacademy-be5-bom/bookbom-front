@@ -1,10 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>쿠폰 발급</title>
 </head>
-<body>
-
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin_coupon.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/coupon_issuance.js}"></script>
+</th:block>
+<body onload="printLocalStorageItems()">
+<div layout:fragment="content">
+    <div class="row">
+        <div class="titleContainer">
+            <h2>쿠폰 발급</h2>
+        </div>
+    </div>
+    <div class="contentContainer">
+        <div class="mainContainer">
+            <div class="memberSearchContainer">
+                회원 추가 <input type="text" id="memberSearchBox"> <button onclick="createDiv()">추가</button>
+                <div id="selectedMemberContainer">
+                </div>
+            </div>
+            <div class="couponIssuanceSelectContainer">
+                <div class="selectedContainer">
+                    쿠폰 ID: <label id="couponIdBox"> </label><br />
+                    쿠폰 이름: <label id="couponNameBox"> </label>
+                </div>
+                <div class="buttonContainer">
+                    쿠폰 만료일 <input type="date" id="expireDate">
+                    <button class="btn btn-success issueBtn" onclick="issue()">발급</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

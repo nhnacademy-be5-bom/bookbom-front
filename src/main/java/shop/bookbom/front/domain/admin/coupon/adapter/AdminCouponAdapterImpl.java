@@ -19,6 +19,7 @@ import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
+import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
@@ -232,26 +233,25 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
         return response.getResult();
     }
 
-    //쿠폰 발급을 위해 전체 쿠폰의 이름, 타입 정보을 가져옵니다.
     @Override
-    public List<CouponIssueResponse> getCouponNameList(Long userId) {
+    public void issue(IssueCouponRequest issueCouponRequest, Long userId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<List<CouponIssueResponse>> requestHttpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<IssueCouponRequest> requestHttpEntity = new HttpEntity<>(issueCouponRequest, httpHeaders);
 
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/issue/{userId}")
                 .buildAndExpand(userId)
                 .toUriString();
-        CommonListResponse<CouponIssueResponse> response = restTemplate.exchange(
+
+        CommonResponse<Void> response = restTemplate.exchange(
                         url,
-                        HttpMethod.GET,
+                        HttpMethod.POST,
                         requestHttpEntity,
-                        COUPON_ISSUE_RESPONSE
+                        COMMON_RESPONSE
                 )
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }
-        return response.getResult();
     }
 }

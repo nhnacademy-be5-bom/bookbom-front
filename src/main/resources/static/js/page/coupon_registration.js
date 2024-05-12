@@ -1,6 +1,5 @@
 function selected(e) {
-    var selectBox = e.value;
-    var selectedValue = selectBox.value;
+    var selectedValue = e.value;
     var generalContainer = document.querySelector('.generalCouponContainer');
     var bookContainer = document.querySelector('.bookCouponContainer');
     var categoryContainer = document.querySelector('.categoryCouponContainer');
@@ -99,7 +98,7 @@ function addCoupon(event) {
     }).then(response => {
         if (response.ok) {
             alert("등록이 완료되었습니다.");
-            location.href = "/admin/coupons/info/general";
+            location.href = "/admin/coupons/general";
         } else {
             console.error("등록 중 오류가 발생했습니다.");
         }

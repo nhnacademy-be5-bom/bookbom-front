@@ -1,5 +1,6 @@
 package shop.bookbom.front.domain.admin.coupon.controller;
 
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import shop.bookbom.front.domain.admin.coupon.dto.request.AddCategoryCouponReque
 import shop.bookbom.front.domain.admin.coupon.dto.request.AddCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
+import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.service.AdminCouponService;
 
 @RestController
@@ -58,6 +60,12 @@ public class AdminCouponRestController {
     @PostMapping("/couponRegister/category")
     public CommonResponse<Void> createCoupon(@RequestBody AddCategoryCouponRequest addCouponRequest) {
         adminCouponService.createCoupon("category", addCouponRequest, userId);
+        return CommonResponse.success();
+    }
+
+    @PostMapping("/coupons/issue")
+    public CommonResponse<Void> issueCoupon(@RequestBody @Valid IssueCouponRequest issueCouponRequest){
+        adminCouponService.issueCoupon(issueCouponRequest, userId);
         return CommonResponse.success();
     }
 }

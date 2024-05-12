@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
+import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
@@ -22,5 +23,5 @@ public interface AdminCouponService {
 
     Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type, Long userId);
 
-    List<CouponIssueResponse> getCouponNameList(Long userId);
+    void issueCoupon(IssueCouponRequest issueCouponRequest, Long userId);
 }

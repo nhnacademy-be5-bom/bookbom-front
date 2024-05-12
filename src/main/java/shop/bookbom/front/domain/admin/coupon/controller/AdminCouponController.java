@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
-import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 import shop.bookbom.front.domain.admin.coupon.service.AdminCouponService;
 
 @Controller
@@ -36,7 +35,7 @@ public class AdminCouponController {
         return "page/admin/coupon/coupon_registration";
     }
 
-    @GetMapping("/coupons/info/{type}")
+    @GetMapping("/coupons/{type}")
     public String getCouponList(Model model, @PathVariable("type") String type, @PageableDefault Pageable pageable) {
         Page<CouponInfoResponse> couponInfoList = adminCouponService.getCouponInfo(pageable, type, userId);
         model.addAttribute("selectType", type);
@@ -46,8 +45,6 @@ public class AdminCouponController {
 
     @GetMapping("/coupons/issue")
     public String getCouponIssuePage(Model model) {
-        List<CouponIssueResponse> couponIssueResponses = adminCouponService.getCouponNameList(userId);
-        model.addAttribute("couponNames", couponIssueResponses);
         return "page/admin/coupon/coupon_issuance";
     }
 }

@@ -41,7 +41,7 @@ function checkEmail() {
         alert("올바른 이메일 양식으로 입력하세요.");
         return;
     }
-    fetch('/users/check-email?email=' + encodeURIComponent(email))
+    fetch('/check-email?email=' + encodeURIComponent(email))
         .then(response => response.json())
         .then(data => {
             if (data.result.canUse) {

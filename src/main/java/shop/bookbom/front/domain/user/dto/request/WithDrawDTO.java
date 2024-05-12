@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.member.dto.request;
+package shop.bookbom.front.domain.user.dto.request;
 
 import java.util.List;
 import lombok.Getter;

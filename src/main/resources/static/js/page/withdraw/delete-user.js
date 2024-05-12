@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
             formData.append('reasons[' + index + ']', checkbox.value);
         });
 
-        fetch("/member/withdraw", {
+        fetch("/users/withdraw", {
             method: 'POST',
             body: formData
         })

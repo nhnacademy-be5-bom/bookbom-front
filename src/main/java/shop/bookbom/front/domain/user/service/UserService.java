@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
@@ -22,4 +23,6 @@ public interface UserService {
      * 마이페이지 회원 정보를 조회하는 메서드입니다.
      */
     UserInfoResponse getUserInfo();
+
+    void deleteUser(WithDrawDTO withDrawDTO);
 }

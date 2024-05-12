@@ -10,6 +10,7 @@ import shop.bookbom.front.domain.user.adapter.UserAdapter;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 import shop.bookbom.front.domain.user.service.UserService;
@@ -41,5 +42,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserInfoResponse getUserInfo() {
         return userAdapter.getUserInfo();
+    }
+
+    @Override
+    public void deleteUser(WithDrawDTO withDrawDTO) {
+        userAdapter.deleteUser(withDrawDTO);
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.pointhistory.adapter.PointHistoryAdapter;
 import shop.bookbom.front.domain.pointhistory.dto.PointHistoryResponse;
 
@@ -37,10 +38,9 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
         UriComponentsBuilder uriBuilder =
-                UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/member/point-history")
+                UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/point-history")
                         .queryParam("page", pageable.getPageNumber())
-                        .queryParam("size", pageable.getPageSize())
-                        .queryParam("userId", 1L); // todo 회원 처리
+                        .queryParam("size", pageable.getPageSize());
         if (reason != null) {
             uriBuilder.queryParam("reason", reason);
         }
@@ -49,8 +49,7 @@ public class PointHistoryAdapterImpl implements PointHistoryAdapter {
         CommonResponse<CommonPage<PointHistoryResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_HISTORY_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }

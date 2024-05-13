@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.cart.adapter.impl;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -14,12 +15,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonListResponse;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.cart.adapter.CartAdapter;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
 import shop.bookbom.front.domain.cart.dto.request.CartUpdateRequest;
 import shop.bookbom.front.domain.cart.dto.response.CartInfoResponse;
 import shop.bookbom.front.domain.cart.dto.response.CartUpdateResponse;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CartAdapterImpl implements CartAdapter {
@@ -56,8 +59,8 @@ public class CartAdapterImpl implements CartAdapter {
                         CART_ITEM_IDS_RESPONSE)
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }
@@ -80,8 +83,8 @@ public class CartAdapterImpl implements CartAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return response.getResult();
     }
@@ -103,8 +106,8 @@ public class CartAdapterImpl implements CartAdapter {
                 .getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return response.getResult();
     }
@@ -125,8 +128,8 @@ public class CartAdapterImpl implements CartAdapter {
                         COMMON_RESPONSE)
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
     }
 }

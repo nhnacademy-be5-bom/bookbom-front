@@ -85,7 +85,7 @@
                     <li th:each="child : ${category.children}" th:inline="text">
                         <a class="link-body-emphasis d-inline-flex text-decoration-none rounded"
                            th:text="${child.name}"
-                           th:href="@{/category/{categoryId}(categoryId=${child.id})}">
+                           th:href="@{/categories/{categoryId}(categoryId=${child.id})}">
                         </a>
                         <ul th:replace="this::fragment_node(${child})"></ul>
                     </li>
@@ -115,7 +115,7 @@
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">
-                                <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                <a th:href="@{/books/detail/{bookId}(bookId=${book.getId()})}">
                                     <img th:src="${!#strings.equals(book.thumbnail, 'NONE') } ? ${book.thumbnail} : '/images/no-image.jpg'"
                                          class="card-img-top img-fluid rounded-start"
                                          alt="...">
@@ -124,7 +124,7 @@
                             <!-- 도서 정보 -->
                             <div class="col-md-6">
                                 <div class="card-body">
-                                    <a th:href="@{/book/detail/{bookId}(bookId=${book.getId()})}">
+                                    <a th:href="@{/books/detail/{bookId}(bookId=${book.getId()})}">
                                         <h5 class="card-title" th:text="${book.title}">
                                             오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들
                                         </h5>
@@ -178,7 +178,7 @@
                 <ul class="pagination justify-content-center">
                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
+                           th:href="@{/categories/{categoryId}(categoryId=${category.getId()}, page=${currentPage - 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
@@ -186,12 +186,12 @@
                     <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${pageNum == currentPage} ? 'active'">
                         <a class="page-link"
-                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${pageNum}, size=${pageSize}, sorted=${sorted})}"
+                           th:href="@{/categories/{categoryId}(categoryId=${category.getId()}, page=${pageNum}, size=${pageSize}, sorted=${sorted})}"
                            th:text="${pageNum + 1}"></a>
                     </li>
                     <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
                         <a class="page-link"
-                           th:href="@{/category/{categoryId}(categoryId=${category.getId()}, page=${currentPage + 1}, size=${pageSize}, sorted=${sorted})}"
+                           th:href="@{/categories/{categoryId}(categoryId=${category.getId()}, page=${currentPage + 1}, size=${pageSize}, sorted=${sorted})}"
                            aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>

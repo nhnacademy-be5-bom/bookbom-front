@@ -2,6 +2,7 @@ package shop.bookbom.front.domain.pointrate.adapter.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.pointrate.adapter.PointRateAdapter;
 import shop.bookbom.front.domain.pointrate.dto.PointRate;
 import shop.bookbom.front.domain.pointrate.dto.request.PointRateUpdateRequest;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class PointRateAdapterImpl implements PointRateAdapter {
@@ -42,8 +45,8 @@ public class PointRateAdapterImpl implements PointRateAdapter {
         CommonResponse<List<PointRate>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, POINT_RATE_LIST_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[PointRateAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return response.getResult();
     }
@@ -62,8 +65,8 @@ public class PointRateAdapterImpl implements PointRateAdapter {
                 restTemplate.exchange(url, HttpMethod.PUT, requestEntity, POINT_RATE_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[PointRateAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return response.getResult();
     }

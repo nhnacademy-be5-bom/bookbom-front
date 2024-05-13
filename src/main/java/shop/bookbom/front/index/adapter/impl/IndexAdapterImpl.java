@@ -2,6 +2,7 @@ package shop.bookbom.front.index.adapter.impl;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -15,9 +16,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class IndexAdapterImpl implements IndexAdapter {
@@ -38,7 +41,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/books/best")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/latest")
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .build()
@@ -48,8 +51,8 @@ public class IndexAdapterImpl implements IndexAdapter {
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[IndexAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }
@@ -60,7 +63,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/books/best")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/best")
                 .queryParam("page", pageable.getPageNumber())
                 .queryParam("size", pageable.getPageSize())
                 .build()
@@ -69,8 +72,8 @@ public class IndexAdapterImpl implements IndexAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+            log.error("[IndexAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
     }

@@ -48,8 +48,9 @@ public class PaymentAdapterImpl implements PaymentAdapter {
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest, httpHeaders);
 
-        CommonResponse<OrderIdResponse> response = restTemplate.exchange(gatewayUrl + "/shop/payment/tosspay/confirm"
-                , HttpMethod.POST, requestEntity, ORDER_ID_RESPONSE).getBody();
+        CommonResponse<OrderIdResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/open/payment/tosspay/confirm"
+                        , HttpMethod.POST, requestEntity, ORDER_ID_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new OrderFailException();
@@ -65,7 +66,7 @@ public class PaymentAdapterImpl implements PaymentAdapter {
         HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
 
         CommonResponse<PaymentSuccessResponse> response =
-                restTemplate.exchange(gatewayUrl + "/shop/payment/order-complete/{orderId}",
+                restTemplate.exchange(gatewayUrl + "/shop/open/payment/order-complete/{orderId}",
                         HttpMethod.GET, requestEntity, PAYMENT_RESPONSE, orderId).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {

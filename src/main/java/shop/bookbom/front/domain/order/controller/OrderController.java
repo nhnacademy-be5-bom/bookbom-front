@@ -22,6 +22,7 @@ import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.order.service.OrderService;
 import shop.bookbom.front.domain.order.util.OrderUtil;
+import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
 
 @Controller
 @RequiredArgsConstructor
@@ -132,11 +133,19 @@ public class OrderController {
     @PostMapping("/order-member")
     public String submitOrder_member(@ModelAttribute OrderRequest orderRequest,
                                      RedirectAttributes redirectAttributes) {
-//        OrderResponse orderResponse = orderService.
+        Long userId = 20L;
+        OrderResponse orderResponse = orderService.submitMemberOrder(orderRequest, userId);
+        //결제 금액이 0원 일 경우 결제 단계 건너뛰고 바로 주문완료 페이지 띄움
+        if (orderResponse.getAmount() == 0) {
+            OrderIdResponse orderIdResponse = orderService.processFreePayment(orderResponse.getOrderId());
+            redirectAttributes.addAttribute("orderId", orderIdResponse.getOrderId());
+            redirectAttributes.addAttribute("isFree", true);
 
-//                redirectAttributes.addAttribute("orderId", orderResponse.getOrderId());
-//        redirectAttributes.addAttribute("orderName", orderResponse.getOrderName());
-//        redirectAttributes.addAttribute("amount", orderResponse.getAmount());
+            return "redirect:/payment-complete";
+        }
+        redirectAttributes.addAttribute("orderId", orderResponse.getOrderId());
+        redirectAttributes.addAttribute("orderName", orderResponse.getOrderName());
+        redirectAttributes.addAttribute("amount", orderResponse.getAmount());
 
         return "redirect:/payment-method";
     }

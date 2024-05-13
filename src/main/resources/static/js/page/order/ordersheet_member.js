@@ -120,6 +120,9 @@ function handleCouponSelection(target) {
         } else if (couponDiscount > finalPayment) {
             alert('쿠폰 최대 할인 금액이 주문 금액을 초과했습니다. 최대 할인 금액을 적용합니다');
             couponCostElement.innerText = '- ' + finalPayment + ' 원';
+            calculateFinalPayment();
+            updateDeliveryCost();
+            calculateFinalPayment();
             return;
         }
 
@@ -513,10 +516,7 @@ function validateDeliveryAndProceed() {
         //totalCost
         const totalCostElement = document.getElementById('finalPayment').innerText.trim().replace('원', '');
         const totalCost = parseInt(totalCostElement.trim().replace(',', ''));
-        if (totalCost === 0) {
-            alert('주문 금액이 0원입니다. 새로고침 후 다시 시도해주세요.');
-            return false;
-        }
+
         const totalCostInput = document.createElement('input');
         totalCostInput.type = 'hidden';
         totalCostInput.name = `totalCost`;

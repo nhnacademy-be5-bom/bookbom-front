@@ -77,4 +77,9 @@ public class UserController {
     public String signUpSuccess() {
         return "page/user/sign-up-success";
     }
+
+    @GetMapping("/users/addresses")
+    public String addresses() {
+        return "page/user/address";
+    }
 }

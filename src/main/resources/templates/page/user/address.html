@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/address.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/address.js}"></script>
+</th:block>
+
+<!-- Content -->
+<div class="d-flex flex-column align-items-center" layout:fragment="content">
+    <span class="fw-bold fs-2">나의 주소록</span>
+    <div class="card mt-3 col-md-6">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <span>
+                    <span class="fw-bold">Home</span><span class="mx-2">(기본 배송지)</span>
+                    </span>
+                    <span>12345</span>
+                    <span>1234 Main Street</span>
+                </div>
+                <div class="d-flex flex-column mx-2 justify-content-center">
+                    <div class="d-flex justify-content-end mt-2">
+                        <span class="fw-bold mx-2">수정</span>
+                        <span class="fw-bold mx-2">삭제</span>
+                    </div>
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <span>
+                    <span class="fw-bold">Home</span><span class="mx-2">(기본 배송지)</span>
+                    </span>
+                    <span>12345</span>
+                    <span>1234 Main Street</span>
+                </div>
+                <div class="d-flex flex-column mx-2">
+                    <button class="btn btn-primary justify-content-center">기본 배송지 등록</button>
+                    <div class="d-flex justify-content-end mt-2">
+                        <span class="fw-bold mx-2">수정</span>
+                        <span class="fw-bold mx-2">삭제</span>
+                    </div>
+                </div>
+            </li>
+
+            <li class="list-group-item d-flex justify-content-between">
+                <div class="d-flex flex-column">
+                    <span>
+                    <span class="fw-bold">Home</span><span class="mx-2">(기본 배송지)</span>
+                    </span>
+                    <span>12345</span>
+                    <span>1234 Main Street</span>
+                </div>
+                <div class="d-flex flex-column mx-2 justify-content-center">
+                    <button class="btn btn-primary">기본 배송지 등록</button>
+                    <div class="d-flex justify-content-end mt-2">
+                        <span class="fw-bold mx-2">수정</span>
+                        <span class="fw-bold mx-2">삭제</span>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="d-flex justify-content-center mt-3"> <!-- 중앙 정렬 -->
+            <button class="btn btn-primary col-md-3">주소 등록</button>
+        </div>
+    </div>
+</div>
+</html>

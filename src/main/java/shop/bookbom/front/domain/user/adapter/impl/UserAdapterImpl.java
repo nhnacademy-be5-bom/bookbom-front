@@ -37,9 +37,6 @@ public class UserAdapterImpl implements UserAdapter {
     private static final ParameterizedTypeReference<CommonResponse<UserInfoResponse>> MEMBER_INFO =
             new ParameterizedTypeReference<>() {
             };
-    private static final ParameterizedTypeReference<CommonResponse<EmailCheckResponse>> EMAIL_CHECK_RESPONSE =
-            new ParameterizedTypeReference<>() {
-            };
     private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
             new ParameterizedTypeReference<>() {
             };

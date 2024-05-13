@@ -7,6 +7,7 @@ import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
+import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
 
 public interface UserAdapter {
     Page<OrderInfoResponse> findOrderList(OrderDateCondition orderDateCondition, Pageable pageable);
@@ -19,4 +20,9 @@ public interface UserAdapter {
      * 마이페이지 회원 정보를 조회하는 메서드입니다.
      */
     UserInfoResponse getUserInfo();
+
+    /**
+     * 회원 등급을 조회하는 메서드입니다.
+     */
+    UserRankResponse getUserRank();
 }

@@ -77,4 +77,10 @@ public class UserController {
     public String signUpSuccess() {
         return "page/user/sign-up-success";
     }
+
+    @GetMapping("/users/my-rank")
+    public String myRank(Model model) {
+        model.addAttribute("userRank", userService.getUserRank());
+        return "page/user/my-rank";
+    }
 }

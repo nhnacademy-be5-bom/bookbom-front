@@ -2,6 +2,7 @@ package shop.bookbom.front.index.adapter.impl;
 
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.index.adapter.IndexAdapter;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class IndexAdapterImpl implements IndexAdapter {
@@ -49,6 +51,7 @@ public class IndexAdapterImpl implements IndexAdapter {
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[IndexAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
@@ -69,6 +72,7 @@ public class IndexAdapterImpl implements IndexAdapter {
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_PAGE_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[IndexAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();

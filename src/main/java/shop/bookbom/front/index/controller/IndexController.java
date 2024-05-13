@@ -1,5 +1,6 @@
 package shop.bookbom.front.index.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -50,6 +51,16 @@ public class IndexController {
         model.addAttribute("totalItems", latestBooks.getTotalElements());
         model.addAttribute("size", latestBooks.getSize());
         return "page/latest-books";
+    }
+
+    @GetMapping("/signin")
+    public String signIn(HttpServletRequest request, Model model) {
+        String ip = request.getHeader("x-forwarded-for");
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+        model.addAttribute("ip", ip);
+        return "page/signin/signin";
     }
 
     @GetMapping("/myCoupon")

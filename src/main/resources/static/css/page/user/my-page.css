@@ -65,3 +65,10 @@
     box-shadow: none;
     cursor: pointer;
 }
+
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* 텍스트가 표시될 최대 너비 */
+}

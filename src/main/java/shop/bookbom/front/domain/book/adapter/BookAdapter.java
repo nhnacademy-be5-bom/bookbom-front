@@ -56,6 +56,10 @@ public class BookAdapter {
             CATEGORY_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
     };
 
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookSearchResponse>>>
+            ENTIRE_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
+    };
+
     @Value("${bookbom.gateway-url}")
     private String gatewayUrl;
 
@@ -192,6 +196,25 @@ public class BookAdapter {
             throw new RuntimeException();
         }
         return response;
+    }
+
+    public Page<BookSearchResponse> getAllBooks(Pageable pageable) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/all/")
+                .queryParam("pageable", pageable)
+                .toUriString();
+
+        CommonResponse<CommonPage<BookSearchResponse>> response =
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ENTIRE_BOOKS_RESPONSE).getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            // todo 예외처리
+            throw new RuntimeException();
+        }
+        return response.getResult();
     }
 
     private static RestTemplate getMultiPartRestTemplate() {

@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.dto.response.UserCheckResponse;
 import shop.bookbom.front.common.exception.RestTemplateException;
 
 @Component
@@ -23,7 +24,7 @@ public class UserCheckAdapter {
     String gatewayUrl;
 
 
-    private static final ParameterizedTypeReference<CommonResponse<Boolean>>
+    private static final ParameterizedTypeReference<CommonResponse<UserCheckResponse>>
             BOOLEAN_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
@@ -33,15 +34,16 @@ public class UserCheckAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        CommonResponse<Boolean> response =
+
+        CommonResponse<UserCheckResponse> response =
                 restTemplate.exchange(gatewayUrl + "/shop/open/check-user", HttpMethod.GET, requestEntity,
                         BOOLEAN_RESPONSE).getBody();
         log.info("response : ", response);
-        
+
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new RestTemplateException();
         }
-        return response.getResult();
+        return response.getResult().isCheck();
 
     }
 }

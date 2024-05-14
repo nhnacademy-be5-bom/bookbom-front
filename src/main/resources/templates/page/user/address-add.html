@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/address.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/address.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</th:block>
+
+<div class="container mt-5 col-md-6" layout:fragment="content">
+    <h2 class="mb-4">주소 등록</h2>
+    <form action="/users/address/add" method="post" th:object="${addressRequest}">
+        <div class="mb-3 col-md-6">
+            <label class="form-label" for="nickname">별칭</label>
+            <input class="form-control" id="nickname" name="nickname" placeholder="별칭 입력" type="text">
+        </div>
+        <div class="mb-3 col-md-5">
+            <label class="form-label" for="zipCode">우편번호</label>
+            <div class="d-flex">
+                <input class="form-control col-md-1 mr-4" id="zipCode" placeholder="우편번호 입력" readonly
+                       th:errorclass="field-error"
+                       th:field="*{zipcode}"
+                       type="text">
+                <button class="btn btn-outline-secondary col-md-2 mx-4" onclick="daumPostCode()" type="button">찾기
+                </button>
+            </div>
+            <div class="field-error" th:errors="*{zipcode}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="address">주소</label>
+            <input class="form-control" id="address" name="address" placeholder="주소 입력" readonly
+                   th:errorclass="field-error"
+                   th:field="*{address}"
+                   type="text">
+            <div class="field-error" th:errors="*{address}"></div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="addressDetail">주소 상세</label>
+            <input class="form-control" id="addressDetail" placeholder="상세 주소 입력"
+                   th:errorclass="field-error"
+                   th:field="*{addressDetail}"
+                   type="text">
+            <div class="field-error" th:errors="*{addressDetail}"></div>
+        </div>
+        <button class="btn btn-primary" type="submit">등록하기</button>
+    </form>
+</div>
+</html>

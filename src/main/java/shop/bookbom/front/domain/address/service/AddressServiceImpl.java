@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.address.adapter.AddressAdapter;
 import shop.bookbom.front.domain.address.dto.AddressResponse;
+import shop.bookbom.front.domain.address.dto.request.AddressRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -17,5 +18,10 @@ public class AddressServiceImpl implements AddressService {
         List<AddressResponse> addresses = addressAdapter.getAddressBook();
         Collections.sort(addresses);
         return addresses;
+    }
+
+    @Override
+    public void saveAddress(AddressRequest request) {
+        addressAdapter.saveAddress(request);
     }
 }

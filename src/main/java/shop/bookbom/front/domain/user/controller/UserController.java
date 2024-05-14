@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.service.UserService;
@@ -65,8 +66,16 @@ public class UserController {
             bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "비밀번호가 일치하지 않습니다.");
             return "page/user/sign-up";
         }
+        boolean existsError = false;
         if (!signUpRequest.isEmailCanUse()) {
             bindingResult.reject("error.email", "이메일 중복체크를 진행해주세요.");
+            existsError = true;
+        }
+        if (!signUpRequest.isNicknameCanUse()) {
+            bindingResult.reject("error.nickname", "닉네임 중복체크를 진행해주세요.");
+            existsError = true;
+        }
+        if (existsError) {
             return "page/user/sign-up";
         }
         userService.signUp(signUpRequest);
@@ -82,5 +91,16 @@ public class UserController {
     public String myRank(Model model) {
         model.addAttribute("userRank", userService.getUserRank());
         return "page/user/my-rank";
+    }
+  
+    @GetMapping("/users/withdraw")
+    public String getDeletePage() {
+        return "page/withdraw/delete-user";
+    }
+
+    @PostMapping("/users/withdraw")
+    public String deleteUser(@ModelAttribute WithDrawDTO withDrawDTO) {
+        userService.deleteUser(withDrawDTO);
+        return "page/main";
     }
 }

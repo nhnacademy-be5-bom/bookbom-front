@@ -31,7 +31,6 @@ function daumPostCode() {
 
 function checkEmail() {
     const email = document.getElementById('email').value;
-    console.log(email);
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
     if (email === '') {
         alert("이메일을 입력하세요.");
@@ -46,7 +45,9 @@ function checkEmail() {
         .then(data => {
             if (data.result.canUse) {
                 alert("사용 가능한 이메일입니다.");
+                document.getElementById('email').readOnly = true;
                 document.getElementById('emailCanUse').value = true;
+                document.getElementById('emailCheckBtn').disabled = true;
             } else {
                 alert("이미 사용중인 이메일입니다.");
             }
@@ -56,3 +57,40 @@ function checkEmail() {
             alert("에러가 발생했습니다. 관리자에게 문의 주세요.")
         });
 }
+
+function checkNickname() {
+    const nickname = document.getElementById('nickname').value;
+    if (nickname === '' || nickname.length < 2) {
+        alert("닉네임을 최소 2자 이상 입력하세요.");
+        return;
+    }
+    fetch('/check-nickname?nickname=' + encodeURIComponent(nickname))
+        .then(response => response.json())
+        .then(data => {
+            if (data.result.canUse) {
+                alert("사용 가능한 닉네임입니다.");
+                document.getElementById('nickname').readOnly = true;
+                document.getElementById('nicknameCanUse').value = true;
+                document.getElementById('nicknameCheckBtn').disabled = true;
+            } else {
+                alert("이미 사용중인 닉네임입니다.");
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert("에러가 발생했습니다. 관리자에게 문의 주세요.")
+        });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    let emailCanUse = document.getElementById('emailCanUse');
+    if (emailCanUse.value === 'true') {
+        document.getElementById('email').readOnly = true;
+        document.getElementById('emailCheckBtn').disabled = true;
+    }
+    let nicknameCanUse = document.getElementById('nicknameCanUse');
+    if (nicknameCanUse.value === 'true') {
+        document.getElementById('nickname').readOnly = true;
+        document.getElementById('nicknameCheckBtn').disabled = true;
+    }
+});

@@ -66,8 +66,16 @@ public class UserController {
             bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "비밀번호가 일치하지 않습니다.");
             return "page/user/sign-up";
         }
+        boolean existsError = false;
         if (!signUpRequest.isEmailCanUse()) {
             bindingResult.reject("error.email", "이메일 중복체크를 진행해주세요.");
+            existsError = true;
+        }
+        if (!signUpRequest.isNicknameCanUse()) {
+            bindingResult.reject("error.nickname", "닉네임 중복체크를 진행해주세요.");
+            existsError = true;
+        }
+        if (existsError) {
             return "page/user/sign-up";
         }
         userService.signUp(signUpRequest);

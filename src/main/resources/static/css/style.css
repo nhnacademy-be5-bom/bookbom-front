@@ -175,7 +175,7 @@ body {
 
 .btn-outline-primary {
     transition: all 0.3s ease-in;
-    padding: 1.2rem 3rem;
+    /*padding: 1.2rem 3rem;*/
     letter-spacing: 0.02375rem;
     --bs-btn-color: #DEAD6F;
     --bs-btn-border-color: #DEAD6F;

@@ -24,4 +24,14 @@ public class AddressServiceImpl implements AddressService {
     public void saveAddress(AddressRequest request) {
         addressAdapter.saveAddress(request);
     }
+
+    @Override
+    public void updateDefaultAddress(Long id) {
+        addressAdapter.updateDefaultAddress(id);
+    }
+
+    @Override
+    public void deleteAddress(Long id) {
+        addressAdapter.deleteAddress(id);
+    }
 }

@@ -78,4 +78,52 @@ public class AddressAdapterImpl implements AddressAdapter {
             throw new RestTemplateException(response.getHeader().getResultMessage());
         }
     }
+
+    @Override
+    public void updateDefaultAddress(Long id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/address/default/" + id)
+                .toUriString();
+
+        CommonResponse<Void> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        requestEntity,
+                        COMMON_RESPONSE)
+                .getBody();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
+        }
+    }
+
+    @Override
+    public void deleteAddress(Long id) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/address/" + id)
+                .toUriString();
+
+        CommonResponse<Void> response = restTemplate.exchange(
+                        url,
+                        HttpMethod.DELETE,
+                        requestEntity,
+                        COMMON_RESPONSE)
+                .getBody();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
+        }
+    }
 }

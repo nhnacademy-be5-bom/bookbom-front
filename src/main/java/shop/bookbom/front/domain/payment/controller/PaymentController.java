@@ -71,6 +71,7 @@ public class PaymentController {
         } else {
             paymentResponse = paymentService.orderComplete(orderId);
         }
+        model.addAttribute("orderId", orderId);
         model.addAttribute("orderNumber", paymentResponse.getOrderNumber());
         model.addAttribute("orderInfo", paymentResponse.getOrderInfo());
         model.addAttribute("totalCount", paymentResponse.getTotalCount());

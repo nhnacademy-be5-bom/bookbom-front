@@ -121,3 +121,11 @@ function toggleTable() {
 function goToMainPage() {
     window.location.href = "/"; // 메인 페이지 URL로 이동
 }
+
+function viewOrderDetails() {
+    // 여기서는 예시로 버튼이 속한 부모 요소의 ID를 사용합니다.
+    var orderId = document.getElementById('orderId').value;
+
+    // 주문 ID를 사용하여 주문 상세 페이지로 이동합니다.
+    window.location.href = "/orders/" + orderId;
+}

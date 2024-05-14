@@ -64,8 +64,9 @@
     <br><br>
     <div class="button-container">
         <button class="pink-button" onclick="goToMainPage()">쇼핑 계속</button>
-        <button class="pink-button">주문 내역 상세</button>
+        <button class="pink-button" onclick="viewOrderDetails()">주문 내역 상세</button>
     </div>
+    <input type="hidden" id="orderId" th:value="${orderId}">
 
 
 </div>

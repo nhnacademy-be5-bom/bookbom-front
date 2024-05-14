@@ -25,6 +25,7 @@ import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,6 +33,9 @@ public class UserAdapterImpl implements UserAdapter {
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<OrderInfoResponse>>> ORDER_INFO_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
+    //    private static final ParameterizedTypeReference<CommonResponse<EmailCheckResponse>> EMAIL_CHECK_RESPONSE =
+//            new ParameterizedTypeReference<>() {
+//            };
     private static final ParameterizedTypeReference<CommonResponse<UserInfoResponse>> MEMBER_INFO =
             new ParameterizedTypeReference<>() {
             };
@@ -95,6 +99,7 @@ public class UserAdapterImpl implements UserAdapter {
         }
         return response.getResult();
     }
+
 
     @Override
     public SignupCheckResponse checkNicknameCanUse(String nickname) {

@@ -74,4 +74,21 @@ public class PaymentAdapterImpl implements PaymentAdapter {
         }
         return Objects.requireNonNull(response).getResult();
     }
+
+
+    public PaymentSuccessResponse orderFreeComplete(Long orderId) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
+
+        CommonResponse<PaymentSuccessResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/open/payment/order-complete/free/{orderId}",
+                        HttpMethod.GET, requestEntity, PAYMENT_RESPONSE, orderId).getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new PaymentFailException();
+        }
+        return Objects.requireNonNull(response).getResult();
+    }
 }

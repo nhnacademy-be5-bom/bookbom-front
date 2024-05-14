@@ -34,10 +34,17 @@ td {
     display: inline-block;
     vertical-align: top;
     background-color: #8a8a8a;
+    margin: 5px;
 }
 
 .delivery-input {
     width: 50%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.delivery-input-member {
+    width: 80%;
     display: inline-block;
     vertical-align: top;
 }
@@ -51,7 +58,7 @@ td {
 }
 
 .delivery input {
-    margin: 5px;
+    margin: 6px;
 }
 
 .delivery-input button {
@@ -61,6 +68,7 @@ td {
 
 .delivery-info label {
     margin: 7px;
+    color: white;
 }
 
 .delivery-select {
@@ -106,6 +114,21 @@ td {
     padding: 10px;
     border-radius: 10px;
 }
+
+.coupon-select select {
+    width: 400px;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: center;
+}
+
+.coupon-select option[disabled] {
+    color: white;
+    background-color: #8a8a8a;
+}
+
 
 .point-use {
     background-color: #8a8a8a;

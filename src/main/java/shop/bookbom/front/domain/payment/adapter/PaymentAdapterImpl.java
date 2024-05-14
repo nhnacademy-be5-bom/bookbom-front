@@ -83,7 +83,7 @@ public class PaymentAdapterImpl implements PaymentAdapter {
         HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
 
         CommonResponse<PaymentSuccessResponse> response =
-                restTemplate.exchange(gatewayUrl + "/shop/payment/order-complete/free/{orderId}",
+                restTemplate.exchange(gatewayUrl + "/shop/open/payment/order-complete/free/{orderId}",
                         HttpMethod.GET, requestEntity, PAYMENT_RESPONSE, orderId).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {

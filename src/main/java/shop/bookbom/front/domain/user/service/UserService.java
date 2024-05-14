@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
-import shop.bookbom.front.domain.user.dto.response.EmailCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 

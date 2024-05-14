@@ -9,9 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import shop.bookbom.front.domain.file.dto.FileDTO;
 import shop.bookbom.front.domain.pointrate.dto.PointRateSimpleInformation;
 import shop.bookbom.front.domain.publisher.entity.dto.PublisherSimpleInformation;
+import shop.bookbom.front.domain.review.dto.ReviewResponse;
+import shop.bookbom.front.domain.review.dto.ReviewStatisticsResponse;
 import shop.bookbom.front.domain.tag.dto.TagDTO;
-import shop.bookbom.front.review.dto.ReviewResponse;
-import shop.bookbom.front.review.dto.ReviewStatisticsResponse;
 
 /**
  * packageName    : shop.bookbom.front.domain.book.dto.response
@@ -35,10 +35,10 @@ public class BookCategoryResponse {
     private Integer discountCost;
     private PublisherSimpleInformation publisher;
     private PointRateSimpleInformation pointRate;
-    private List<AuthorResponse> authors = new ArrayList<>();
-    private List<TagDTO> tags = new ArrayList<>();
-    private List<FileDTO> files = new ArrayList<>();
-    private List<ReviewResponse> reviews = new ArrayList<>();
+    private final List<AuthorResponse> authors = new ArrayList<>();
+    private final List<TagDTO> tags = new ArrayList<>();
+    private final List<FileDTO> files = new ArrayList<>();
+    private final List<ReviewResponse> reviews = new ArrayList<>();
     // 리뷰 평점, 리뷰 총갯수
     private ReviewStatisticsResponse reviewStatistics;
 }

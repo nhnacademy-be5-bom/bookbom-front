@@ -17,4 +17,22 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error('Error:', error);
         });
     });
+
+    document.getElementById('reviewModal').addEventListener('show.bs.modal', (event) => {
+        const button = event.relatedTarget; // 클릭된 버튼
+         // 버튼의 데이터(book-id)
+        document.getElementById('bookIdField').value = button.getAttribute("data-book-id"); // 히든 필드에 book-id 설정
+    });
+
+    let saveButton = document.querySelector('.write-review');
+    document.querySelector('.write-review').addEventListener('click', function () {
+        let bookId = document.getElementById('bookIdField').value;
+        let orderId = window.location.pathname.split('/').pop();
+        let reviewType = document.getElementById('reviewType').value;
+
+        console.log('bookId:', bookId);
+        console.log('orderId:', orderId);
+        console.log('reviewType:', reviewType);
+        window.location.href = `/reviews?bookId=${bookId}&orderId=${orderId}&reviewType=${reviewType}`;
+    });
 });

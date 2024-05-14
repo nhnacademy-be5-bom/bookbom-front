@@ -610,7 +610,12 @@ function validateDeliveryAndProceed() {
         //couponId
         const selectElement = document.getElementById('selected-coupon');
         const selectedOption = selectElement.options[selectElement.selectedIndex];
-        const couponId = selectedOption.value;
+        var couponId = selectedOption.value;
+        if (couponId === 'null') {
+            couponId = parseInt('0');
+        } else {
+            couponId = parseInt(selectedOption.value);
+        }
         const couponIdInput = document.createElement('input');
         couponIdInput.type = 'hidden';
         couponIdInput.name = `couponId`;

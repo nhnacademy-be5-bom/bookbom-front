@@ -36,7 +36,7 @@
                     </form>
                     <div class="d-flex justify-content-end align-items-center mt-2">
                         <form id="deleteAddressForm" th:action="@{'/users/address/delete/' + ${address.id}}"
-                              th:method="delete">
+                              th:if="${addresses.size() != 1}" th:method="delete">
                             <button class="btn btn-danger mx-2" type="submit">삭제</button>
                         </form>
                     </div>

@@ -30,11 +30,11 @@ public interface OrderAdapter {
 
     OpenWrapperSelectResponse wrapperSelect(WrapperSelectRequest wrapperSelectRequest);
 
-    WrapperSelectResponse wrapperSelectForMember(WrapperSelectRequest wrapperSelectRequest, Long userId);
+    WrapperSelectResponse wrapperSelectForMember(WrapperSelectRequest wrapperSelectRequest);
 
     OrderResponse submitOrder(OpenOrderRequest openOrderRequest);
 
-    OrderResponse submitMemberOrder(OrderRequest orderRequest, Long userId);
+    OrderResponse submitMemberOrder(OrderRequest orderRequest);
 
     Page<OrderManagementResponse> getOrderManagement(Pageable pageable, LocalDate dateFrom, LocalDate dateTo,
                                                      String sort, String status);

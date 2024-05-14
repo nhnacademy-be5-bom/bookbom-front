@@ -41,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest, Long userId) {
-        return orderAdapter.wrapperSelectForMember(wrapperSelectRequest, userId);
+    public WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest) {
+        return orderAdapter.wrapperSelectForMember(wrapperSelectRequest);
     }
 
     @Override
@@ -51,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse submitMemberOrder(OrderRequest orderRequest, Long userId) {
-        return orderAdapter.submitMemberOrder(orderRequest, userId);
+    public OrderResponse submitMemberOrder(OrderRequest orderRequest) {
+        return orderAdapter.submitMemberOrder(orderRequest);
     }
 
     @Override

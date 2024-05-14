@@ -135,7 +135,7 @@ public class OrderAdapterImpl implements OrderAdapter {
     }
 
     @Override
-    public WrapperSelectResponse wrapperSelectForMember(WrapperSelectRequest wrapperSelectRequest, Long userId) {
+    public WrapperSelectResponse wrapperSelectForMember(WrapperSelectRequest wrapperSelectRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
@@ -144,8 +144,8 @@ public class OrderAdapterImpl implements OrderAdapter {
 
 
         CommonResponse<WrapperSelectResponse> response =
-                restTemplate.exchange(gatewayUrl + "/shop/orders/wrapper/{userId}"
-                        , HttpMethod.POST, requestEntity, WRAPPER_SELECT_MEMBER_RESPONSE, userId).getBody();
+                restTemplate.exchange(gatewayUrl + "/shop/orders/wrapper"
+                        , HttpMethod.POST, requestEntity, WRAPPER_SELECT_MEMBER_RESPONSE).getBody();
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new BeforeOrderException();
         }
@@ -177,14 +177,14 @@ public class OrderAdapterImpl implements OrderAdapter {
     }
 
     @Override
-    public OrderResponse submitMemberOrder(OrderRequest orderRequest, Long userId) {
+    public OrderResponse submitMemberOrder(OrderRequest orderRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<OrderRequest> requestEntity = new HttpEntity<>(orderRequest, httpHeaders);
 
-        CommonResponse<OrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/orders/{userId}"
-                , HttpMethod.POST, requestEntity, ORDER_RESPONSE, userId).getBody();
+        CommonResponse<OrderResponse> response = restTemplate.exchange(gatewayUrl + "/shop/orders"
+                , HttpMethod.POST, requestEntity, ORDER_RESPONSE).getBody();
         if (response == null) {
             throw new OrderFailException();
         }
@@ -282,7 +282,7 @@ public class OrderAdapterImpl implements OrderAdapter {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(orderNumber, httpHeaders);
 
-        CommonResponse<OrderIdResponse> response = restTemplate.exchange(gatewayUrl + "/shop/payment/free"
+        CommonResponse<OrderIdResponse> response = restTemplate.exchange(gatewayUrl + "/shop/open/payment/free"
                 , HttpMethod.POST, requestEntity, ORDER_ID_RESPONSE).getBody();
 
         if (response == null || !response.getHeader().isSuccessful()) {

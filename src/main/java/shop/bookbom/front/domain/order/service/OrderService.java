@@ -31,11 +31,11 @@ public interface OrderService {
 
     OpenWrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest);
 
-    WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest, Long userId);
+    WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest);
 
     OrderResponse submitOrder(OpenOrderRequest openOrderRequest);
 
-    OrderResponse submitMemberOrder(OrderRequest orderRequest, Long userId);
+    OrderResponse submitMemberOrder(OrderRequest orderRequest);
 
     Page<OrderManagementResponse> orderManagement(Pageable pageable, String sort, String status, LocalDate dateFrom,
                                                   LocalDate dateTo);

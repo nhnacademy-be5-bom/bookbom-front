@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.bookbom.front.common.Adapter.UserCheckAdapter;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
@@ -28,6 +29,7 @@ import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final UserCheckAdapter userCheckAdapter;
 
     //포장지 선택페이지
     @PostMapping("/order/wrapper")
@@ -71,20 +73,23 @@ public class OrderController {
                 OrderUtil.convertWrapperSelectListToString(wrapperSelectRequest.getWrapperSelectBookRequestList());
         redirectAttributes.addAttribute("wrapperSelectListToStr", wrapperSelectListToStr);
         //회원이면
-        //return "redirect:/order/member-ordersheet
-        return "redirect:/order/ordersheet";
+        if (userCheckAdapter.checkUser()) {
+            return "redirect:/order/member-ordersheet";
+        } else {
+            return "redirect:/order/ordersheet";
+        }
+
     }
 
     //회원 주문 페이지
     @GetMapping("/order/member-ordersheet")
-    public String getMemberOrderSheet(@RequestParam(name = "userId") Long userId,
-                                      @RequestParam("wrapperSelectListToStr") String wrapperSelectListToStr,
+    public String getMemberOrderSheet(@RequestParam("wrapperSelectListToStr") String wrapperSelectListToStr,
                                       Model model) {
         WrapperSelectRequest wrapperSelectRequest = WrapperSelectRequest.builder()
                 .wrapperSelectBookRequestList(OrderUtil.convertStringToWrapperSelectList(wrapperSelectListToStr))
                 .build();
 
-        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapperForMember(wrapperSelectRequest, userId);
+        WrapperSelectResponse wrapperSelectResponse = orderService.selectWrapperForMember(wrapperSelectRequest);
         model.addAttribute("totalOrderCount", wrapperSelectResponse.getTotalOrderCount());
         model.addAttribute("wrapCost", wrapperSelectResponse.getWrapCost());
         model.addAttribute("wrapperSelectResponseList", wrapperSelectResponse.getWrapperSelectResponseList());
@@ -134,8 +139,7 @@ public class OrderController {
     @PostMapping("/order-member")
     public String submitOrder_member(@ModelAttribute OrderRequest orderRequest,
                                      RedirectAttributes redirectAttributes) {
-        Long userId = 20L;
-        OrderResponse orderResponse = orderService.submitMemberOrder(orderRequest, userId);
+        OrderResponse orderResponse = orderService.submitMemberOrder(orderRequest);
         //결제 금액이 0원 일 경우 결제 단계 건너뛰고 바로 주문완료 페이지 띄움
         if (orderResponse.getAmount() == 0) {
             OrderIdResponse orderIdResponse = orderService.processFreePayment(orderResponse.getOrderId());

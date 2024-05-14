@@ -17,25 +17,25 @@
         <table>
             <tr>
                 <td th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRank' : ''}">
-                    <div class="STANDARD"></div>
+                    <div th:class="${userRank.getRanks().get(0).getName()}"></div>
                     <b th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'STANDARD' ? '- STANDARD -' : 'STANDARD'}">STANDARD</b><br>
                     <span class="month">최근 3개월 순수구매액</span><br>
                     10만원 미만
                 </td>
                 <td th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRank' : ''}">
-                    <div class="ROYAL"></div>
+                    <div th:class="${userRank.getRanks().get(1).getName()}"></div>
                     <b th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'ROYAL' ? '- ROYAL -' : 'ROYAL'}">ROYAL</b><br>
                     <span class="month">최근 3개월 순수구매액</span><br>
                     10~20만원
                 </td>
                 <td th:class="${userRank.getUserrank() == 'GOLD' ? 'myRank' : ''}">
-                    <div class="GOLD"></div>
+                    <div th:class="${userRank.getRanks().get(2).getName()}"></div>
                     <b th:class="${userRank.getUserrank() == 'GOLD' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'GOLD' ? '- GOLD -' : 'GOLD'}">GOLD</b><br>
                     <span class="month">최근 3개월 순수구매액</span><br>
                     20~30만원
                 </td>
                 <td th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRank' : ''}">
-                    <div class="PLATINUM"></div>
+                    <div th:class="${userRank.getRanks().get(3).getName()}"></div>
                     <b th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'PLATINUM' ? '- PLATINUM -' : 'PLATINUM'}">PLATINUM</b><br>
                     <span class="month">최근 3개월 순수구매액</span><br>
                     30만원 이상
@@ -44,19 +44,19 @@
             <tr>
                 <td th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage">2%</span> 적립</b>
+                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(0).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage">3%</span> 적립</b>
+                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(1).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'GOLD' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage">4%</span> 적립</b>
+                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(2).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage">5%</span> 적립</b>
+                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(3).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
                 </td>
             </tr>
         </table>

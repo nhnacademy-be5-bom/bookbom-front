@@ -83,7 +83,9 @@ public class RestTemplateConfig {
         formHttpMessageConverter.addPartConverter(jackson);
         formHttpMessageConverter.addPartConverter(resource);
 
-        return new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
+        RestTemplate restTemplate = new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
+        restTemplate.setInterceptors(Collections.singletonList(addJwtInterceptor()));
+        return restTemplate;
     }
 
     @Bean

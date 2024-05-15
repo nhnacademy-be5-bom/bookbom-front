@@ -10,17 +10,17 @@ import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
 
 public interface AdminCouponService {
-    void addCouponPolicy(CouponPolicyAddRequest request, Long userId);
+    void addCouponPolicy(CouponPolicyAddRequest request);
 
-    void deleteCouponPolicy(CouponPolicyDeleteRequest request, Long userId);
+    void deleteCouponPolicy(CouponPolicyDeleteRequest request);
 
-    void updateCouponPolicy(CouponPolicyInfoDto request, Long userId);
+    void updateCouponPolicy(CouponPolicyInfoDto request);
 
-    List<CouponPolicyInfoDto> getCouponPolicyInfo(Long userId);
+    List<CouponPolicyInfoDto> getCouponPolicyInfo();
 
-    <T> void createCoupon(String type, T addCouponDto, Long userId);
+    <T> void createCoupon(String type, T addCouponDto);
 
-    Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type, Long userId);
+    Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type);
 
-    void issueCoupon(IssueCouponRequest issueCouponRequest, Long userId);
+    void issueCoupon(IssueCouponRequest issueCouponRequest);
 }

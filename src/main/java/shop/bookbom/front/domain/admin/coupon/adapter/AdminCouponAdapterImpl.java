@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.admin.coupon.adapter;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,8 +30,8 @@ import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 public class AdminCouponAdapterImpl implements AdminCouponAdapter {
     private final RestTemplate restTemplate;
 
-    //@Value("${bookbom.gateway-url}")
-    String gatewayUrl = "http://127.0.0.1:8011";
+    @Value("${bookbom.gateway-url}")
+    String gatewayUrl;
 
     private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
             new ParameterizedTypeReference<>() {
@@ -52,16 +53,14 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
      * 쿠폰 정책을 등록합니다.
      *
      * @param request
-     * @param userId
      */
     @Override
-    public void addCouponPolicy(CouponPolicyAddRequest request, Long userId) {
+    public void addCouponPolicy(CouponPolicyAddRequest request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CouponPolicyAddRequest> requestHttpEntity = new HttpEntity<>(request, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy/{userId}")
-                .buildAndExpand(userId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy")
                 .toUriString();
 
         CommonResponse<Void> response = restTemplate.exchange(
@@ -80,16 +79,14 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
      * 쿠폰 정책을 삭제합니다.
      *
      * @param request
-     * @param userId
      */
     @Override
-    public void deleteCouponPolicy(CouponPolicyDeleteRequest request, Long userId) {
+    public void deleteCouponPolicy(CouponPolicyDeleteRequest request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CouponPolicyDeleteRequest> requestHttpEntity = new HttpEntity<>(request, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy/{userId}")
-                .buildAndExpand(userId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy")
                 .toUriString();
 
         CommonResponse<Void> response = restTemplate.exchange(
@@ -108,16 +105,14 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
      * 쿠폰 정책 수정사항을 업데이트합니다.
      *
      * @param request
-     * @param userId
      */
     @Override
-    public void updateCouponPolicy(CouponPolicyInfoDto request, Long userId) {
+    public void updateCouponPolicy(CouponPolicyInfoDto request) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CouponPolicyInfoDto> requestHttpEntity = new HttpEntity<>(request, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy/{userId}")
-                .buildAndExpand(userId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy")
                 .toUriString();
 
         CommonResponse<Void> response = restTemplate.exchange(
@@ -135,17 +130,15 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
     /**
      * 쿠폰 정책 목록을 불러옵니다.
      *
-     * @param userId
      * @return 쿠폰 정책 목록
      */
     @Override
-    public List<CouponPolicyInfoDto> getCouponPolicyInfo(Long userId) {
+    public List<CouponPolicyInfoDto> getCouponPolicyInfo() {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CouponPolicyInfoDto> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy/{userId}")
-                .buildAndExpand(userId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/couponPolicy")
                 .toUriString();
 
         CommonListResponse<CouponPolicyInfoDto> response = restTemplate.exchange(
@@ -165,27 +158,23 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
      *
      * @param type         쿠폰 타입
      * @param addCouponDto 쿠폰타입별 dto
-     * @param userId       유저 id
      * @param <T>
      */
     @Override
-    public <T> void addCoupon(String type, T addCouponDto, Long userId) {
+    public <T> void addCoupon(String type, T addCouponDto) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<T> requestHttpEntity = new HttpEntity<>(addCouponDto, httpHeaders);
 
         String url = "";
         if (type.equals("general")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/generalCoupon/{userId}")
-                    .buildAndExpand(userId)
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/generalCoupon")
                     .toUriString();
         } else if (type.equals("book")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/bookCoupon/{userId}")
-                    .buildAndExpand(userId)
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/bookCoupon")
                     .toUriString();
         } else if (type.equals("category")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/categoryCoupon/{userId}")
-                    .buildAndExpand(userId)
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/categoryCoupon")
                     .toUriString();
         }
 
@@ -202,22 +191,20 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
     }
 
     /**
-     * 쿠폰 정보를 가져옵니다.
+     * 관리자페이지에서 쿠폰 정보를 가져옵니다.
      *
      * @param pageable
      * @param type
-     * @param userId
      * @return
      */
     @Override
-    public Page<CouponInfoResponse> getConponInfo(Pageable pageable, String type, Long userId) {
+    public Page<CouponInfoResponse> getConponInfo(Pageable pageable, String type) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Page<CouponInfoResponse>> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/{type}/{userId}")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/{type}")
                 .queryParam("pageable", pageable)
-                .buildAndExpand(type, userId)
                 .toUriString();
 
         CommonResponse<CommonPage<CouponInfoResponse>> response = restTemplate.exchange(
@@ -233,14 +220,18 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
         return response.getResult();
     }
 
+    /**
+     * 관리자가 쿠폰을 발급합니다.
+     *
+     * @param issueCouponRequest 발급할 쿠폰 정보
+     */
     @Override
-    public void issue(IssueCouponRequest issueCouponRequest, Long userId) {
+    public void issue(IssueCouponRequest issueCouponRequest) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<IssueCouponRequest> requestHttpEntity = new HttpEntity<>(issueCouponRequest, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/issue/{userId}")
-                .buildAndExpand(userId)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/issue")
                 .toUriString();
 
         CommonResponse<Void> response = restTemplate.exchange(

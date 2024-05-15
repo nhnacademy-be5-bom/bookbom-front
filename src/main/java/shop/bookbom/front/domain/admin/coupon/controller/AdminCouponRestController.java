@@ -25,47 +25,45 @@ import shop.bookbom.front.domain.admin.coupon.service.AdminCouponService;
 public class AdminCouponRestController {
     private final AdminCouponService adminCouponService;
 
-    Long userId = 1L; //테스트
-
     @PostMapping("/couponPolicy")
     public CommonResponse<Void> addCouponPolicy(@RequestBody CouponPolicyAddRequest request) {
-        adminCouponService.addCouponPolicy(request, userId);
+        adminCouponService.addCouponPolicy(request);
         return CommonResponse.success();
     }
 
     @DeleteMapping("/couponPolicy")
     public CommonResponse<Void> deleteCouponPolicy(@RequestBody CouponPolicyDeleteRequest request) {
-        adminCouponService.deleteCouponPolicy(request, userId);
+        adminCouponService.deleteCouponPolicy(request);
         return CommonResponse.success();
     }
 
     @PutMapping("/couponPolicy")
     public CommonResponse<Void> updateCouponPolicy(@RequestBody CouponPolicyInfoDto request) {
-        adminCouponService.updateCouponPolicy(request, userId);
+        adminCouponService.updateCouponPolicy(request);
         return CommonResponse.success();
     }
 
     @PostMapping("/couponRegister/general")
     public CommonResponse<Void> createCoupon(@RequestBody AddCouponRequest addCouponRequest) {
-        adminCouponService.createCoupon("general", addCouponRequest, userId);
+        adminCouponService.createCoupon("general", addCouponRequest);
         return CommonResponse.success();
     }
 
     @PostMapping("/couponRegister/book")
     public CommonResponse<Void> createCoupon(@RequestBody AddBookCouponRequest addCouponRequest) {
-        adminCouponService.createCoupon("book", addCouponRequest, userId);
+        adminCouponService.createCoupon("book", addCouponRequest);
         return CommonResponse.success();
     }
 
     @PostMapping("/couponRegister/category")
     public CommonResponse<Void> createCoupon(@RequestBody AddCategoryCouponRequest addCouponRequest) {
-        adminCouponService.createCoupon("category", addCouponRequest, userId);
+        adminCouponService.createCoupon("category", addCouponRequest);
         return CommonResponse.success();
     }
 
     @PostMapping("/coupons/issue")
     public CommonResponse<Void> issueCoupon(@RequestBody @Valid IssueCouponRequest issueCouponRequest){
-        adminCouponService.issueCoupon(issueCouponRequest, userId);
+        adminCouponService.issueCoupon(issueCouponRequest);
         return CommonResponse.success();
     }
 }

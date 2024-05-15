@@ -1,6 +1,7 @@
 package shop.bookbom.front.domain.coupon.adapter;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,8 +31,8 @@ public class MemberCouponAdapterImpl implements MemberCouponAdapter{
             new ParameterizedTypeReference<>() {
             };
 
-    //@Value("${bookbom.gateway-url}")
-    String gatewayUrl = "http://127.0.0.1:8011";
+    @Value("${bookbom.gateway-url}")
+    String gatewayUrl;
 
     @Override
     public Page<MyCouponInfoResponse> getMyConponInfo(Pageable pageable) {

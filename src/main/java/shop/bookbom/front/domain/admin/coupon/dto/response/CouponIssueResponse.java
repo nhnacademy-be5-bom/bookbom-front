@@ -2,11 +2,11 @@ package shop.bookbom.front.domain.admin.coupon.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import shop.bookbom.front.domain.admin.coupon.entity.CouponType;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class CouponIssueResponse {
     private Long couponId;
     private String name;

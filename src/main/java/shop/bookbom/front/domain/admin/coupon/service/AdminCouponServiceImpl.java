@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import shop.bookbom.front.domain.admin.coupon.adapter.AdminCouponAdapter;
 import shop.bookbom.front.domain.admin.coupon.dto.CouponPolicyInfoDto;
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest;
@@ -18,38 +19,39 @@ public class AdminCouponServiceImpl implements AdminCouponService {
     private final AdminCouponAdapter adminCouponAdapter;
 
     @Override
-    public void addCouponPolicy(CouponPolicyAddRequest request, Long userId) {
-        adminCouponAdapter.addCouponPolicy(request, userId);
+    public void addCouponPolicy(CouponPolicyAddRequest request) {
+        adminCouponAdapter.addCouponPolicy(request);
     }
 
     @Override
-    public void deleteCouponPolicy(CouponPolicyDeleteRequest request, Long userId) {
-        adminCouponAdapter.deleteCouponPolicy(request, userId);
+    public void deleteCouponPolicy(CouponPolicyDeleteRequest request) {
+        adminCouponAdapter.deleteCouponPolicy(request);
     }
 
     @Override
-    public List<CouponPolicyInfoDto> getCouponPolicyInfo(Long userId) {
-        return adminCouponAdapter.getCouponPolicyInfo(userId);
+    @Transactional(readOnly = true)
+    public List<CouponPolicyInfoDto> getCouponPolicyInfo() {
+        return adminCouponAdapter.getCouponPolicyInfo();
     }
 
     @Override
-    public void updateCouponPolicy(CouponPolicyInfoDto request, Long userId) {
-        adminCouponAdapter.updateCouponPolicy(request, userId);
+    public void updateCouponPolicy(CouponPolicyInfoDto request) {
+        adminCouponAdapter.updateCouponPolicy(request);
     }
 
     @Override
-    public <T> void createCoupon(String type, T addCouponDto, Long userId) {
-        adminCouponAdapter.addCoupon(type, addCouponDto, userId);
+    public <T> void createCoupon(String type, T addCouponDto) {
+        adminCouponAdapter.addCoupon(type, addCouponDto);
     }
 
     @Override
-    public Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type, Long userId) {
-        return adminCouponAdapter.getConponInfo(pageable, type, userId);
+    public Page<CouponInfoResponse> getCouponInfo(Pageable pageable, String type) {
+        return adminCouponAdapter.getConponInfo(pageable, type);
     }
 
     @Override
-    public void issueCoupon(IssueCouponRequest issueCouponRequest, Long userId) {
-        adminCouponAdapter.issue(issueCouponRequest, userId);
+    public void issueCoupon(IssueCouponRequest issueCouponRequest) {
+        adminCouponAdapter.issue(issueCouponRequest);
     }
 
 }

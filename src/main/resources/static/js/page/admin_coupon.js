@@ -1,11 +1,11 @@
 function selected(e) {
     var selectedOption = e.value;
     if (selectedOption == 'book') {
-        location.href = "/admin/coupons/info/book";
+        location.href = "/admin/coupons/book";
     } else if (selectedOption == 'category') {
-        location.href = "/admin/coupons/info/category";
+        location.href = "/admin/coupons/category";
     } else if (selectedOption == 'general') {
-        location.href = "/admin/coupons/info/general";
+        location.href = "/admin/coupons/general";
     }
 }
 

@@ -17,7 +17,6 @@ import shop.bookbom.front.domain.coupon.service.MemberCouponService;
 @RequiredArgsConstructor
 public class MemberCouponController {
     private final MemberCouponService memberCouponService;
-    //Long userId = 1L; //test
 
     @GetMapping("/mycoupons")
     public String getMyCouponList(Model model, @PageableDefault Pageable pageable) {

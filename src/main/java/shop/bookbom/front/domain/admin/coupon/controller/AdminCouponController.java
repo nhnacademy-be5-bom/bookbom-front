@@ -25,7 +25,7 @@ public class AdminCouponController {
 
     @GetMapping("/coupons/policy")
     public String getCouponPolicyList(Model model) {
-        List<CouponPolicyInfoDto> couponPolicyList = adminCouponService.getCouponPolicyInfo(userId);
+        List<CouponPolicyInfoDto> couponPolicyList = adminCouponService.getCouponPolicyInfo();
         model.addAttribute("couponPolicyList", couponPolicyList);
         return "page/admin/coupon/coupon_policy";
     }
@@ -37,7 +37,7 @@ public class AdminCouponController {
 
     @GetMapping("/coupons/{type}")
     public String getCouponList(Model model, @PathVariable("type") String type, @PageableDefault Pageable pageable) {
-        Page<CouponInfoResponse> couponInfoList = adminCouponService.getCouponInfo(pageable, type, userId);
+        Page<CouponInfoResponse> couponInfoList = adminCouponService.getCouponInfo(pageable, type);
         model.addAttribute("selectType", type);
         model.addAttribute("couponInfoList", couponInfoList);
         return "page/admin/coupon/coupon_admin";

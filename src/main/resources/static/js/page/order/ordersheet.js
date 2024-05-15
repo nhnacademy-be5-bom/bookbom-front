@@ -166,7 +166,8 @@ function validateEmail() {
         emailErrorSpan.innerText = '';
         emailInput.style.border = '';
         emailErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
-        fetch('/users/check-email?email=' + encodeURIComponent(email))
+
+        fetch('/check-email?email=' + encodeURIComponent(email))
             .then(response => response.json())
             .then(data => {
                 if (!data.result.canUse) {

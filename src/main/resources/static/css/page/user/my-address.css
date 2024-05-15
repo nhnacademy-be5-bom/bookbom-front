@@ -1,0 +1,40 @@
+/* 체크박스 스타일 수정 */
+input[type="checkbox"] {
+    width: 20px; /* 체크박스의 너비 */
+    height: 20px; /* 체크박스의 높이 */
+    margin-right: 10px; /* 체크박스와 텍스트 사이의 간격 */
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* 체크박스가 하나만 선택되도록 하는 CSS */
+input[type="checkbox"]:checked {
+    pointer-events: none;
+}
+
+/* 닉네임 스타일 수정 */
+.fw-bold {
+    font-weight: bold; /* 굵은 글꼴 */
+    font-size: 1.1em; /* 글꼴 크기 */
+    margin-right: 20px;
+}
+
+/* 주소 및 상세주소 간격 조정 */
+td span {
+    margin-right: 20px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+}

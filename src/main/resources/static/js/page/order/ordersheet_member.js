@@ -434,6 +434,31 @@ function usePoint() {
     }
 }
 
+var childWindow;
+
+function myAddressesPopup() {
+    // 주소록 페이지의 URL
+    var addressBookUrl = '/users/my-address';
+
+    // 팝업 창을 띄우기
+    childWindow = window.open(addressBookUrl, '_blank', 'width=600,height=400,toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1');
+}
+
+function receiveSelectedAddress(zipCode, address, addressDetail) {
+    // 받은 주소 정보를 사용하여 작업 수행
+    console.log("자식 창에서 받은 우편번호:", zipCode);
+    console.log("자식 창에서 받은 주소:", address);
+    console.log("자식 창에서 받은 상세 주소:", addressDetail);
+
+    childWindow.close();
+    var zipcodeInput = document.getElementById('sample6_postcode');
+    var deliveryAddressinput = document.getElementById('sample6_address');
+    var addressDetailInput = document.getElementById('sample6_detailAddress');
+    zipcodeInput.value = zipCode;
+    deliveryAddressinput.value = address;
+    addressDetailInput.value = addressDetail;
+}
+
 function validateDeliveryAndProceed() {
     var selectedButton = document.querySelector('.delivery-select button.selected');
 

@@ -69,7 +69,7 @@
                 <div class="col-md-1 d-flex flex-column">
                     <button class="btn btn-outline-secondary btn-sm mb-1 review"
                             th:data-book-id="${book.id}" th:if="${order.status.equals('완료')} and ${user.role.equals('ROLE_MEMBER')}
-                    and ${order.orderDate.isAfter(T(java.time.LocalDateTime).now().minusDays(14))}">리뷰 쓰기
+                    and ${order.orderDate.isAfter(T(java.time.LocalDateTime).now().minusWeeks(2))}">리뷰 쓰기
                     </button>
                 </div>
             </div>

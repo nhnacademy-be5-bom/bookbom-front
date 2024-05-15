@@ -25,18 +25,18 @@ public class ReviewAdapterImpl implements ReviewAdapter {
     private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
-    private final RestTemplate restTemplate;
+    private final RestTemplate multipartRestTemplate;
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
 
     @Override
     public void writeReview(ReviewForm reviewForm) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("Content-Type", MediaType.MULTIPART_FORM_DATA_VALUE);
+        httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = getMultiValueMapHttpEntity(reviewForm, httpHeaders);
         String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/reviews")
                 .toUriString();
-        CommonResponse<Void> response = restTemplate.exchange(
+        CommonResponse<Void> response = multipartRestTemplate.exchange(
                         url,
                         HttpMethod.POST,
                         requestEntity,

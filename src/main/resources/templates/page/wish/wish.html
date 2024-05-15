@@ -28,79 +28,21 @@
     </div>
 
     <table class="table">
-        <tbody>
-        <tr>
+        <tbody th:each="wish:${wishList}">
+        <tr th:id="${wish.id}">
             <td class="align-middle">
                 <div class="d-flex align-items-center">
                     <div class="custom-control custom-checkbox me-2">
                         <input class="custom-control-input" type="checkbox" value="" id="item1">
                         <label class="custom-control-label" for="item1"></label>
                     </div>
-                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책1">
+                    <img th:src="${wish.url}" class="img-thumbnail me-3">
                     <div>
-                        <div>상품명 1</div>
-                        <div>출판사 1</div>
+                        <div th:text="${wish.title}"></div>
+                        <div th:text="${wish.publisher}"></div>
                         <div>
-                            <span class="fw-bold">12,000원</span>
-                            <span class="text-muted original-price">15,000원</span>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td class="text-center align-middle">
-                <button type="button" class="btn btn-general">
-                    <img src="/images/cart.png" alt="장바구니 추가 버튼">
-                </button>
-            </td>
-            <td class="align-middle">
-                <button type="button" class="btn btn-general">
-                    <img src="/images/full_heart.png" alt="좋아요 해제 버튼">
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="align-middle">
-                <div class="d-flex align-items-center">
-                    <div class="custom-control custom-checkbox me-2">
-                        <input class="custom-control-input" type="checkbox" value="" id="item2">
-                        <label class="custom-control-label" for="item2"></label>
-                    </div>
-                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책2">
-                    <div>
-                        <div>상품명 2</div>
-                        <div>출판사 2</div>
-                        <div>
-                            <span class="fw-bold">12,000원</span>
-                            <span class="text-muted original-price">15,000원</span>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <td class="text-center align-middle">
-                <button type="button" class="btn btn-general">
-                    <img src="/images/cart.png" alt="장바구니 추가 버튼">
-                </button>
-            </td>
-            <td class="align-middle">
-                <button type="button" class="btn btn-general">
-                    <img src="/images/full_heart.png" alt="좋아요 해제 버튼">
-                </button>
-            </td>
-        </tr>
-        <tr>
-            <td class="align-middle">
-                <div class="d-flex align-items-center">
-                    <div class="custom-control custom-checkbox me-2">
-                        <input class="custom-control-input" type="checkbox" value="" id="item3">
-                        <label class="custom-control-label" for="item3"></label>
-                    </div>
-                    <img src="/images/no-image.jpg" class="img-thumbnail me-3" alt="책3">
-                    <div>
-                        <div>상품명 3</div>
-                        <div>출판사 3</div>
-                        <div>
-                            <span class="fw-bold">12,000원</span>
-                            <span class="text-muted original-price">15,000원</span>
+                            <span class="fw-bold" th:text="${wish.cost}+'원'"></span>
+                            <span class="text-muted original-price" th:text="${wish.discountCost}+'원'"></span>
                         </div>
                     </div>
                 </div>

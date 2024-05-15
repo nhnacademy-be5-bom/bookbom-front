@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import javax.net.ssl.SSLContext;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
@@ -21,6 +22,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import shop.bookbom.front.common.exception.SecureManagerException;
 import shop.bookbom.front.security.adapter.SecurityAdapter;
@@ -68,6 +73,17 @@ public class RestTemplateConfig {
                 .build();
         restTemplate.setInterceptors(Collections.singletonList(addJwtInterceptor()));
         return restTemplate;
+    }
+
+    @Bean
+    public RestTemplate multipartRestTemplate() {
+        HttpMessageConverter<Object> jackson = new MappingJackson2HttpMessageConverter();
+        HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
+        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
+        formHttpMessageConverter.addPartConverter(jackson);
+        formHttpMessageConverter.addPartConverter(resource);
+
+        return new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
     }
 
     @Bean

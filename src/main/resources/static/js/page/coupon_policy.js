@@ -27,7 +27,22 @@ function completeEditing(button) {
     var discountType = document.querySelector('.policyContainer select[name="discountType"]').value.toUpperCase();
     var discountAmount = document.querySelector('.policyContainer input[name="discountCost"]').value;
     var minOrderAmount = document.querySelector('.policyContainer input[name="minOrderCost"]').value;
-    var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value;
+    var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value
+
+    if(discountType == 'RATE' && discountAmount <= 0 && discountAmount > 100){ //할인 비율이 1~100%를 벗어난 경우
+        alert("할인 비율은 1~100사이의 값을 입력해주세요.");
+        return;
+    }
+
+    if(discountType == 'COST' && discountAmount <= 0){ //할인 금액이 0이거나 음수인 경우
+        alert("올바른 할인 금액을 입력해주세요.");
+        return;
+    }
+
+    if(discountType == 'COST' && maxDiscountAmount != null){ //비율 할인의 경우만 최대 할인 금액 존재
+        alert("최대할인금액은 비율할인에만 적용되며 금액할인에는 적용되지 않습니다.");
+        maxDiscountAmount = null;
+    }
 
     fetch('/admin/couponPolicy', {
         method: 'PUT',
@@ -74,7 +89,7 @@ function deleteSelectedContainers() {
                 if (data.header.resultMessage == "SUCCESS") {
                     container.remove();
                 } else {
-                    alert("정책 삭제 실패");
+                    alert("정책 삭제 실패. 관리자에게 문의하세요.");
                 }
             })
         }
@@ -93,6 +108,21 @@ function create() {
     var discountAmount = document.querySelector('.createPolicyModal input[name="discountAmount"]').value;
     var minOrderAmount = document.querySelector('.createPolicyModal input[name="minOrderAmount"]').value;
     var maxDiscountAmount = document.querySelector('.createPolicyModal input[name="maxDiscountAmount"]').value;
+
+    if(discountType == 'RATE' && discountAmount <= 0 && discountAmount > 100){ //할인 비율이 1~100%를 벗어난 경우
+        alert("할인 비율은 1~100사이의 값을 입력해주세요.");
+        return;
+    }
+
+    if(discountType == 'COST' && discountAmount <= 0){ //할인 금액이 0이거나 음수인 경우
+        alert("올바른 할인 금액을 입력해주세요.");
+        return;
+    }
+
+    if(discountType == 'COST' && maxDiscountAmount != null){ //비율 할인의 경우만 최대 할인 금액 존재
+        alert("최대할인금액은 비율할인에만 적용되며 금액할인에는 적용되지 않습니다.");
+        maxDiscountAmount = null;
+    }
 
     fetch('/admin/couponPolicy', {
         method: 'POST',

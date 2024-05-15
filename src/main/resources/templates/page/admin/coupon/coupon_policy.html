@@ -19,8 +19,8 @@
     <div class="createPolicyModal">
         <h4>정책 등록</h4>
         할인 방식: <select name="discountType" class="form-select-sm">
-        <option value="cost">COST</option>
-        <option value="rate">RATE</option>
+        <option value="cost">금액할인</option>
+        <option value="rate">비율할인</option>
     </select><br/>
         할인금액: <input name="discountAmount" type="text" class="form-control-sm"><br/>
         최소주문금액: <input name="minOrderAmount" type="text" class="form-control-sm"><br/>
@@ -48,9 +48,9 @@
                     </div>
                     <div class="col-md-8 policyContentContainer">
                         할인방식 <select name="discountType" class="form-select-sm" disabled>
-                        <option th:text="${policy.discountType.name()}" selected hidden></option>
-                        <option value="cost">COST</option>
-                        <option value="rate">RATE</option>
+                        <option th:text="${policy.discountType.name() == 'COST' ? '금액할인': '비율할인'}" selected hidden></option>
+                        <option value="cost">금액할인</option>
+                        <option value="rate">비율할인</option>
                     </select><br/>
                         할인금액: <input type="text" name="discountCost" class="form-control-sm" readonly
                                      th:value="${policy.discountCost}"><br/>

@@ -56,12 +56,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         SecurityContextHolder.getContext()
                 .setAuthentication(a);
-
-        try {
-            response.sendRedirect("/");
-        } catch (Exception e) {
-            log.error("redirect failed" + e.getMessage());
-        }
         return a;
     }
 

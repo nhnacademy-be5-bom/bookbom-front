@@ -16,11 +16,14 @@ public class SignInFailureHandler implements AuthenticationFailureHandler {
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
+
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-        String errorMessage = exception.getMessage();
-        errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
-        redirectStrategy.sendRedirect(request, response, "/signin?errorMessage=" + errorMessage);
+        if (!response.isCommitted()) {
+            String errorMessage = exception.getMessage();
+            errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
+            redirectStrategy.sendRedirect(request, response, "/signin?errorMessage=" + errorMessage);
+        }
     }
 }

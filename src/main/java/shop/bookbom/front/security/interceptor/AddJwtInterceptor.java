@@ -54,7 +54,9 @@ public class AddJwtInterceptor implements ClientHttpRequestInterceptor {
                             .addCookie(new Cookie("accessToken", jwt));
                 } else {
                     log.error("refresh not success, clear context");
-                    SecurityContextHolder.clearContext(); // refresh token도 만료되었을 경우 context를 초기화
+                    if (SecurityContextHolder.getContext() != null) {
+                        SecurityContextHolder.clearContext(); // refresh token도 만료되었을 경우 context를 초기화
+                    }
                     // TODO 로그인페이지로 REDIRECT?
                 }
             }

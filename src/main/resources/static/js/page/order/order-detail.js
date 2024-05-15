@@ -18,21 +18,52 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    document.getElementById('reviewModal').addEventListener('show.bs.modal', (event) => {
-        const button = event.relatedTarget; // 클릭된 버튼
-         // 버튼의 데이터(book-id)
-        document.getElementById('bookIdField').value = button.getAttribute("data-book-id"); // 히든 필드에 book-id 설정
+    function openReviewModal(bookId) {
+        // bookId를 모달에 전달하기 위해 hidden input 필드에 값을 설정
+        document.getElementById("bookIdField").value = bookId;
+
+        // 모달을 열기 위해 Bootstrap의 modal 함수 호출
+        const myModal = new bootstrap.Modal(document.getElementById('reviewModal'));
+        myModal.show();
+    }
+
+    document.querySelectorAll('.review').forEach(item => {
+        item.addEventListener('click', event => {
+            // th:data-book-id 속성에서 bookId 값을 가져옴
+            const bookId = item.getAttribute('data-book-id');
+            let orderId = window.location.pathname.split('/').pop();
+            const url = `/reviews/exists-check?bookId=${bookId}&orderId=${orderId}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        alert('리뷰를 작성할 수 없습니다. 관리자에게 문의 주세요.');
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data)
+                    if (data.header.isSuccessful === false) {
+                        alert('리뷰를 작성할 수 없습니다. 관리자에게 문의 주세요.');
+                        return;
+                    }
+                    if (data.result.exists === true) {
+                        alert('이미 리뷰를 작성하셨습니다.');
+                        return;
+                    }
+                    openReviewModal(bookId);
+                })
+                .catch(error => {
+                    alert('리뷰를 작성할 수 없습니다. 관리자에게 문의 주세요.');
+                    console.error('Error:', error);
+                });
+        });
     });
 
-    let saveButton = document.querySelector('.write-review');
     document.querySelector('.write-review').addEventListener('click', function () {
         let bookId = document.getElementById('bookIdField').value;
         let orderId = window.location.pathname.split('/').pop();
         let reviewType = document.getElementById('reviewType').value;
-
-        console.log('bookId:', bookId);
-        console.log('orderId:', orderId);
-        console.log('reviewType:', reviewType);
         window.location.href = `/reviews?bookId=${bookId}&orderId=${orderId}&reviewType=${reviewType}`;
     });
 });

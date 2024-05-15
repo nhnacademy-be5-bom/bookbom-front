@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.review.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.bookbom.front.domain.review.adapter.ReviewAdapter;
+import shop.bookbom.front.domain.review.dto.ReviewCheckResponse;
 import shop.bookbom.front.domain.review.dto.ReviewForm;
 import shop.bookbom.front.domain.review.service.ReviewService;
 
@@ -14,5 +15,10 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void writeReview(ReviewForm reviewForm) {
         reviewAdapter.writeReview(reviewForm);
+    }
+
+    @Override
+    public ReviewCheckResponse existsCheck(Long bookId, Long orderId) {
+        return reviewAdapter.existsCheck(bookId, orderId);
     }
 }

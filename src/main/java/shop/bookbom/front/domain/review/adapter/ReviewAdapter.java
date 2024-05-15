@@ -1,7 +1,10 @@
 package shop.bookbom.front.domain.review.adapter;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.review.dto.ReviewCheckResponse;
 import shop.bookbom.front.domain.review.dto.ReviewForm;
+import shop.bookbom.front.domain.review.dto.response.BookReviewResponse;
 
 public interface ReviewAdapter {
     /**
@@ -18,4 +21,6 @@ public interface ReviewAdapter {
      * @return ReviewCheckResponse(리뷰가 존재하는지 여부)
      */
     ReviewCheckResponse existsCheck(Long bookId, Long orderId);
+
+    Page<BookReviewResponse> getReviews(Long bookId, Pageable pageable);
 }

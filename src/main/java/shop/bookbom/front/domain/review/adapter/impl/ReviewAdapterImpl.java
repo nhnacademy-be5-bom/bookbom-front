@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,11 +16,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.review.adapter.ReviewAdapter;
 import shop.bookbom.front.domain.review.dto.ReviewCheckResponse;
 import shop.bookbom.front.domain.review.dto.ReviewForm;
+import shop.bookbom.front.domain.review.dto.response.BookReviewResponse;
 
 @Component
 @RequiredArgsConstructor
@@ -27,6 +31,10 @@ public class ReviewAdapterImpl implements ReviewAdapter {
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<ReviewCheckResponse>> REVIEW_CHECK_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookReviewResponse>>>
+            BOOK_REVIEW_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
     private final RestTemplate multipartRestTemplate;
@@ -59,7 +67,7 @@ public class ReviewAdapterImpl implements ReviewAdapter {
     public ReviewCheckResponse existsCheck(Long bookId, Long orderId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/reviews/exists-check")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/reviews/exists-check")
                 .queryParam("bookId", bookId)
                 .queryParam("orderId", orderId)
                 .toUriString();
@@ -69,6 +77,29 @@ public class ReviewAdapterImpl implements ReviewAdapter {
                         requestEntity,
                         REVIEW_CHECK_RESPONSE)
                 .getBody();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
+        }
+        return response.getResult();
+    }
+
+    @Override
+    public Page<BookReviewResponse> getReviews(Long bookId, Pageable pageable) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/reviews")
+                .queryParam("bookId", bookId)
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
+                .toUriString();
+        CommonResponse<CommonPage<BookReviewResponse>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                requestEntity,
+                BOOK_REVIEW_RESPONSE).getBody();
         if (response == null) {
             throw new RestTemplateException();
         }
@@ -101,4 +132,6 @@ public class ReviewAdapterImpl implements ReviewAdapter {
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, httpHeaders);
         return requestEntity;
     }
+
+
 }

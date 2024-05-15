@@ -19,17 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function openReviewModal(bookId) {
-        // bookId를 모달에 전달하기 위해 hidden input 필드에 값을 설정
         document.getElementById("bookIdField").value = bookId;
 
-        // 모달을 열기 위해 Bootstrap의 modal 함수 호출
         const myModal = new bootstrap.Modal(document.getElementById('reviewModal'));
         myModal.show();
     }
 
     document.querySelectorAll('.review').forEach(item => {
         item.addEventListener('click', event => {
-            // th:data-book-id 속성에서 bookId 값을 가져옴
             const bookId = item.getAttribute('data-book-id');
             let orderId = window.location.pathname.split('/').pop();
             const url = `/reviews/exists-check?bookId=${bookId}&orderId=${orderId}`;

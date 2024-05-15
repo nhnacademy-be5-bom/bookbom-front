@@ -32,7 +32,6 @@ public class ReviewController {
         model.addAttribute("bookId", bookId);
         model.addAttribute("orderId", orderId);
         model.addAttribute("type", type);
-        log.info("review bookId: {}, orderId: {}, type: {}", bookId, orderId, type);
         return "page/review/write-review";
     }
 
@@ -45,6 +44,6 @@ public class ReviewController {
             bindingResult.reject("error.image", "첨부파일을 입력해주세요.");
         }
         reviewService.writeReview(reviewForm);
-        return "redirect:/orders/" + reviewForm.getOrderId();
+        return "redirect:/books/detail/" + reviewForm.getBookId();
     }
 }

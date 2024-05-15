@@ -21,7 +21,7 @@
         <input name="bookId" th:value="${bookId}" type="hidden">
         <input name="orderId" th:value="${orderId}" type="hidden">
         <input name="type" th:value="${type}" type="hidden">
-        <div class="mb-3">
+        <div class="mb-3" th:if="${type.equals('photo')}">
             <label class="form-label" for="image">첨부파일 / 최대 용량 2MB</label>
             <input class="form-control" id="image" name="image" type="file">
         </div>

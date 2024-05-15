@@ -111,26 +111,28 @@ public class ReviewAdapterImpl implements ReviewAdapter {
 
     private HttpEntity<MultiValueMap<String, Object>> getMultiValueMapHttpEntity(ReviewForm reviewForm,
                                                                                  HttpHeaders httpHeaders) {
-        ByteArrayResource image;
-        try {
-            image = new ByteArrayResource(reviewForm.getImage().getBytes()) {
-                @Override
-                public String getFilename() {
-                    return reviewForm.getImage().getOriginalFilename();
-                }
-            };
-        } catch (IOException e) {
-            throw new RestTemplateException("이미지 파일을 읽을 수 없습니다.");
-        }
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        if (reviewForm.getImage() != null) {
+            ByteArrayResource image;
+            try {
+                image = new ByteArrayResource(reviewForm.getImage().getBytes()) {
+                    @Override
+                    public String getFilename() {
+                        return reviewForm.getImage().getOriginalFilename();
+                    }
+                };
+                body.add("image", image);
+            } catch (IOException e) {
+                throw new RestTemplateException("이미지 파일을 읽을 수 없습니다.");
+            }
+        }
         body.add("bookId", reviewForm.getBookId());
         body.add("orderId", reviewForm.getOrderId());
         body.add("type", reviewForm.getType());
         body.add("rating", reviewForm.getRating());
         body.add("content", reviewForm.getContent());
-        body.add("image", image);
-        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, httpHeaders);
-        return requestEntity;
+
+        return new HttpEntity<>(body, httpHeaders);
     }
 
 

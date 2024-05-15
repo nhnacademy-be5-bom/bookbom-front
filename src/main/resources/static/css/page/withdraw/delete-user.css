@@ -1,0 +1,45 @@
+.buttonBox {
+    display: flex;
+    justify-content: center;
+    gap : 10px;
+}
+#submit {
+    border : none;
+    border-radius: 10px;
+    width: 300px;
+    height: 50px;
+    background-color: #4882d9;
+}
+#cancel {
+    border : none;
+    border-radius: 10px;
+    width: 300px;
+    height: 50px;
+    background-color: lightgray;
+}
+.agreeBox {
+    padding : 15px;
+    background-color: #ededed;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+table, th, td {
+    border-collapse: collapse;
+    border: 1px solid lightgray;
+    padding: 10px;
+}
+
+table {
+    width : 100%;
+    border-top: 1px solid black;
+    margin-bottom: 15px;
+}
+
+table label {
+    margin-left: 20px;
+}
+
+span {
+    color : red;
+}

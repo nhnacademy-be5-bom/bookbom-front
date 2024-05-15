@@ -65,6 +65,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .loginPage("/signin")
                         .defaultSuccessUrl("/", false)
                         .permitAll())
+                .logout(logout -> logout
+                        .deleteCookies("accessToken")
+                        .deleteCookies("refreshToken")
+                        .clearAuthentication(true)
+                        .logoutSuccessUrl("/")
+                        .permitAll())
                 .httpBasic().disable()
                 .addFilter(jwtAuthenticationFilter());
 

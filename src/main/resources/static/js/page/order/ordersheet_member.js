@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateFinalPayment();
     couponNameByDiscountType();
     updateDeliveryCost();
+    calculateFinalPayment();
     // 옵션 선택에 대한 이벤트 리스너 추가
     var selectElement = document.getElementById("selected-coupon"); // 옵션을 담고 있는 셀렉트 요소의 ID를 가져와야 합니다.
     selectElement.addEventListener("change", function (event) {

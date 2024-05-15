@@ -138,7 +138,7 @@ public class UserAdapterImpl implements UserAdapter {
                         requestEntity,
                         SIGNUP_CHECK_RESPONSE)
                 .getBody();
-
+        log.info("reponse : {}", response);
         if (response == null || !response.getHeader().isSuccessful()) {
             log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();

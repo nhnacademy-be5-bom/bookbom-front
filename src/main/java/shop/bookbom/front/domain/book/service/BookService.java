@@ -43,7 +43,7 @@ public class BookService {
         return bookAdapter.update(file, bookUpdateRequest, bookId);
     }
 
-    public Page<BookSearchResponse> getAllBooks(Pageable pageable) {
-        return bookAdapter.getAllBooks(pageable);
+    public Page<BookSearchResponse> getAllBooks(Pageable pageable, String searchCondition) {
+        return bookAdapter.getAllBooks(pageable, searchCondition);
     }
 }

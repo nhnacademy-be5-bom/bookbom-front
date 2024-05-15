@@ -198,13 +198,15 @@ public class BookAdapter {
         return response;
     }
 
-    public Page<BookSearchResponse> getAllBooks(Pageable pageable) {
+    public Page<BookSearchResponse> getAllBooks(Pageable pageable, String searchCondition) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/books/all/")
-                .queryParam("pageable", pageable)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/all")
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
+                .queryParam("searchCondition", searchCondition)
                 .toUriString();
 
         CommonResponse<CommonPage<BookSearchResponse>> response =

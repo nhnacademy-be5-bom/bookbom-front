@@ -16,8 +16,8 @@
     <div class="row justify-content-center">
         <div class="col-md-2 leftContainer">
             <h2>내 쿠폰함</h2>
-            <a href="myCoupon"><h4>보유 쿠폰</h4></a>
-            <a href="myCouponDetail"><h4 class="thisPage">쿠폰 상세 내역</h4></a>
+            <a href="/mycoupons"><h4>보유 쿠폰</h4></a>
+            <a href="/mycoupons/detail"><h4 class="thisPage">쿠폰 상세 내역</h4></a>
         </div>
         <div class="col-md-7 rightContainer">
             <table class="couponDetailTable">
@@ -26,33 +26,13 @@
                     <th>쿠폰 이름</th>
                     <th>이용 구분</th>
                     <th>발급/사용/만료 일자</th>
-                    <th>이용 내용</th>
                 </tr>
                 </thead>
                 <tbody class="couponDetailBody">
-                <tr class="couponDetailRow">
-                    <td>생일 쿠폰</td>
-                    <td>발급</td>
-                    <td>2024-04-01</td>
-                    <td>생일 회원 쿠폰 발급</td>
-                </tr>
-                <tr class="couponDetailRow">
-                    <td>생일 쿠폰</td>
-                    <td>발급</td>
-                    <td>2024-04-01</td>
-                    <td>생일 회원 쿠폰 발급</td>
-                </tr>
-                <tr class="couponDetailRow">
-                    <td>생일 쿠폰</td>
-                    <td>발급</td>
-                    <td>2024-04-01</td>
-                    <td>생일 회원 쿠폰 발급</td>
-                </tr>
-                <tr class="couponDetailRow">
-                    <td>생일 쿠폰</td>
-                    <td>발급</td>
-                    <td>2024-04-01</td>
-                    <td>생일 회원 쿠폰 발급</td>
+                <tr class="couponDetailRow" th:each="record:${records}">
+                    <td th:text="${record.name}">생일 쿠폰</td>
+                    <td th:text="${record.status.name == 'NEW' ? '발급' : (record.status.name() == 'USED' ? '사용' : '만료')}">발급</td>
+                    <td th:text="${record.date}">2024-04-01</td>
                 </tr>
                 </tbody>
             </table>

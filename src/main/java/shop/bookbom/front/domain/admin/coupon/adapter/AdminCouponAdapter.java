@@ -8,7 +8,6 @@ import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyAddRequest
 import shop.bookbom.front.domain.admin.coupon.dto.request.CouponPolicyDeleteRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.request.IssueCouponRequest;
 import shop.bookbom.front.domain.admin.coupon.dto.response.CouponInfoResponse;
-import shop.bookbom.front.domain.admin.coupon.dto.response.CouponIssueResponse;
 
 public interface AdminCouponAdapter {
     void addCouponPolicy(CouponPolicyAddRequest request, Long userId);

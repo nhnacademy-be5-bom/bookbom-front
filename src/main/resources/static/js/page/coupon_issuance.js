@@ -10,7 +10,7 @@ function printLocalStorageItems() {
 
 function createDiv() {
     var memberEmail = document.getElementById("memberSearchBox").value;
-    fetch('/users/check-email?email=' + encodeURIComponent(memberEmail))
+    fetch('/check-email?email=' + encodeURIComponent(memberEmail))
         .then(response => response.json())
         .then(data => {
             console.log(data);

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import shop.bookbom.front.domain.coupon.dto.CouponDto;
+import shop.bookbom.front.domain.coupon.entity.CouponStatus;
 
 @Getter
 @NoArgsConstructor

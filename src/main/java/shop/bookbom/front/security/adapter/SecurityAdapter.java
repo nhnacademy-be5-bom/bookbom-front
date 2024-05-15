@@ -2,6 +2,7 @@ package shop.bookbom.front.security.adapter;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -13,8 +14,8 @@ import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.common.exception.ErrorCode;
 import shop.bookbom.front.domain.signin.dto.SignInDTO;
 import shop.bookbom.front.security.dto.AccessNRefreshTokenDto;
-import shop.bookbom.front.security.exception.TokenNotExistException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class SecurityAdapter {
     private static final ParameterizedTypeReference<CommonResponse<AccessNRefreshTokenDto>> ACCESS_N_REFRESH_TOKEN =
@@ -29,7 +30,7 @@ public class SecurityAdapter {
     @Value("${bookbom.gateway-url}")
     String gatewayUrl;
 
-    public AccessNRefreshTokenDto getTokens(SignInDTO signInDTO) {
+    public CommonResponse getTokens(SignInDTO signInDTO) {
         URI uri = UriComponentsBuilder
                 .fromUriString(gatewayUrl)
                 .path("/auth/token")
@@ -42,14 +43,10 @@ public class SecurityAdapter {
                 .body(signInDTO);
 
         // 토큰 요청 전송
-        ResponseEntity<CommonResponse<AccessNRefreshTokenDto>> responseEntity = restTemplate.exchange(
-                requestEntity, ACCESS_N_REFRESH_TOKEN);
+        CommonResponse<AccessNRefreshTokenDto> responseEntity = restTemplate.exchange(
+                requestEntity, ACCESS_N_REFRESH_TOKEN).getBody();
 
-        if (!responseEntity.hasBody() || !responseEntity.getBody().getHeader().isSuccessful()) {
-            throw new TokenNotExistException(ErrorCode.TOKEN_NOT_EXIST);
-        }
-
-        return responseEntity.getBody().getResult();
+        return responseEntity;
     }
 
     public CommonResponse refresh(String refreshToken) {

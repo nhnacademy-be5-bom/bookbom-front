@@ -4,17 +4,18 @@ package shop.bookbom.front.security.filter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shop.bookbom.front.common.exception.ErrorCode;
+import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.signin.dto.SignInDTO;
 import shop.bookbom.front.security.adapter.SecurityAdapter;
 import shop.bookbom.front.security.dto.AccessNRefreshTokenDto;
-import shop.bookbom.front.security.exception.RedirectException;
+import shop.bookbom.front.security.exception.SignInFailedException;
 import shop.bookbom.front.security.token.UserEmailJwtAuthenticationToken;
 
 /**
@@ -22,6 +23,7 @@ import shop.bookbom.front.security.token.UserEmailJwtAuthenticationToken;
  * -> 토큰 요청은 UserEmailPasswordAuthenticationProvider에서
  * SecurityAdapter가 진행
  */
+@Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Autowired
@@ -30,12 +32,20 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Autowired
     private SecurityAdapter securityAdapter;
 
+    @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
         // UserEmailPasswordAuthenticationProvider를 통해 UserIdRoleAuthentication Token을 얻는다
-        AccessNRefreshTokenDto accessNRefreshTokenDto =
+
+        CommonResponse commonResponse =
                 securityAdapter.getTokens(SignInDTO.builder().email(request.getParameter("email"))
                         .password(request.getParameter("password")).build());
+
+        if (!commonResponse.getHeader().isSuccessful()) {
+            throw new SignInFailedException();
+        }
+
+        AccessNRefreshTokenDto accessNRefreshTokenDto = (AccessNRefreshTokenDto) commonResponse.getResult();
 
         setCookie("accessToken", accessNRefreshTokenDto.getAccessToken(), response);
         setCookie("refreshToken", accessNRefreshTokenDto.getRefreshToken(), response);
@@ -50,10 +60,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         try {
             response.sendRedirect("/");
         } catch (Exception e) {
-            throw new RedirectException(ErrorCode.REDIRECT_FAILED);
+            log.error("redirect failed" + e.getMessage());
         }
         return a;
     }
+
 
     public void setCookie(String name, String token, HttpServletResponse response) {
         Cookie cookie = new Cookie(name, token);

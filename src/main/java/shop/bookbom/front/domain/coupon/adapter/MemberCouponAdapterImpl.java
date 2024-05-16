@@ -19,7 +19,7 @@ import shop.bookbom.front.domain.coupon.dto.response.MyCouponRecordResponse;
 
 @Component
 @RequiredArgsConstructor
-public class MemberCouponAdapterImpl implements MemberCouponAdapter{
+public class MemberCouponAdapterImpl implements MemberCouponAdapter {
     private final RestTemplate restTemplate;
 
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<MyCouponInfoResponse>>>
@@ -51,6 +51,7 @@ public class MemberCouponAdapterImpl implements MemberCouponAdapter{
                         MYCOUPON_INFO_RESPONSE
                 )
                 .getBody();
+
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new RuntimeException();
         }

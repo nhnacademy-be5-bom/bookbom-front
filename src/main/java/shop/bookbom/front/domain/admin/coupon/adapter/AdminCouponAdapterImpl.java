@@ -212,7 +212,8 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
                         url,
                         HttpMethod.GET,
                         requestHttpEntity,
-                        COUPON_INFO_RESPONSE
+                        COUPON_INFO_RESPONSE,
+                        type
                 )
                 .getBody();
         if (response == null || !response.getHeader().isSuccessful()) {

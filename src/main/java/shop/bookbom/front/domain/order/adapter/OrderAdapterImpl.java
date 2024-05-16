@@ -33,6 +33,8 @@ import shop.bookbom.front.domain.order.exception.BeforeOrderException;
 import shop.bookbom.front.domain.order.exception.LowStockException;
 import shop.bookbom.front.domain.order.exception.OrderFailException;
 import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
+import shop.bookbom.front.domain.payment.dto.response.PaymentCancelResponse;
+import shop.bookbom.front.domain.payment.exception.PaymentCancelFailedException;
 
 @Slf4j
 @Component
@@ -76,6 +78,10 @@ public class OrderAdapterImpl implements OrderAdapter {
 
     private static final ParameterizedTypeReference<CommonResponse<OrderIdResponse>>
             ORDER_ID_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<PaymentCancelResponse>>
+            PAYMENT_CANCEL_RESPONSE =
             new ParameterizedTypeReference<>() {
             };
 
@@ -287,6 +293,25 @@ public class OrderAdapterImpl implements OrderAdapter {
 
         if (response == null || !response.getHeader().isSuccessful()) {
             throw new OrderFailException();
+        }
+        return Objects.requireNonNull(response).getResult();
+
+    }
+
+    @Override
+    public PaymentCancelResponse cancelOrder(Long orderId, String cancelReason) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(httpHeaders);
+
+        CommonResponse<PaymentCancelResponse> response =
+                restTemplate.exchange(gatewayUrl + "/shop/orders/{id}?reason=" + cancelReason
+                        , HttpMethod.DELETE, requestEntity, PAYMENT_CANCEL_RESPONSE, orderId).getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            throw new PaymentCancelFailedException();
         }
         return Objects.requireNonNull(response).getResult();
 

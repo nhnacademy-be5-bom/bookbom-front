@@ -16,6 +16,7 @@ import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
+import shop.bookbom.front.domain.payment.dto.response.PaymentCancelResponse;
 
 
 public interface OrderService {
@@ -43,4 +44,6 @@ public interface OrderService {
     CommonResponse<Void> updateOrderStatus(OrderStatusUpdateRequest request);
 
     OrderIdResponse processFreePayment(String orderNumber);
+
+    PaymentCancelResponse cancelOrder(Long orderId, String cancelReason);
 }

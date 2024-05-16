@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문 취소</title>
+    <script src="../../../js/page/order/cancel.js" defer></script>
     <style>
 
         .container {
@@ -47,45 +48,15 @@
 <body>
 
 <div class="container">
-    <form action="/order/cancel" method="post">
-        <div class="form-group">
-            <label for="cancelReason" class="form-label">취소 이유</label>
-            <textarea class="form-control" id="cancelReason" name="cancelReason" rows="5" required></textarea>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn" onclick="validateForm()">취소하기</button>
-        </div>
-    </form>
+    <div class="form-group">
+        <label for="cancelReason" class="form-label">취소 이유</label>
+        <textarea class="form-control" id="cancelReason" name="cancelReason" rows="5" required></textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn" onclick="validateForm()">취소하기</button>
+    </div>
     <input type="hidden" id="orderId" th:value="${orderId}">
 </div>
-<script>
-    const orderId = parseInt(document.getElementById("orderId").value);
-
-    function validateForm() {
-        var cancelReason = document.getElementById("cancelReason").value;
-        if (cancelReason.trim() === "") {
-            alert("취소 이유를 입력해주세요.");
-            return false;
-        } else {
-            fetch(`/orders//${orderId}?cancelReason=${cancelReason}`, {
-                method: 'DELETE'
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('주문 취소 요청에서 에러가 발생했습니다.');
-            }).then(response => {
-                console.log('Success:', response);
-                // $('#orderCancel').modal('hide');
-                // window.location.reload();
-            }).catch(error => {
-                console.error('Error:', error);
-            });
-            return true;
-        }
-
-    }
-</script>
 
 </body>
 </html>

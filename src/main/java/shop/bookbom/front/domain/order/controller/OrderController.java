@@ -155,13 +155,13 @@ public class OrderController {
         return "redirect:/payment-method";
     }
 
-    @GetMapping("/order/{id}")
-    public String orderCancel(@PathVariable("id") String orderId,
-                              @RequestParam(name = "reason") String cancelReason,
-                              Model model) {
+    @GetMapping("/order/cancel")
+    public String orderCancel(@RequestParam("id") String orderId, Model model) {
         model.addAttribute("orderId", orderId);
         return "page/order/cancel";
     }
+
+
 }
 
 

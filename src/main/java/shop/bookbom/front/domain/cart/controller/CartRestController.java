@@ -42,7 +42,8 @@ public class CartRestController {
             @RequestBody List<CartAddRequest> requests,
             HttpServletResponse response
     ) {
-        boolean isLoggedIn = userDto != null && userDto.getRole().equals("ROLE_MEMBER");
+        boolean isLoggedIn =
+                userDto != null && (userDto.getRole().equals("ROLE_MEMBER") || userDto.getRole().equals("ROLE_ADMIN"));
         String userId = UUID.randomUUID().toString();
         if (isLoggedIn) {
             userId = userDto.getId().toString();
@@ -62,7 +63,7 @@ public class CartRestController {
      * 장바구니 상품 삭제 메서드입니다.
      *
      * @param cartCookie 장바구니 쿠키
-     * @param itemId     상품 ID
+     * @param bookId     상품 ID
      */
     @DeleteMapping("/cart/items/{id}")
     public CommonResponse<Void> deleteFromCart(
@@ -70,7 +71,8 @@ public class CartRestController {
             @PathVariable(value = "id") Long bookId,
             @Login UserDto userDto
     ) {
-        boolean isLoggedIn = userDto != null && userDto.getRole().equals("ROLE_MEMBER");
+        boolean isLoggedIn =
+                userDto != null && (userDto.getRole().equals("ROLE_MEMBER") || userDto.getRole().equals("ROLE_ADMIN"));
         String userId;
         if (isLoggedIn) {
             userId = userDto.getId().toString();

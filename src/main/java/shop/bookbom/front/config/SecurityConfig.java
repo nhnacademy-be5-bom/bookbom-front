@@ -1,5 +1,6 @@
 package shop.bookbom.front.config;
 
+import javax.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +11,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import shop.bookbom.front.security.CustomAuthenticationSuccessHandler;
 import shop.bookbom.front.security.filter.JwtAuthenticationFilter;
 import shop.bookbom.front.security.filter.SetSecurityContextFilter;
 import shop.bookbom.front.security.handler.SignInFailureHandler;
@@ -43,6 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
+
+    @Bean
     public SignInFailureHandler signInFailureHandler() {
         return new SignInFailureHandler();
     }
@@ -53,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 new JwtAuthenticationFilter();
         jwtAuthenticationFilter.setFilterProcessesUrl("/dosignin");
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        jwtAuthenticationFilter.setAuthenticationSuccessHandler(customAuthenticationSuccessHandler());
         jwtAuthenticationFilter.setAuthenticationFailureHandler(signInFailureHandler());
         jwtAuthenticationFilter.afterPropertiesSet();
         return jwtAuthenticationFilter;
@@ -74,9 +84,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .failureForwardUrl("/signin")
                         .permitAll())
                 .logout(logout -> logout
-                        .deleteCookies("accessToken")
-                        .deleteCookies("refreshToken")
-                        .deleteCookies("cart")
+                        .addLogoutHandler((request, response, authentication) -> {
+                            Cookie cartCookie = new Cookie("cart", null);
+                            cartCookie.setPath("/cart");
+                            cartCookie.setMaxAge(0);
+                            response.addCookie(cartCookie);
+                        })
+                        .deleteCookies("accessToken", "refreshToken")
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/")
                         .permitAll())

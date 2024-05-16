@@ -29,15 +29,11 @@ function completeEditing(button) {
     var minOrderAmount = document.querySelector('.policyContainer input[name="minOrderCost"]').value;
     var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value;
 
-    if (discountType === '비율할인' && Number(discountAmount) <= 0 || Number(discountAmount) > 100) { //할인 비율이 1~100%를 벗어난 경우
+    if (discountType === '비율할인' && (Number(discountAmount) <= 0 || Number(discountAmount) > 100)) { //할인 비율이 1~100%를 벗어난 경우
         alert("할인 비율은 1~100사이의 값을 입력해주세요.");
         return;
     }
 
-    if (discountType === '금액할인' && Number(discountAmount) > Number(minOrderAmount)) { //할인 금액은 최소 주문 금액보다 작아야 함
-        alert("할인 금액은 최소 주문 금액보다 작아야 합니다.");
-        return;
-    }
 
     if (discountType === '금액할인' && discountAmount <= 0) { //할인 금액이 0이거나 음수인 경우
         alert("올바른 할인 금액을 입력해주세요.");
@@ -115,13 +111,8 @@ function create() {
     var minOrderAmount = document.querySelector('.createPolicyModal input[name="minOrderAmount"]').value;
     var maxDiscountAmount = document.querySelector('.createPolicyModal input[name="maxDiscountAmount"]').value;
 
-    if (discountType === '비율할인' && discountAmount <= 0 || discountAmount > 100) { //할인 비율이 1~100%를 벗어난 경우
+    if (discountType === '비율할인' && (discountAmount <= 0 || discountAmount > 100)) { //할인 비율이 1~100%를 벗어난 경우
         alert("할인 비율은 1~100사이의 값을 입력해주세요.");
-        return;
-    }
-
-    if (discountType === '금액할인' && discountAmount > minOrderAmount) { //할인 금액은 최소 주문 금액보다 작아야 함
-        alert("할인 금액은 최소 주문 금액보다 작아야 합니다.");
         return;
     }
 

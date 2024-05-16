@@ -22,6 +22,7 @@ import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.adapter.UserAdapter;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
@@ -47,6 +48,9 @@ public class UserAdapterImpl implements UserAdapter {
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<Boolean>> CONFIRM_RESULT =
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<Void>> DELETE_USER =
@@ -127,6 +131,28 @@ public class UserAdapterImpl implements UserAdapter {
             throw new RestTemplateException();
         }
         return Objects.requireNonNull(response).getResult();
+    }
+
+
+    @Override
+    public void setPassword(SetPasswordRequest setPasswordRequest) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<SetPasswordRequest> requestEntity = new HttpEntity<>(setPasswordRequest, httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/open/users/edit/pw")
+                .toUriString();
+
+        CommonResponse response = restTemplate.exchange(
+                        url,
+                        HttpMethod.POST,
+                        requestEntity, CommonResponse.class)
+                .getBody();
+
+        if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
+        }
     }
 
 

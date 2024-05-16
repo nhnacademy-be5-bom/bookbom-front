@@ -49,7 +49,6 @@ public class CartServiceImpl implements CartService {
         String key = "cart:" + userId;
         Map<Object, Object> entries = redisHash.entries(key);
         if (entries.isEmpty() && isLoggedIn) {
-            // 레디스에 값이 없고 회원인 경우, 서버에서 장바구니 데이터를 가져와서 레디스에 저장
             CartInfoResponse cart = cartAdapter.getCart(Long.valueOf(userId));
             saveCartToRedis(userId, cart.getCartItems(), true);
             return cart.getCartItems();
@@ -60,21 +59,21 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteItem(String userId, Long itemId, boolean isLoggedIn) {
+    public void deleteItem(String userId, Long bookId, boolean isLoggedIn) {
         String key = "cart:" + userId;
-        redisHash.delete(key, String.valueOf(itemId));
+        redisHash.delete(key, String.valueOf(bookId));
         if (isLoggedIn) {
-            cartAdapter.deleteCart(itemId);
-            redisTemplate.expire(key, 30, TimeUnit.DAYS);
+            cartAdapter.deleteCart(bookId);
+            redisTemplate.expire(key, 10, TimeUnit.DAYS);
         } else {
             redisTemplate.expire(key, 3, TimeUnit.DAYS);
         }
     }
 
     @Override
-    public void updateItem(String userId, Long itemId, int quantity, boolean isLoggedIn) {
+    public void updateItem(String userId, Long bookId, int quantity, boolean isLoggedIn) {
         String key = "cart:" + userId;
-        String bookIdKey = String.valueOf(itemId);
+        String bookIdKey = String.valueOf(bookId);
         CartItemDto cartItemDto = (CartItemDto) redisHash.get(key, bookIdKey);
         if (cartItemDto == null) {
             return;
@@ -82,8 +81,8 @@ public class CartServiceImpl implements CartService {
         cartItemDto.updateQuantity(quantity);
         redisHash.put(key, bookIdKey, cartItemDto);
         if (isLoggedIn) {
-            cartAdapter.updateCart(itemId, quantity);
-            redisTemplate.expire(key, 30, TimeUnit.DAYS);
+            cartAdapter.updateCart(bookId, quantity);
+            redisTemplate.expire(key, 10, TimeUnit.DAYS);
         } else {
             redisTemplate.expire(key, 3, TimeUnit.DAYS);
         }
@@ -105,7 +104,7 @@ public class CartServiceImpl implements CartService {
             }
             redisHash.putAll(key, cartItemsMap);
             if (isLoggedIn) {
-                redisTemplate.expire(key, 30, TimeUnit.DAYS);
+                redisTemplate.expire(key, 10, TimeUnit.DAYS);
             } else {
                 redisTemplate.expire(key, 3, TimeUnit.DAYS);
             }
@@ -121,18 +120,14 @@ public class CartServiceImpl implements CartService {
      * @return CartItemDto
      */
     private CartItemDto createCartItem(CartItemDto item, CartAddRequest request, Long itemId) {
-        if (item != null) {
-            item.updateQuantity(item.getQuantity() + request.getQuantity());
-            return item;
-        } else {
-            return CartItemDto.of(
-                    itemId,
-                    request.getBookId(),
-                    request.getThumbnail(),
-                    request.getTitle(),
-                    request.getPrice(),
-                    request.getDiscountPrice(),
-                    request.getQuantity());
-        }
+        return CartItemDto.of(
+                itemId,
+                request.getBookId(),
+                request.getThumbnail(),
+                request.getTitle(),
+                request.getPrice(),
+                request.getDiscountPrice(),
+                item == null ? request.getQuantity() : item.getQuantity() + request.getQuantity()
+        );
     }
 }

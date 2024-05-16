@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.user.controller;
 import java.time.LocalDate;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,20 +14,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
+import shop.bookbom.front.annotation.Login;
+import shop.bookbom.front.common.dto.UserDto;
+import shop.bookbom.front.domain.member.service.MemberService;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
+import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 import shop.bookbom.front.domain.user.service.UserService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
+    private final MemberService memberService;
     private final UserService userService;
 
 
     @GetMapping("/users/my-page")
-    public String myPage(Model model) {
-        model.addAttribute("user", userService.getUserInfo());
+    public String myPage(@Login UserDto userDto, Model model) {
+        if (userDto.getRole().equals("ROLE_USER")) {
+            UserInfoResponse infos = userService.getUserInfo();
+            Long orderId = infos.getLastOrders().get(0).getId();
+            return "redirect:/orders/" + orderId;
+        }
+        model.addAttribute("user", memberService.getMemberInfo());
         return "page/user/my-page";
     }
 
@@ -87,12 +100,35 @@ public class UserController {
         return "page/user/sign-up-success";
     }
 
+    @GetMapping("/users/update-private")
+    public String setPassword(@ModelAttribute("setPasswordRequest") SetPasswordRequest setPasswordRequest) {
+        return "page/user/set-password";
+    }
+
+    @PostMapping("/users/update-private")
+    public String doSetPassword(@ModelAttribute("setPasswordRequest") @Valid SetPasswordRequest setPasswordRequest,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "page/user/set-password";
+        }
+        if (!setPasswordRequest.getPassword().equals(setPasswordRequest.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "입력한 비밀번호가 같지 않습니다.");
+            return "page/user/set-password";
+        }
+        try {
+            userService.setPassword(setPasswordRequest);
+        } catch (Exception e) {
+            bindingResult.rejectValue("prePassword", "error.prePassword", "현재 비밀번호가 일치하지 않습니다");
+            return "page/user/set-password";
+        }
+        return "redirect:/users/my-page";
+    }
+
     @GetMapping("/users/my-rank")
     public String myRank(Model model) {
         model.addAttribute("userRank", userService.getUserRank());
         return "page/user/my-rank";
     }
-  
     @GetMapping("/users/withdraw")
     public String getDeletePage() {
         return "page/withdraw/delete-user";

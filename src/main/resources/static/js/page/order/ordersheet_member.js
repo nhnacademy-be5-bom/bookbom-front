@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateFinalPayment();
     couponNameByDiscountType();
     updateDeliveryCost();
+    calculateFinalPayment();
     // 옵션 선택에 대한 이벤트 리스너 추가
     var selectElement = document.getElementById("selected-coupon"); // 옵션을 담고 있는 셀렉트 요소의 ID를 가져와야 합니다.
     selectElement.addEventListener("change", function (event) {
@@ -431,6 +432,31 @@ function usePoint() {
         calculateFinalPayment();
         return true;
     }
+}
+
+var childWindow;
+
+function myAddressesPopup() {
+    // 주소록 페이지의 URL
+    var addressBookUrl = '/users/my-address';
+
+    // 팝업 창을 띄우기
+    childWindow = window.open(addressBookUrl, '_blank', 'width=600,height=400,toolbar=0,location=0,menubar=0,status=0,scrollbars=1,resizable=1');
+}
+
+function receiveSelectedAddress(zipCode, address, addressDetail) {
+    // 받은 주소 정보를 사용하여 작업 수행
+    console.log("자식 창에서 받은 우편번호:", zipCode);
+    console.log("자식 창에서 받은 주소:", address);
+    console.log("자식 창에서 받은 상세 주소:", addressDetail);
+
+    childWindow.close();
+    var zipcodeInput = document.getElementById('sample6_postcode');
+    var deliveryAddressinput = document.getElementById('sample6_address');
+    var addressDetailInput = document.getElementById('sample6_detailAddress');
+    zipcodeInput.value = zipCode;
+    deliveryAddressinput.value = address;
+    addressDetailInput.value = addressDetail;
 }
 
 function validateDeliveryAndProceed() {

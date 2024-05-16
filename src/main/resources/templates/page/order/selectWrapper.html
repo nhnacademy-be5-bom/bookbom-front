@@ -38,7 +38,7 @@
                     <td class="order-table-td" th:text="${bookResponse.title}"></td>
                     <td class="order-table-td" th:text="${bookResponse.quantity}+'개'"></td>
                     <td class="order-table-td">
-                        <span style="text-decoration: line-through;" th:text="${bookResponse.cost}"></span><br>
+                        <span style="text-decoration: line-through;" th:text="${bookResponse.cost}+'원'"></span><br>
                         <span th:text="${bookResponse.discountCost}+'원'"></span>
                     </td>
                 </tr>

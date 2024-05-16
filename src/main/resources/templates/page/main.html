@@ -26,12 +26,12 @@
                     <div class="swiper-slide py-5">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                                <img th:src="@{/images/book-main.jpg}" class="img-fluid">
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
                                 <div class=" text-primary text-uppercase mb-4 fw-bold"></div>
-                                <h2 class="banner-title display-1 fw-bold">Best destination for <span
-                                        class="text-primary">your Books</span>
+                                <h2 class="banner-title display-1 fw-bold"><span
+                                        class="text-primary">많은 책들을 한 공간에서, BookBom!</span>
                                 </h2>
                                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1"
                                    style="margin-top: 20px;">
@@ -39,18 +39,17 @@
                                     <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>
-
                         </div>
                     </div>
                     <div class="swiper-slide py-5">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                                <img th:src="@{/images/logo.png}" class="img-fluid">
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
                                 <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
-                                <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">your pets</span>
+                                <h2 class="banner-title display-1 fw-bold"><span
+                                        class="text-primary">당신을 위한 할인</span>
                                 </h2>
                                 <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
                                     shop now
@@ -59,18 +58,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="swiper-slide py-5">
+                    <div class="swiper-slide py-5 justify-content-center">
                         <div class="row banner-content align-items-center">
                             <div class="img-wrapper col-md-5">
-                                <img th:src="@{/images/no-image.jpg}" class="img-fluid">
+                                <img th:src="${bestBooks.get(0).getThumbnail()}" class="rounded-4 book-thumbnail" alt="image">
+                                <h3 class="card-title pt-4 m-0" th:text="${bestBooks.get(0).getTitle()}"></h3>
                             </div>
                             <div class="content-wrapper col-md-7 p-5 mb-5">
-                                <div class=" text-primary text-uppercase mb-4">Save 10 - 20 % off</div>
-                                <h2 class="banner-title display-1 fw-normal">Best destination for <span
-                                        class="text-primary">your pets</span>
+                                <h2 class="banner-title display-1 fw-bold"><span
+                                        class="text-primary">가장 인기있는 책</span>
                                 </h2>
-                                <a href="#" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
-                                    shop now
+                                <a th:href="@{'/books/detail/' + ${bestBooks.get(0).getId()}}" class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1">
+                                    Go Shopping
                                     <i class="fa-solid fa-arrow-right"></i>
                                 </a>
                             </div>

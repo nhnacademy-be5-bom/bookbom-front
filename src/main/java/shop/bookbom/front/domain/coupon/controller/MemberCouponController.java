@@ -18,7 +18,7 @@ import shop.bookbom.front.domain.coupon.service.MemberCouponService;
 public class MemberCouponController {
     private final MemberCouponService memberCouponService;
 
-    @GetMapping("/mycoupons")
+    @GetMapping("/users/coupons")
     public String getMyCouponList(Model model, @PageableDefault Pageable pageable) {
         Page<MyCouponInfoResponse> mycouponList = memberCouponService.getMyCouponInfo(pageable);
         model.addAttribute("totalCouponCount", mycouponList.getTotalElements());
@@ -26,7 +26,7 @@ public class MemberCouponController {
         return "page/coupon/myCoupon";
     }
 
-    @GetMapping("/mycoupons/detail")
+    @GetMapping("/users/coupons/detail")
     public String getMyCouponDetail(Model model, @PageableDefault Pageable pageable) {
         Page<MyCouponRecordResponse> records = memberCouponService.getMyCouponRecode(pageable);
         model.addAttribute("records", records);

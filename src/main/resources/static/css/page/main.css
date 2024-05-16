@@ -43,3 +43,8 @@ section {
 .text-black {
     font-size: 1.2rem;
 }
+
+.image {
+    height: 100%;
+    width: 100%;
+}

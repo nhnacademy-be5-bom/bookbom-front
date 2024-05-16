@@ -48,8 +48,7 @@ public class CartAdapterImpl implements CartAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<CartAddRequest>> requestEntity = new HttpEntity<>(addItems, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts/{id}")
-                .buildAndExpand(id)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts")
                 .toUriString();
 
         CommonListResponse<Long> response = restTemplate.exchange(
@@ -100,7 +99,7 @@ public class CartAdapterImpl implements CartAdapter {
 
         CommonResponse<CartUpdateResponse> response = restTemplate.exchange(
                         url,
-                        HttpMethod.GET,
+                        HttpMethod.PUT,
                         requestEntity,
                         CART_UPDATE_RESPONSE)
                 .getBody();
@@ -123,7 +122,7 @@ public class CartAdapterImpl implements CartAdapter {
 
         CommonResponse<Void> response = restTemplate.exchange(
                         url,
-                        HttpMethod.GET,
+                        HttpMethod.DELETE,
                         requestEntity,
                         COMMON_RESPONSE)
                 .getBody();

@@ -14,22 +14,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
+import shop.bookbom.front.annotation.Login;
+import shop.bookbom.front.common.dto.UserDto;
+import shop.bookbom.front.domain.member.service.MemberService;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
+import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 import shop.bookbom.front.domain.user.service.UserService;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
+    private final MemberService memberService;
     private final UserService userService;
 
 
     @GetMapping("/users/my-page")
-    public String myPage(Model model) {
-        model.addAttribute("user", userService.getUserInfo());
+    public String myPage(@Login UserDto userDto, Model model) {
+        if (userDto.getRole().equals("ROLE_USER")) {
+            UserInfoResponse infos = userService.getUserInfo();
+            Long orderId = infos.getLastOrders().get(0).getId();
+            return "redirect:/orders/" + orderId;
+        }
+        model.addAttribute("user", memberService.getMemberInfo());
         return "page/user/my-page";
     }
 

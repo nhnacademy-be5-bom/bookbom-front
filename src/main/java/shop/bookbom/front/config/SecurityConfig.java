@@ -10,7 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.bookbom.front.security.filter.JwtAuthenticationFilter;
+import shop.bookbom.front.security.filter.SetSecurityContextFilter;
+import shop.bookbom.front.security.handler.SignInFailureHandler;
 import shop.bookbom.front.security.provider.UserEmailPasswordAuthenticationProvider;
 
 @Configuration
@@ -40,13 +43,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public SignInFailureHandler signInFailureHandler() {
+        return new SignInFailureHandler();
+    }
+
+    @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         JwtAuthenticationFilter jwtAuthenticationFilter =
                 new JwtAuthenticationFilter();
         jwtAuthenticationFilter.setFilterProcessesUrl("/dosignin");
         jwtAuthenticationFilter.setAuthenticationManager(authenticationManager());
+        jwtAuthenticationFilter.setAuthenticationFailureHandler(signInFailureHandler());
         jwtAuthenticationFilter.afterPropertiesSet();
         return jwtAuthenticationFilter;
+    }
+
+    @Bean
+    public SetSecurityContextFilter setSecurityContextFilter() {
+        return new SetSecurityContextFilter();
     }
 
     @Override
@@ -54,9 +68,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .cors().disable()
-                .formLogin().disable()
+                .formLogin(form -> form
+                        .loginPage("/signin")
+                        .defaultSuccessUrl("/", false)
+                        .failureForwardUrl("/signin")
+                        .permitAll())
+                .logout(logout -> logout
+                        .deleteCookies("accessToken")
+                        .deleteCookies("refreshToken")
+                        .clearAuthentication(true)
+                        .logoutSuccessUrl("/")
+                        .permitAll())
                 .httpBasic().disable()
                 .addFilter(jwtAuthenticationFilter());
+
+        http
+                .addFilterAfter(setSecurityContextFilter(), UsernamePasswordAuthenticationFilter.class);
 
         /**
          * .permitAll() -> 로그인 안한 사용자도 접근 가능하게 설정
@@ -67,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/users/**").authenticated()
+                .antMatchers("/users/**").hasAnyRole("USER", "ADMIN", "MEMBER")
                 .antMatchers("/reviews/**").hasRole("MEMBER")
                 .anyRequest().permitAll();
     }

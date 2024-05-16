@@ -20,6 +20,8 @@ public enum ErrorCode {
     PAYMENT_FAILED(400, "결제가 실패했습니다"),
     JWT_NOT_VALIDATE(400, "유효하지 않은 상태입니다. 다시 로그인해주세요."),
     TOKEN_NOT_EXIST(400, "토큰을 생성하지 못했습니다"),
+    //signin
+    SIGN_IN_FAILED(400, "아이디 또는 비밀번호가 일치하지 않습니다."),
     REDIRECT_FAILED(400, "페이지 이동을 실패했습니다.");
     private final int code;
     private final String message;

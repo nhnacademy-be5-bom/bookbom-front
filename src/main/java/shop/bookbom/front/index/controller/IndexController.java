@@ -2,6 +2,7 @@ package shop.bookbom.front.index.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,9 +10,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.index.service.IndexService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class IndexController {
@@ -54,12 +57,11 @@ public class IndexController {
     }
 
     @GetMapping("/signin")
-    public String signIn(HttpServletRequest request, Model model) {
-        String ip = request.getHeader("x-forwarded-for");
-        if (ip == null) {
-            ip = request.getRemoteAddr();
+    public String signIn(HttpServletRequest request, Model model,
+                         @RequestParam(required = false, name = "errorMessage") String errorMessage) {
+        if (errorMessage != null && !errorMessage.isBlank()) {
+            model.addAttribute("errorMessage", errorMessage);
         }
-        model.addAttribute("ip", ip);
         return "page/signin/signin";
     }
 

@@ -19,6 +19,8 @@
 }
 
 .field-error {
+    margin: 0 auto;
+    width: fit-content;
     color: #dc3545;
 }
 

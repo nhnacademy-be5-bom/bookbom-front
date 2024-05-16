@@ -129,6 +129,7 @@ public class UserController {
         model.addAttribute("userRank", userService.getUserRank());
         return "page/user/my-rank";
     }
+
     @GetMapping("/users/withdraw")
     public String getDeletePage() {
         return "page/withdraw/delete-user";
@@ -137,6 +138,6 @@ public class UserController {
     @PostMapping("/users/withdraw")
     public String deleteUser(@ModelAttribute WithDrawDTO withDrawDTO) {
         userService.deleteUser(withDrawDTO);
-        return "page/main";
+        return "redirect:/logout";
     }
 }

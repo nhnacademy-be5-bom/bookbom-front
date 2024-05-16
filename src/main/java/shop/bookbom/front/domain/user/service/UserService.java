@@ -33,5 +33,4 @@ public interface UserService {
      * @return 닉네임 사용 가능 여부
      */
     SignupCheckResponse checkNicknameCanUse(String nickname);
-
 }

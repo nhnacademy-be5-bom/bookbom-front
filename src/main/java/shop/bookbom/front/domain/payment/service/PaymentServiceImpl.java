@@ -22,4 +22,10 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentSuccessResponse orderComplete(Long orderId) {
         return paymentAdapter.orderComplete(orderId);
     }
+
+
+    @Override
+    public PaymentSuccessResponse orderFreeComplete(Long orderId) {
+        return paymentAdapter.orderFreeComplete(orderId);
+    }
 }

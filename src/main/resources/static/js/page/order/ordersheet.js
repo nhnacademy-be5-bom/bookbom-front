@@ -105,28 +105,25 @@ function validatePhoneNumber() {
     }
 }
 
-function validateId() {
-    var idInput = document.getElementById('id');
-    var idErrorSpan = document.getElementById('id-error');
-    var id = idInput.value.trim(); // 앞뒤 공백 제거
-
-    if (id === '') {
-        idErrorSpan.innerText = '아이디를 입력해주세요';
-        idInput.style.border = '1px solid red';
-        idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
-        return false;
-    } else if (!/^[a-zA-Z]+[a-zA-Z0-9!@#$%^&*()_+\-=<>?]{3,19}$/.test(id)) { // 아이디 형식 확인
-        idErrorSpan.innerText = '올바른 아이디를 입력하세요 (영어 4자리 이상 20자리 이하)';
-        idInput.style.border = '1px solid red';
-        idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
-        return false;
-    } else {
-        idErrorSpan.innerText = '';
-        idInput.style.border = '';
-        idErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
-        return true;
-    }
-}
+// function validateId() {
+//     var idInput = document.getElementById('id');
+//     var idErrorSpan = document.getElementById('id-error');
+//     var id = idInput.value.trim(); // 앞뒤 공백 제거
+//     var emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+//     if (id === '') {
+//         idErrorSpan.innerText = '아이디를 입력해주세요.';
+//         idInput.style.border = '1px solid red';
+//         idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+//         return false;
+//     } else if (!emailPattern.test(id)) { // 아이디 형식 확인
+//         idErrorSpan.innerText = '올바른 이메일 형식을 입력하세요.';
+//         idInput.style.border = '1px solid red';
+//         idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+//         return false;
+//     } else {
+//
+//     }
+// }
 
 function validateName() {
     var nameInput = document.getElementById('name');
@@ -169,6 +166,29 @@ function validateEmail() {
         emailErrorSpan.innerText = '';
         emailInput.style.border = '';
         emailErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
+
+        fetch('/check-email?email=' + encodeURIComponent(email))
+            .then(response => response.json())
+            .then(data => {
+                if (!data.result.canUse) {
+                    emailErrorSpan.innerText = '이미 가입된 이메일입니다.';
+                    emailInput.style.border = '1px solid red';
+                    emailErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+                    return false;
+                } else {
+                    emailErrorSpan.innerText = '';
+                    emailInput.style.border = '';
+                    emailErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
+                    return true;
+                }
+            })
+            .catch(error => {
+                // console.error('Error:', error);
+                emailErrorSpan.innerText = '서버 오류가 발생했습니다. 관리자에게 문의 주세요.';
+                emailInput.style.border = '1px solid red';
+                emailErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+                return true;
+            });
         return true;
     }
 }
@@ -197,9 +217,9 @@ function validatePassword() {
 }
 
 function validateDelivery() {
-    var zipcodeInput = document.getElementById('zip-code');
-    var deliveryAddressinput = document.getElementById('delivery-address');
-    var addressDetailInput = document.getElementById('address-detail');
+    var zipcodeInput = document.getElementById('sample6_postcode');
+    var deliveryAddressinput = document.getElementById('sample6_address');
+    var addressDetailInput = document.getElementById('sample6_detailAddress');
     var deliveryErrorSpan = document.getElementById('delivery-error');
 
     var zipcode = zipcodeInput.value.trim();
@@ -220,6 +240,56 @@ function validateDelivery() {
         deliveryErrorSpan.style.display = 'none';
         return true;
     }
+}
+
+//주소찾기 api
+function sample6_execDaumPostcode() {
+    new daum.Postcode({
+        oncomplete: function (data) {
+            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+            // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+            var addr = ''; // 주소 변수
+            var extraAddr = ''; // 참고항목 변수
+
+            //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+            // if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+            //     addr = data.roadAddress;
+            // } else { // 사용자가 지번 주소를 선택했을 경우(J)
+            //     addr = data.jibunAddress;
+            // }
+            addr = data.roadAddress;
+
+            // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+            if (data.userSelectedType === 'R') {
+                // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                    extraAddr += data.bname;
+                }
+                // 건물명이 있고, 공동주택일 경우 추가한다.
+                if (data.buildingName !== '' && data.apartment === 'Y') {
+                    extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                }
+                // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                if (extraAddr !== '') {
+                    extraAddr = ' (' + extraAddr + ')';
+                }
+                // 조합된 참고항목을 해당 필드에 넣는다.
+                document.getElementById("sample6_extraAddress").value = extraAddr;
+
+            } else {
+                document.getElementById("sample6_extraAddress").value = '';
+            }
+
+            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+            document.getElementById('sample6_postcode').value = data.zonecode;
+            document.getElementById("sample6_address").value = addr;
+            // 커서를 상세주소 필드로 이동한다.
+            document.getElementById("sample6_detailAddress").focus();
+        }
+    }).open();
 }
 
 function validateDeliveryAndProceed() {
@@ -243,13 +313,19 @@ function validateDeliveryAndProceed() {
             const wrapperName = quantityElement.id;
 
             //bookId
+            if (bookId === '') {
+                alert('책 아이디를 찾을 수 없습니다. 새로고침 후 다시시도해주세요.')
+            }
             const bookIdInput = document.createElement('input');
             bookIdInput.type = 'hidden';
             bookIdInput.name = `wrapperSelectRequestList[${index}].bookId`;
             bookIdInput.value = bookId;
             form.appendChild(bookIdInput);
 
-            //quantiy
+            //quantity
+            if (quantity === '') {
+                alert('책 수량을 찾을 수 없습니다. 새로고침 후 다시시도해주세요.')
+            }
             const quantityInput = document.createElement('input');
             quantityInput.type = 'hidden';
             quantityInput.name = `wrapperSelectRequestList[${index}].quantity`;
@@ -257,6 +333,9 @@ function validateDeliveryAndProceed() {
             form.appendChild(quantityInput);
 
             //wrapperName
+            if (wrapperName === '') {
+                alert('책 포장지를 찾을 수 없습니다. 새로고침 후 다시시도해주세요.')
+            }
             const wrapperNameInput = document.createElement('input');
             wrapperNameInput.type = 'hidden';
             wrapperNameInput.name = `wrapperSelectRequestList[${index}].wrapperName`;
@@ -266,14 +345,27 @@ function validateDeliveryAndProceed() {
         });
         //name
         const name = document.getElementById('name').value;
+        if (name.trim() === '') {
+            alert('이름을 입력해주세요.');
+            return false;
+        } else if (!validateName()) {
+            alert('올바른 이름을 입력하세요.');
+            return false;
+        }
         const nameInput = document.createElement('input');
         nameInput.type = 'hidden';
         nameInput.name = `name`;
         nameInput.value = name;
         form.appendChild(nameInput);
-
         //phoneNumber
         const phoneNumber = document.getElementById('phone-number').value;
+        if (phoneNumber.trim() === '') {
+            alert('전화번호를 입력해주세요');
+            return false;
+        } else if (!validatePhoneNumber()) {
+            alert('올바른 전화번호를 입력하세요.');
+            return false;
+        }
         const phoneNumberInput = document.createElement('input');
         phoneNumberInput.type = 'hidden';
         phoneNumberInput.name = `phoneNumber`;
@@ -283,6 +375,10 @@ function validateDeliveryAndProceed() {
         //totalCost
         const totalCostElement = document.getElementById('finalPayment').innerText.trim().replace('원', '');
         const totalCost = parseInt(totalCostElement.trim().replace(',', ''));
+        if (totalCost === 0) {
+            alert('주문 금액이 0원입니다. 새로고침 후 다시 시도해주세요.');
+            return false;
+        }
         const totalCostInput = document.createElement('input');
         totalCostInput.type = 'hidden';
         totalCostInput.name = `totalCost`;
@@ -292,22 +388,40 @@ function validateDeliveryAndProceed() {
         //discountCost
         const discountCostElement = document.getElementById('discountCost').innerText.trim().replace('원', '');
         const discountCost = parseInt(discountCostElement.trim().replace(',', ''));
+        if (discountCost === 0) {
+            alert('할인 금액이 0원입니다. 새로고침 후 다시 시도해주세요.');
+            return false;
+        }
         const discountCostInput = document.createElement('input');
         discountCostInput.type = 'hidden';
         discountCostInput.name = `discountCost`;
         discountCostInput.value = discountCost;
         form.appendChild(discountCostInput);
 
-        //id
-        const id = document.getElementById('id').value;
-        const idInput = document.createElement('input');
-        idInput.type = 'hidden';
-        idInput.name = `email`;
-        idInput.value = id;
-        form.appendChild(idInput);
+        //email
+        const email = document.getElementById('email').value;
+        if (email.trim() === '') {
+            alert('이메일을 입력해주세요');
+            return false;
+        } else if (!validateEmail()) {
+            alert('올바른 이메일을 입력하세요');
+            return false;
+        }
+        const emailInput = document.createElement('input');
+        emailInput.type = 'hidden';
+        emailInput.name = `email`;
+        emailInput.value = email;
+        form.appendChild(emailInput);
 
         //password
         const password = document.getElementById('password').value;
+        if (password.trim() === '') {
+            alert('비밀번호을 입력해주세요');
+            return false;
+        } else if (!validatePassword()) {
+            alert('올바른 비밀번호를 입력하세요');
+            return false;
+        }
         const passwordInput = document.createElement('input');
         passwordInput.type = 'hidden';
         passwordInput.name = `password`;
@@ -325,6 +439,10 @@ function validateDeliveryAndProceed() {
 
         //deliveryCost
         const deliveryCost = parseInt(document.getElementById('deliveryCost').textContent.trim().replace('원', ''));
+        if (deliveryCost === 0) {
+            alert('할인 금액이 0원입니다. 새로고침 후 다시 시도해주세요.');
+            return false;
+        }
         const deliveryCostInput = document.createElement('input');
         deliveryCostInput.type = 'hidden';
         deliveryCostInput.name = `deliveryCost`;
@@ -332,7 +450,11 @@ function validateDeliveryAndProceed() {
         form.appendChild(deliveryCostInput);
 
         //zipCode
-        const zipCode = document.getElementById('zip-code').value;
+        const zipCode = document.getElementById('sample6_postcode').value;
+        if (zipCode.trim() === '') {
+            alert('우편번호를 입력해주세요');
+            return false;
+        }
         const zipCodeInput = document.createElement('input');
         zipCodeInput.type = 'hidden';
         zipCodeInput.name = `zipCode`;
@@ -340,7 +462,11 @@ function validateDeliveryAndProceed() {
         form.appendChild(zipCodeInput);
 
         //deliveryAddress
-        const deliveryAddress = document.getElementById('delivery-address').value;
+        const deliveryAddress = document.getElementById('sample6_address').value;
+        if (deliveryAddress.trim() === '') {
+            alert('주소를 입력해주세요');
+            return false;
+        }
         const deliveryAddressInput = document.createElement('input');
         deliveryAddressInput.type = 'hidden';
         deliveryAddressInput.name = `deliveryAddress`;
@@ -348,7 +474,11 @@ function validateDeliveryAndProceed() {
         form.appendChild(deliveryAddressInput);
 
         //addressDetail
-        const addressDetail = document.getElementById('address-detail').value;
+        const addressDetail = document.getElementById('sample6_detailAddress').value;
+        if (addressDetail.trim() === '') {
+            alert('상세주소를 입력해주세요');
+            return false;
+        }
         const addressDetailInput = document.createElement('input');
         addressDetailInput.type = 'hidden';
         addressDetailInput.name = `addressDetail`;

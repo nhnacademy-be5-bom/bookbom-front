@@ -8,4 +8,6 @@ public interface PaymentService {
     OrderIdResponse getPaymentConfirm(PaymentRequest paymentRequest);
 
     PaymentSuccessResponse orderComplete(Long orderId);
+
+    PaymentSuccessResponse orderFreeComplete(Long orderId);
 }

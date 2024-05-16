@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
@@ -23,6 +24,8 @@ public interface UserService {
      */
     UserInfoResponse getUserInfo();
 
+    void deleteUser(WithDrawDTO withDrawDTO);
+  
     /**
      * 닉네임 중복 체크하는 메서드입니다.
      *
@@ -30,4 +33,5 @@ public interface UserService {
      * @return 닉네임 사용 가능 여부
      */
     SignupCheckResponse checkNicknameCanUse(String nickname);
+
 }

@@ -13,7 +13,8 @@
 </th:block>
 <!--메인 페이지 고유 스크립트 추가-->
 <th:block layout:fragment="script">
-    <script th:src="@{/js/page/ordersheet.js}"></script>
+    <script th:src="@{/js/page/order/ordersheet.js}"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </th:block>
 <div layout:fragment="content">
     <div class="main">
@@ -48,30 +49,28 @@
             <b style="font-size: large">배송 주소</b>
             <hr>
             <div class="delivery-info">
-                <label>이름</label><br>
-                <label>배송 주소</label><br><br><br><br><br>
+                <label>이름</label><br><br>
+                <label>배송 주소</label><br><br><br><br><br><br>
                 <label>휴대폰</label><br>
             </div>
             <div class="delivery-input">
                 <input id="name" type="text" onblur="validateName()">
                 <span id="name-error" class="error" style="color: red; display: none"></span><br>
-                <input id="zip-code" type="text" onblur="validateDelivery()">
-                <button>주소 찾기</button>
-                <br>
                 <span id="delivery-error" class="error" style="color: red; display: none"></span>
                 <br>
-                <label style="width: 75px; text-align:center;">도로명 주소</label>
-                <input id="delivery-address" type="text" onblur="validateDelivery()"><br>
-                <label style="width: 75px; text-align:center;">상세 주소</label>
-                <input id="address-detail" type="text" onblur="validateDelivery()"><br>
-                <input id="phone-number" type="text" placeholder="- 없이 입력해주세요" onblur="validatePhoneNumber()">
+                <input type="text" id="sample6_postcode" placeholder="우편번호" onclick="validateDelivery()">
+                <input type="button" onclick="sample6_execDaumPostcode()" value="주소 찾기"><br>
+                <input type="text" id="sample6_address" placeholder="주소"><br>
+                <input type="text" id="sample6_detailAddress" placeholder="상세주소" onclick="validateDelivery()">
+                <input type="text" id="sample6_extraAddress" placeholder="참고항목" onclick="validateDelivery()">
+                <input id="phone-number" type="text" placeholder="010-0000-0000" onblur="validatePhoneNumber()">
                 <span id="phone-error" class="error" style="color: red; display: none"></span><br>
             </div>
             <div class="non-member-info">
                 <b>비회원 주문고객</b><br>
                 <hr>
-                <label>아이디</label><br><input id="id" type="text" onblur="validateId()"><br>
-                <span id="id-error" class="error" style="color: red; display: none"></span><br>
+                <label>이메일</label><br><input id="email" type="text" onblur="validateEmail()"><br>
+                <span id="email-error" class="error" style="color: red; display: none"></span><br>
                 <label>비밀번호</label><br><input id="password" type="text" onblur="validatePassword()"
                                               placeholder="영어, 특수문자 포함 8자리 이상"><br>
                 <span id="password-error" class="error" style="color: red; display: none"></span><br>
@@ -80,7 +79,7 @@
             <hr>
         </div>
         <div class="delivery-select">
-            <b>배송일 선택(도착 예상일)</b><br>
+            <b style="color: white">배송일 선택(도착 예상일)</b><br>
             <div th:each="estimatedDate : ${estimatedDateList}">
                 <button onclick="selectDeliveryDate(this)" th:text="${estimatedDate}"
                         th:value="${estimatedDate}"></button>

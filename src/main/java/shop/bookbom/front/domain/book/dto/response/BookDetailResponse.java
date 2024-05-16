@@ -11,8 +11,8 @@ import shop.bookbom.front.domain.category.dto.CategoryDTO;
 import shop.bookbom.front.domain.file.dto.FileDTO;
 import shop.bookbom.front.domain.pointrate.dto.PointRateSimpleInformation;
 import shop.bookbom.front.domain.publisher.entity.dto.PublisherSimpleInformation;
+import shop.bookbom.front.domain.review.dto.ReviewStatisticsResponse;
 import shop.bookbom.front.domain.tag.dto.TagDTO;
-import shop.bookbom.front.review.dto.ReviewStatisticsResponse;
 
 @Getter
 @NoArgsConstructor

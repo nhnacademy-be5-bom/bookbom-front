@@ -1,6 +1,5 @@
 package shop.bookbom.front.domain.admin.coupon.dto.request;
 
-import java.util.Date;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,22 +9,19 @@ import lombok.RequiredArgsConstructor;
 public class AddCategoryCouponRequest {
     private String name;
     private Long couponPolicyId;
-    private Date period;
     private Long categoryId;
 
     @Builder
-    private AddCategoryCouponRequest(String name, Long couponPolicyId, Date period, Long categoryId) {
+    private AddCategoryCouponRequest(String name, Long couponPolicyId, Long categoryId) {
         this.name = name;
         this.couponPolicyId = couponPolicyId;
-        this.period = period;
         this.categoryId = categoryId;
     }
 
-    public AddCategoryCouponRequest of(String name, Long couponPolicyId, Date period, Long categoryId) {
+    public AddCategoryCouponRequest of(String name, Long couponPolicyId, Long categoryId) {
         return AddCategoryCouponRequest.builder()
                 .name(name)
                 .couponPolicyId(couponPolicyId)
-                .period(period)
                 .categoryId(categoryId)
                 .build();
     }

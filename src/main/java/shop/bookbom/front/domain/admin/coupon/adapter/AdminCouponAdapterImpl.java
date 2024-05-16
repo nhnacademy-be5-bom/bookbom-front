@@ -168,13 +168,13 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
 
         String url = "";
         if (type.equals("general")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/generalCoupon")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/generalCoupon")
                     .toUriString();
         } else if (type.equals("book")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/bookCoupon")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/bookCoupon")
                     .toUriString();
         } else if (type.equals("category")) {
-            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/categoryCoupon")
+            url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/categoryCoupon")
                     .toUriString();
         }
 
@@ -203,8 +203,9 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Page<CouponInfoResponse>> requestHttpEntity = new HttpEntity<>(httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/{type}")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/coupons/{type}")
                 .queryParam("pageable", pageable)
+                .buildAndExpand(type)
                 .toUriString();
 
         CommonResponse<CommonPage<CouponInfoResponse>> response = restTemplate.exchange(
@@ -231,7 +232,7 @@ public class AdminCouponAdapterImpl implements AdminCouponAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<IssueCouponRequest> requestHttpEntity = new HttpEntity<>(issueCouponRequest, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/admin/coupons/issue")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/coupons/issue")
                 .toUriString();
 
         CommonResponse<Void> response = restTemplate.exchange(

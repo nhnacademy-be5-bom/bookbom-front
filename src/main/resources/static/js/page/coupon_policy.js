@@ -27,19 +27,27 @@ function completeEditing(button) {
     var discountType = document.querySelector('.policyContainer select[name="discountType"]').value.toUpperCase();
     var discountAmount = document.querySelector('.policyContainer input[name="discountCost"]').value;
     var minOrderAmount = document.querySelector('.policyContainer input[name="minOrderCost"]').value;
-    var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value
+    var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value;
 
-    if(discountType == 'RATE' && discountAmount <= 0 && discountAmount > 100){ //할인 비율이 1~100%를 벗어난 경우
+    console.log(couponPolicyId);
+
+    if (discountType === '비율할인' && Number(discountAmount) <= 0 || Number(discountAmount) > 100) { //할인 비율이 1~100%를 벗어난 경우
+        console.log('비율할인 조건문')
         alert("할인 비율은 1~100사이의 값을 입력해주세요.");
         return;
     }
 
-    if(discountType == 'COST' && discountAmount <= 0){ //할인 금액이 0이거나 음수인 경우
+    if (discountType === '금액할인' && Number(discountAmount) > Number(minOrderAmount)) { //할인 금액은 최소 주문 금액보다 작아야 함
+        alert("할인 금액은 최소 주문 금액보다 작아야 합니다.");
+        return;
+    }
+
+    if (discountType === '금액할인' && discountAmount <= 0) { //할인 금액이 0이거나 음수인 경우
         alert("올바른 할인 금액을 입력해주세요.");
         return;
     }
 
-    if(discountType == 'COST' && maxDiscountAmount != null){ //비율 할인의 경우만 최대 할인 금액 존재
+    if (discountType === '금액할인' && maxDiscountAmount != null) { //비율 할인의 경우만 최대 할인 금액 존재
         alert("최대할인금액은 비율할인에만 적용되며 금액할인에는 적용되지 않습니다.");
         maxDiscountAmount = null;
     }
@@ -51,7 +59,7 @@ function completeEditing(button) {
         },
         body: JSON.stringify({
             couponPolicyId: couponPolicyId,
-            discountType: discountType,
+            discountType: (discountType === '금액할인' ? 'COST' : 'RATE'),
             discountCost: discountAmount,
             minOrderCost: minOrderAmount,
             maxDiscountCost: maxDiscountAmount
@@ -59,6 +67,7 @@ function completeEditing(button) {
     }).then(response => {
         if (response.ok) {
             alert("수정이 완료되었습니다.");
+            location.reload();
         } else {
             console.error("수정 중 오류가 발생했습니다.");
         }
@@ -109,17 +118,22 @@ function create() {
     var minOrderAmount = document.querySelector('.createPolicyModal input[name="minOrderAmount"]').value;
     var maxDiscountAmount = document.querySelector('.createPolicyModal input[name="maxDiscountAmount"]').value;
 
-    if(discountType == 'RATE' && discountAmount <= 0 && discountAmount > 100){ //할인 비율이 1~100%를 벗어난 경우
+    if (discountType === '비율할인' && discountAmount <= 0 && discountAmount > 100) { //할인 비율이 1~100%를 벗어난 경우
         alert("할인 비율은 1~100사이의 값을 입력해주세요.");
         return;
     }
 
-    if(discountType == 'COST' && discountAmount <= 0){ //할인 금액이 0이거나 음수인 경우
+    if (discountType === '금액할인' && discountAmount > minOrderAmount) { //할인 금액은 최소 주문 금액보다 작아야 함
+        alert("할인 금액은 최소 주문 금액보다 작아야 합니다.");
+        return;
+    }
+
+    if (discountType === '금액할인' && discountAmount <= 0) { //할인 금액이 0이거나 음수인 경우
         alert("올바른 할인 금액을 입력해주세요.");
         return;
     }
 
-    if(discountType == 'COST' && maxDiscountAmount != null){ //비율 할인의 경우만 최대 할인 금액 존재
+    if (discountType === '금액할인' && maxDiscountAmount != null) { //비율 할인의 경우만 최대 할인 금액 존재
         alert("최대할인금액은 비율할인에만 적용되며 금액할인에는 적용되지 않습니다.");
         maxDiscountAmount = null;
     }
@@ -130,7 +144,7 @@ function create() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            discountType: discountType,
+            discountType: (discountType === '금액할인' ? 'COST' : 'RATE'),
             discountCost: discountAmount,
             minOrderCost: minOrderAmount,
             maxDiscountCost: maxDiscountAmount

@@ -24,7 +24,6 @@ function addCoupon(event) {
     var container = registBtn.parentNode.parentNode;
     var couponName = container.querySelector('.couponName').value;
     var couponPolicyId = container.querySelector('.couponPolicyId').value;
-    var couponPeriod = container.querySelector('.couponPeriod').value;
 
     if (couponName.trim() === '') {
         alert('쿠폰 이름을 입력하세요.');
@@ -36,21 +35,9 @@ function addCoupon(event) {
         return;
     }
 
-    if (couponPeriod.trim() === '') {
-        alert('유효 기간을 입력하세요.');
-        return;
-    }
-
-    var currentDate = new Date();
-    if (new Date(couponPeriod) < currentDate) {
-        alert('유효 기간은 현재 날짜보다 빨라야 합니다.');
-        return;
-    }
-
-    var requestBody = JSON.stringify({
+    requestBody = JSON.stringify({
         name: couponName,
-        couponPolicyId: couponPolicyId,
-        period: couponPeriod
+        couponPolicyId: couponPolicyId
     });
 
     var type = "general";
@@ -64,7 +51,6 @@ function addCoupon(event) {
             requestBody = JSON.stringify({
                 name: couponName,
                 couponPolicyId: couponPolicyId,
-                period: couponPeriod,
                 bookId: bookId
             });
             type = "book";
@@ -81,14 +67,12 @@ function addCoupon(event) {
             requestBody = JSON.stringify({
                 name: couponName,
                 couponPolicyId: couponPolicyId,
-                period: couponPeriod,
                 categoryId: categoryId
             });
             type = "category";
         }
     }
 
-    console.log(type);
     fetch(`/admin/couponRegister/${type}`, {
         method: 'POST',
         headers: {

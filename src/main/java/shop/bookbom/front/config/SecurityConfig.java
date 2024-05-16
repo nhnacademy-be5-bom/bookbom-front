@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.bookbom.front.security.filter.JwtAuthenticationFilter;
+import shop.bookbom.front.security.filter.SetSecurityContextFilter;
 import shop.bookbom.front.security.handler.SignInFailureHandler;
 import shop.bookbom.front.security.provider.UserEmailPasswordAuthenticationProvider;
 
@@ -56,6 +58,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return jwtAuthenticationFilter;
     }
 
+    @Bean
+    public SetSecurityContextFilter setSecurityContextFilter() {
+        return new SetSecurityContextFilter();
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -64,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin(form -> form
                         .loginPage("/signin")
                         .defaultSuccessUrl("/", false)
+                        .failureForwardUrl("/signin")
                         .permitAll())
                 .logout(logout -> logout
                         .deleteCookies("accessToken")
@@ -73,6 +81,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .permitAll())
                 .httpBasic().disable()
                 .addFilter(jwtAuthenticationFilter());
+
+        http
+                .addFilterAfter(setSecurityContextFilter(), UsernamePasswordAuthenticationFilter.class);
 
         /**
          * .permitAll() -> 로그인 안한 사용자도 접근 가능하게 설정

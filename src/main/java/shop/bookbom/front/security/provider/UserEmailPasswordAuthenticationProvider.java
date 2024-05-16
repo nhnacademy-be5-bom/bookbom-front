@@ -40,6 +40,4 @@ public class UserEmailPasswordAuthenticationProvider implements AuthenticationPr
     public boolean supports(Class<?> authentication) {
         return UserEmailJwtAuthenticationToken.class.isAssignableFrom(authentication);
     }
-
-
 }

@@ -111,8 +111,9 @@
                         <!-- 카드 내용 -->
                         <div class="row g-0">
                             <div class="col-md-1 custom-checkbox">
-                                <label th:for="${'bookCheckbox' + bookStat.index}"></label>
-                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + bookStat.index}">
+                                <label th:for="${'bookCheckbox' + book.id}"></label>
+                                <input class="book-checkbox" th:data-id="${book.id}" th:id="${'bookCheckbox' + book.id}"
+                                       type="checkbox">
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">

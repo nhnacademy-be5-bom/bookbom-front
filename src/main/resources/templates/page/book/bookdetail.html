@@ -32,17 +32,17 @@
         <div class="container">
             <div class="row gx-5 justify-content-center">
                 <aside class="col-lg-6">
-                    <div class="border rounded-4 mb-3 d-flex">
+                    <div class="border rounded-4 mb-3 d-flex thumbnail-container">
                         <a style="width: 60%; height: auto;" data-fslightbox="mygalley" class="rounded-4"
                            data-type="image">
-                            <img style="width: 100%; height: auto; margin: auto;" class="rounded-4 fit"
+                            <img style="width: 100%; height: auto; margin: auto;" class="rounded-4 fit book-thumbnail"
                                  th:src="@{${bookDetail.getFiles().get(0).getUrl()}}"/>
                         </a>
                     </div>
                 </aside>
                 <main class="col-lg-6">
-                    <div class="ps-lg-3">
-                        <h4 class="title text-dark" th:text="${bookDetail.getTitle()}"></h4>
+                    <div class="ps-lg-3 book-detail-container">
+                        <h4 class="title text-dark book-title" th:text="${bookDetail.getTitle()}"></h4>
                         <p th:text="|출판사: ${bookDetail.getPublisher().getName()}|"></p>
 
                         <p th:each="author : ${bookDetail.getAuthors()}"
@@ -65,14 +65,14 @@
                         </div>
 
                         <div class="mb-3">
-                            <span class="text-muted" style="text-decoration: line-through"
+                            <span class="text-muted book-cost" style="text-decoration: line-through"
                                   th:text="|${bookDetail.getCost()}원|"></span>
-                            <span class="h5" th:text="| /${bookDetail.getDiscountCost()}원|"></span>
+                            <span class="h5 book-discount-cost" th:text="| /${bookDetail.getDiscountCost()}원|"></span>
                         </div>
 
                         <div class="row">
                             <dt class="col-3">배송비:</dt>
-                            <dd class="col-9"> 5000원</dd>
+                            <dd class="col-9"> 3000원</dd>
 
                             <dt class="col-3">포장여부:</dt>
                             <dd class="col-9" th:if="${bookDetail.getPackagable() == true}">가능</dd>
@@ -90,7 +90,7 @@
 
                         <div class="row mb-4">
                             <!-- col.// -->
-                            <div class="col-md-4 col-6 mb-3">
+                            <div class="col-md-4 col-6 mb-3 quantity-and-buttons">
                                 <label class="mb-2 d-block">수량</label>
                                 <div class="input-group mb-3" style="width: 170px;">
                                     <button class="btn btn-white border border-secondary px-3" type="button"
@@ -98,11 +98,14 @@
                                         <i class="fas fa-minus"></i>
                                     </button>
 
-                                    <input type="text" class="form-control text-center border border-secondary"
-                                           id="bookQuantity" name="bookQuantity" value="0" placeholder="0"
+                                    <input type="text"
+                                           class="form-control text-center border border-secondary quantity-input"
+                                           id="bookQuantity" name="bookQuantity" value="1" placeholder="1"
                                            aria-label="수량"
                                            aria-describedby="button-addon1"/>
-                                    <input type="hidden" name="bookId" th:value="${bookDetail.getId()}"/>
+                                    <input type="hidden"
+                                           class="form-control book-id-input"
+                                           name="bookId" th:value="${bookDetail.getId()}"/>
 
                                     <button class="btn btn-white border border-secondary px-3" type="button"
                                             id="button-addon2" data-mdb-ripple-color="dark">
@@ -112,25 +115,19 @@
                             </div>
                         </div>
 
-                        <!-- 책 수량=@RequestParam "bookQuantity"/ 책 id=@RequestParam "bookId" -->
-
                         <div class="col-6 col-md-12 btn-div">
                             <button class="btn btn-primary custom-btn custom-primary order-one"
                                     type="button">구매하기
                             </button>
-                            <button type="button" class="btn btn-success custom-btn cart-btn">장바구니</button>
-                            <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
+                            <button type="button" class="btn btn-success custom-btn cart-btn">
+                                <i class="me-1 fa fa-shopping-basket"></i>
+                                장바구니
+                            </button>
+                            <button type="button" class="btn btn-secondary custom-btn">
+                                <i class="me-1 fa fa-heart fa-lg"></i>
+                                좋아요
+                            </button>
                         </div>
-
-                        <button class="btn btn-warning shadow-0"> 즉시구매</button>
-
-                        <a class="btn btn-primary shadow-0"
-                           style="padding: 0.375rem 0.75rem !important;">
-                            <i class="me-1 fa fa-shopping-basket"></i>장바구니
-                        </a>
-
-                        <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
-                                class="me-1 fa fa-heart fa-lg"></i></a>
                     </div>
                 </main>
             </div>

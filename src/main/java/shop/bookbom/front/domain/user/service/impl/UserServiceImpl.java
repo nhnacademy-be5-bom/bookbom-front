@@ -9,10 +9,12 @@ import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.adapter.UserAdapter;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
+import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
 import shop.bookbom.front.domain.user.service.UserService;
 
 @Service
@@ -45,6 +47,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserRankResponse getUserRank(){
+        return userAdapter.getUserRank();
+    }
+    
+    @Override
     public void deleteUser(WithDrawDTO withDrawDTO) {
         userAdapter.deleteUser(withDrawDTO);
     }
@@ -52,5 +59,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public SignupCheckResponse checkNicknameCanUse(String nickname) {
         return userAdapter.checkNicknameCanUse(nickname);
+    }
+
+    @Override
+    public void setPassword(SetPasswordRequest setPasswordRequest) {
+        userAdapter.setPassword(setPasswordRequest);
     }
 }

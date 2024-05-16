@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}" lang="ko">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/my-rank.css}">
+</th:block>
+<div class="container mt-5" layout:fragment="content">
+    <div class="userBox">
+        <div th:class="${userRank.getUserrank()}"></div>
+        <span class="nickname" th:text="${userRank.getNickname()}"></span> 회원님의 이번 달 등급은 <span class="rank" th:text="${userRank.getUserrank()}"></span> 등급입니다.
+    </div>
+    <div class="rankBox">
+        <h3>등급 별 혜택</h3>
+        <table>
+            <tr>
+                <td th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRank' : ''}">
+                    <div th:class="${userRank.getRanks().get(0).getName()}"></div>
+                    <b th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'STANDARD' ? '- STANDARD -' : 'STANDARD'}">STANDARD</b><br>
+                    <span class="month">최근 3개월 순수구매액</span><br>
+                    10만원 미만
+                </td>
+                <td th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRank' : ''}">
+                    <div th:class="${userRank.getRanks().get(1).getName()}"></div>
+                    <b th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'ROYAL' ? '- ROYAL -' : 'ROYAL'}">ROYAL</b><br>
+                    <span class="month">최근 3개월 순수구매액</span><br>
+                    10~20만원
+                </td>
+                <td th:class="${userRank.getUserrank() == 'GOLD' ? 'myRank' : ''}">
+                    <div th:class="${userRank.getRanks().get(2).getName()}"></div>
+                    <b th:class="${userRank.getUserrank() == 'GOLD' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'GOLD' ? '- GOLD -' : 'GOLD'}">GOLD</b><br>
+                    <span class="month">최근 3개월 순수구매액</span><br>
+                    20~30만원
+                </td>
+                <td th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRank' : ''}">
+                    <div th:class="${userRank.getRanks().get(3).getName()}"></div>
+                    <b th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRankName' : 'rankName'}" th:text="${userRank.getUserrank() == 'PLATINUM' ? '- PLATINUM -' : 'PLATINUM'}">PLATINUM</b><br>
+                    <span class="month">최근 3개월 순수구매액</span><br>
+                    30만원 이상
+                </td>
+            </tr>
+            <tr>
+                <td th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRank' : ''}">
+                    <span class="pay">결제 시</span><br>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(0).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(0).getEarnPoint() + (userRank.getRanks().get(0).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
+                </td>
+                <td th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRank' : ''}">
+                    <span class="pay">결제 시</span><br>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(1).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(1).getEarnPoint() + (userRank.getRanks().get(1).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
+                </td>
+                <td th:class="${userRank.getUserrank() == 'GOLD' ? 'myRank' : ''}">
+                    <span class="pay">결제 시</span><br>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(2).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(2).getEarnPoint() + (userRank.getRanks().get(2).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
+                </td>
+                <td th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRank' : ''}">
+                    <span class="pay">결제 시</span><br>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(3).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(3).getEarnPoint() + (userRank.getRanks().get(3).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</html>

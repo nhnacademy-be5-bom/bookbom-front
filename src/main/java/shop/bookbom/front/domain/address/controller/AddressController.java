@@ -26,6 +26,13 @@ public class AddressController {
         return "page/user/address";
     }
 
+    @GetMapping("/users/my-address")
+    public String showMyAddress(Model model) {
+        model.addAttribute("addresses", addressService.getAddressBook());
+
+        return "page/user/my-address";
+    }
+
     @GetMapping("/users/address/add")
     public String addAddressPage(@ModelAttribute("addressRequest") AddressRequest addressRequest) {
         return "page/user/address-add";

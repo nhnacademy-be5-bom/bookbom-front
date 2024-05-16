@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateCartSummary() {
         let totalAmount = 0;
         let totalDiscount = 0;
-        let shippingFee = 3000;
+        let shippingFee = 5000;
 
         itemCheckboxes.forEach(function (checkbox) {
             const itemRow = checkbox.closest('tr');
@@ -170,7 +170,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         console.error("상품 삭제 실패: " + data.header.resultMessage);
                         alert("장바구니 상품 삭제에 실패하였습니다. 나중에 다시 시도해주세요.")
                     }
-                });
+                })
+                .catch(error => {
+                    console.error("상품 삭제 실패: " + error);
+                    alert("장바구니 상품 삭제에 실패하였습니다. 나중에 다시 시도해주세요.")
+                })
         });
     });
 
@@ -187,14 +191,20 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(data => {
-                if (data.header.resultMessage === "SUCCESS") {
-                } else {
+                if (data.header.successful === false) {
                     console.error("수량 업데이트 실패: " + data.header.resultMessage);
                     alert("수량 변경에 실패하였습니다. 나중에 다시 시도해주세요.")
                     // 실패한 경우 이전 수량으로 복원
                     const input = document.querySelector(`.quantity-input[data-item="${id}"]`);
                     input.value = previousQuantity;
                 }
+            })
+            .catch(error => {
+                console.error("수량 업데이트 실패");
+                alert("수량 변경에 실패하였습니다. 나중에 다시 시도해주세요.")
+                // 실패한 경우 이전 수량으로 복원
+                const input = document.querySelector(`.quantity-input[data-item="${id}"]`);
+                input.value = previousQuantity;
             })
     }
 

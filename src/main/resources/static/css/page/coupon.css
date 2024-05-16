@@ -68,3 +68,15 @@
 .couponDetailRow:hover {
     background-color: #f9f9f9; /* 마우스를 올렸을 때 배경색 */
 }
+
+.USED, .EXPIRED {
+    background-color: #e3e3ea;
+}
+
+.USED span, .EXPIRED span {
+    color: #4e5968;
+}
+
+.couponName {
+    color: #DEAD6F;
+}

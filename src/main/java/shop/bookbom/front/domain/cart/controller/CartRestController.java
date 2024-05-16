@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import shop.bookbom.front.annotation.Login;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.dto.UserDto;
+import shop.bookbom.front.common.exception.BaseException;
 import shop.bookbom.front.common.exception.ErrorCode;
 import shop.bookbom.front.domain.cart.dto.request.CartAddRequest;
 import shop.bookbom.front.domain.cart.dto.request.CartUpdateRequest;
@@ -26,30 +29,30 @@ public class CartRestController {
     /**
      * 장바구니에 상품 추가 메서드입니다.
      *
-     * @param cartCookie
-     * @param userId
-     * @param requests
-     * @param response
+     * @param cartCookie 장바구니 쿠키
+     * @param userDto    로그인 회원 정보
+     * @param requests   장바구니 추가 요청
+     * @param response   HttpServletResponse
      * @return
      */
     @PostMapping("/cart")
     public CommonResponse<Void> addToCart(
             @CookieValue(name = "cart", required = false) String cartCookie,
+            @Login UserDto userDto,
             @RequestBody List<CartAddRequest> requests,
             HttpServletResponse response
     ) {
-        // todo 로그인 처리
-        boolean isLoggedIn = false;
-        String userId = null;
+        boolean isLoggedIn =
+                userDto != null && (userDto.getRole().equals("ROLE_MEMBER") || userDto.getRole().equals("ROLE_ADMIN"));
+        String userId = UUID.randomUUID().toString();
         if (isLoggedIn) {
-            addCartCookie(response, userId, 30);
+            userId = userDto.getId().toString();
+            addCartCookie(response, userDto.getId().toString(), 10);
         } else {
-            if (cartCookie == null) {
-                userId = UUID.randomUUID().toString();
-            } else {
+            if (cartCookie != null) {
                 userId = cartCookie;
             }
-            addCartCookie(response, userId, 7);
+            addCartCookie(response, userId, 3);
         }
 
         cartService.addToCart(userId, requests, isLoggedIn);
@@ -60,40 +63,45 @@ public class CartRestController {
      * 장바구니 상품 삭제 메서드입니다.
      *
      * @param cartCookie 장바구니 쿠키
-     * @param itemId     상품 ID
+     * @param bookId     상품 ID
      */
     @DeleteMapping("/cart/items/{id}")
     public CommonResponse<Void> deleteFromCart(
-            @CookieValue(name = "cart", required = false) String cartCookie,
-            @PathVariable(value = "id") Long itemId
+            @CookieValue(name = "cart") String cartCookie,
+            @PathVariable(value = "id") Long bookId,
+            @Login UserDto userDto
     ) {
-        // todo 로그인 처리
-        boolean isLoggedIn = false;
-        String userId = null;
-        if (cartCookie != null) {
+        boolean isLoggedIn =
+                userDto != null && (userDto.getRole().equals("ROLE_MEMBER") || userDto.getRole().equals("ROLE_ADMIN"));
+        String userId;
+        if (isLoggedIn) {
+            userId = userDto.getId().toString();
+        } else {
             userId = cartCookie;
         }
-        cartService.deleteItem(userId, itemId, isLoggedIn);
+        cartService.deleteItem(userId, bookId, isLoggedIn);
         return CommonResponse.success();
     }
 
     @PutMapping("/cart/items/{id}")
     public CommonResponse<Void> updateItem(
-            @CookieValue(name = "cart", required = false) String cartCookie,
-            @PathVariable(value = "id") Long itemId,
+            @Login UserDto userDto,
+            @CookieValue(name = "cart") String cartCookie,
+            @PathVariable(value = "id") Long bookId,
             @RequestBody CartUpdateRequest request
     ) {
-        // todo 로그인 처리
-        boolean isLoggedIn = false;
-        String userId = null;
-        int quantity = request.getQuantity();
-        if (quantity < 1) {
-            return CommonResponse.fail(ErrorCode.COMMON_INVALID_PARAMETER);
-        }
-        if (cartCookie != null) {
+        boolean isLoggedIn = userDto != null && userDto.getRole().equals("ROLE_MEMBER");
+        String userId;
+        if (isLoggedIn) {
+            userId = userDto.getId().toString();
+        } else {
             userId = cartCookie;
         }
-        cartService.updateItem(userId, itemId, quantity, isLoggedIn);
+        int quantity = request.getQuantity();
+        if (quantity < 1) {
+            throw new BaseException(ErrorCode.COMMON_INVALID_PARAMETER);
+        }
+        cartService.updateItem(userId, bookId, quantity, isLoggedIn);
         return CommonResponse.success();
     }
 
@@ -108,7 +116,9 @@ public class CartRestController {
     private void addCartCookie(HttpServletResponse response, String value, int days) {
         Cookie cookie = new Cookie("cart", value);
         cookie.setMaxAge(24 * 60 * 60 * days);
-        cookie.setPath("/");
+        cookie.setPath("/cart");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
         response.addCookie(cookie);
     }
 }

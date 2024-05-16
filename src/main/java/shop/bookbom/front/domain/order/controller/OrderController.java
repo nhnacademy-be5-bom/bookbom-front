@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.bookbom.front.annotation.Login;
 import shop.bookbom.front.common.Adapter.UserCheckAdapter;
+import shop.bookbom.front.common.dto.UserDto;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequest;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
@@ -58,8 +60,11 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{id}")
-    public String orderDetailPage(@PathVariable("id") Long id, Model model) {
+    public String orderDetailPage(@PathVariable("id") Long id, Model model, @Login UserDto userDto) {
         OrderDetailResponse orderDetail = orderService.getOrderDetail(id);
+        if (userDto != null) {
+            model.addAttribute("user", userDto);
+        }
         model.addAttribute("order", orderDetail);
         return "page/order/order-detail";
     }
@@ -153,6 +158,11 @@ public class OrderController {
         redirectAttributes.addAttribute("amount", orderResponse.getAmount());
 
         return "redirect:/payment-method";
+    }
+
+    @GetMapping("/order/cancel")
+    public String orderCancel() {
+        return "page/order/cancel";
     }
 }
 

@@ -6,26 +6,23 @@
 
 <!-- 메인 페이지 고유 CSS 추가 -->
 <th:block layout:fragment="css">
-<!--    <link rel="stylesheet" th:href="@{/css/page/signin.css}">-->
+    <link rel="stylesheet" th:href="@{/css/page/user/sign-in.css}">
 </th:block>
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
 </th:block>
 <body>
-<div layout:fragment="content" class="login-container justify-content-center">
+<div layout:fragment="content" class="login-container justify-content-center" style="text-align: center;">
     <h2>로그인</h2>
-    <form id="signInForm" action="/dosignin" method="post">
-        <div>
-            <input type="text" id="email" name="email" placeholder="아이디(이메일)" required>
-        </div>
-        <div>
-            <input type="password" id="password" name="password" placeholder="비밀번호" required>
-        </div>
-        <div>
-            <button type="submit">로그인</button>
-        </div>
-    </form>
+        <form class="form-div" id="signInForm" action="/dosignin" method="post">
+            <div class="input-div">
+                <button class="submit" type="submit">로그인</button>
+                <input class="form-control" type="text" id="email" name="email" placeholder="아이디(이메일)" required>
+                <input class="form-control" type="password" id="password" name="password" placeholder="비밀번호" required>
+                </div>
+        </form>
     <div>
+        <pre class="field-error" th:if="${errorMessage}" th:text="${errorMessage}"></pre>
         <a href="/signup" onclick="findPassword()">회원가입</a>
         <a href="/find" onclick="findUsername()">아이디 찾기</a>
         <a href="/find" onclick="findPassword()">비밀번호 찾기</a>
@@ -34,5 +31,4 @@
         <a href="javascript:void(0)" onclick="orderSearch()">비회원 주문 조회</a>
     </div>
 </div>
-</body>
 </html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 주소록</title>
+    <script src="../../../js/page/user/my-address.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="../../../css/page/user/my-address.css"/>
+</head>
+<body>
+<table>
+    <tbody>
+    <!-- 주소록 항목 -->
+    <tr th:each=" address : ${addresses}">
+        <td><input type="checkbox" th:id="${address.id}"></td>
+        <td>
+            <span class="fw-bold" th:text="${address.nickname}"></span>
+            <span class="mx-2" th:if="${address.defaultAddress}">(기본 배송지)</span>
+            <span class="child-zipcode" th:text="${address.zipCode}"></span><br>
+            <span class="child-address" th:text="${address.address}"></span>
+            <span class="child-addressDetail" th:text="${address.addressDetail}"></span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,51 @@
+/* register form  */
+.form-control {
+    color: #908F8D;
+    line-height: normal;
+    letter-spacing: 0.02125rem;
+    border-radius: 0.25rem;
+    border: 1px solid rgba(65, 64, 62, 0.20);
+    background: #FFF;
+    display: flex;
+    padding: 1.25rem 0rem 1.25rem 1.25rem;
+    align-items: center;
+    gap: 0.375rem;
+    align-self: stretch;
+    width: fit-content;
+}
+
+.form-control:focus {
+    border-color: #41403E;
+}
+
+.field-error {
+    margin: 0 auto;
+    width: fit-content;
+    color: #dc3545;
+}
+
+.login-container {
+    text-align: center;
+    width: fit-content;
+    margin: 20px auto;
+}
+
+.input-div {
+    padding: 20px;
+    float: left;
+    width: 360px;
+}
+
+.submit {
+    border: 1px solid rgba(65, 64, 62, 0.20);
+    height: 122px;
+    width: 80px;
+    float: right;
+}
+
+.form-div {
+    width: 460px;
+    height: 122px;
+    width: fit-content;
+    margin: 20px auto;
+}

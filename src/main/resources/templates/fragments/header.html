@@ -48,10 +48,6 @@
                         <li class="">
                             <a href="/cart" class="mx-3">
                                 <iconify-icon icon="mdi:cart" class="fs-4 position-relative"></iconify-icon>
-                                <span class="position-absolute translate-middle badge rounded-circle bg-primary pt-2">
-                                <!--장바구니 아이템 갯수-->
-                                333
-                              </span>
                             </a>
                         </li>
                     </ul>
@@ -72,7 +68,7 @@
             <div class="d-flex d-lg-none align-items-end mt-3">
                 <ul class="d-flex justify-content-end list-unstyled m-0">
                     <li>
-                        <a href="account.html" class="mx-3">
+                        <a href="/my-page" class="mx-3">
                             <iconify-icon icon="healthicons:person" class="fs-4"></iconify-icon>
                         </a>
                     </li>
@@ -161,12 +157,23 @@
                     </ul>
 
                     <ul class="navbar-nav menu-list list-unstyled d-flex gap-md-3 mb-0">
-                        <li class="nav-item">
-                            <a href="/signin" class="nav-link active">로그인</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/sign-up">회원가입</a>
-                        </li>
+                        <th:block th:if="${@SignInService ne null}">
+                            <li th:if="${@SignInService.isUser()}" class="nav-item">
+                                <a href="/users/my-page" class="nav-link">비회원 주문조회</a>
+                            </li>
+                            <li th:if="${@SignInService.isAdmin()}" class="nav-item">
+                                <a href="/admin" class="nav-link">관리자 페이지 바로가기</a>
+                            </li>
+                            <li th:if="${@SignInService.isAuthenticated()}" class="nav-item">
+                                <a href="/logout" class="nav-link active">로그아웃</a>
+                            </li>
+                            <li th:if="${!@SignInService.isAuthenticated()}" class="nav-item">
+                                <a href="/signin" class="nav-link active">로그인</a>
+                            </li>
+                            <li th:if="${!@SignInService.isAuthenticated()}" class="nav-item">
+                                <a class="nav-link" href="/sign-up">회원가입</a>
+                            </li>
+                        </th:block>
                     </ul>
 
                 </div>

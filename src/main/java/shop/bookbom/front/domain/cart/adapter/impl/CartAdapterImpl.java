@@ -48,8 +48,7 @@ public class CartAdapterImpl implements CartAdapter {
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<List<CartAddRequest>> requestEntity = new HttpEntity<>(addItems, httpHeaders);
 
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts/{id}")
-                .buildAndExpand(id)
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts")
                 .toUriString();
 
         CommonListResponse<Long> response = restTemplate.exchange(
@@ -58,7 +57,10 @@ public class CartAdapterImpl implements CartAdapter {
                         requestEntity,
                         CART_ITEM_IDS_RESPONSE)
                 .getBody();
-        if (response == null || !response.getHeader().isSuccessful()) {
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
             log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
             throw new RestTemplateException();
         }
@@ -67,13 +69,12 @@ public class CartAdapterImpl implements CartAdapter {
 
     @Override
     public CartInfoResponse getCart(Long userId) {
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts/{id}")
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/carts")
                 .buildAndExpand(userId)
                 .toUriString();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
-
 
         CommonResponse<CartInfoResponse> response = restTemplate.exchange(
                         url,
@@ -82,9 +83,12 @@ public class CartAdapterImpl implements CartAdapter {
                         CART_INFO_RESPONSE)
                 .getBody();
 
-        if (response == null || !response.getHeader().isSuccessful()) {
-            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+        if (response == null) {
             throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response.getResult();
     }
@@ -100,14 +104,17 @@ public class CartAdapterImpl implements CartAdapter {
 
         CommonResponse<CartUpdateResponse> response = restTemplate.exchange(
                         url,
-                        HttpMethod.GET,
+                        HttpMethod.PUT,
                         requestEntity,
                         CART_UPDATE_RESPONSE)
                 .getBody();
 
-        if (response == null || !response.getHeader().isSuccessful()) {
-            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+        if (response == null) {
             throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response.getResult();
     }
@@ -123,13 +130,16 @@ public class CartAdapterImpl implements CartAdapter {
 
         CommonResponse<Void> response = restTemplate.exchange(
                         url,
-                        HttpMethod.GET,
+                        HttpMethod.DELETE,
                         requestEntity,
                         COMMON_RESPONSE)
                 .getBody();
-        if (response == null || !response.getHeader().isSuccessful()) {
-            log.error("[OrderAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+        if (response == null) {
             throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            log.error("[CartAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
     }
 }

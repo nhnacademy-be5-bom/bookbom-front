@@ -16,7 +16,7 @@
     <div class="row justify-content-center mb-3">
         <div class="col-md-6 text-center">
             <span class="fw-bold fs-2" th:text="${user.nickname}">냥냥</span><span class="fs-4">님</span>
-            <div class="member-link" th:data-href="@{/rank-policy}">
+            <div class="member-link" th:data-href="@{/users/my-rank}">
                 <span class="fs-5" th:text="${user.rank}">PLATINUM</span>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <span class="fw-bold fs-4">쇼핑</span>
             <ul class="list-group mb-3">
                 <li class="list-group-item member-link" th:data-href="@{/users/orders}">주문 내역</li>
-                <li class="list-group-item member-link" th:data-href="@{/users/wishes}">찜 목록</li>
+                <li class="list-group-item member-link" href="/wish">찜 목록</li>
                 <li class="list-group-item member-link" th:data-href="@{/users/coupons}">쿠폰함</li>
                 <li class="list-group-item member-link" th:data-href="@{/users/point-history}">포인트 적립/사용 목록</li>
             </ul>
@@ -34,10 +34,9 @@
             <span class="fw-bold fs-4">회원 정보</span>
             <ul class="list-group mb-3">
                 <li class="list-group-item member-link">회원 정보 수정</li>
-                <li class="list-group-item member-link">비밀 번호 수정</li>
+                <li class="list-group-item member-link" th:data-href="@{/users/update-private}">비밀 번호 수정</li>
                 <li class="list-group-item member-link" th:data-href="@{/users/address}">나의 주소록</li>
-                <li class="list-group-item member-link">나의 리뷰 목록</li>
-                <li class="list-group-item member-link">나의 회원 등급</li>
+                <li class="list-group-item member-link" th:data-href="@{/users/my-rank}">나의 회원 등급</li>
             </ul>
             <form th:action="@{/users/withdraw}" th:method="get">
                 <button type="submit" class="btn btn-link p-0 border-0 member-withdraw"
@@ -72,7 +71,7 @@
             <div class="row mt-4 mx-4 justify-content-between my-2">
                 <div class="col-md-2 my-2">
                     <div class="card custom-card" style="border-radius: 25px">
-                        <div class="card-body member-link" th:data-href="@{/users/coupons}">
+                        <div class="card-body member-link" href="/mycoupons">
                             <h5 class="card-title text-center fw-bold">쿠폰함</h5>
                             <p class="card-text text-end" th:text="${user.couponCount} + '장'">3장</p>
                         </div>
@@ -80,7 +79,7 @@
                 </div>
                 <div class="col-md-2 my-2">
                     <div class="card custom-card" style="border-radius: 25px">
-                        <div class="card-body member-link" th:data-href="@{/users/wishes}">
+                        <div class="card-body member-link" href="/wish">
                             <h5 class="card-title text-center fw-bold">찜 목록</h5>
                             <p class="card-text text-end" th:text="${user.wishCount} + '개'">10개</p>
                         </div>

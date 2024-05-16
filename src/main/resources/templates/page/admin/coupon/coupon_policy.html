@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>쿠폰 정책</title>
+</head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin_coupon.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/coupon_policy.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="createPolicyModal">
+        <h4>정책 등록</h4>
+        할인 방식: <select name="discountType" class="form-select-sm">
+        <option value="cost">금액할인</option>
+        <option value="rate">비율할인</option>
+    </select><br/>
+        할인금액: <input name="discountAmount" type="text" class="form-control-sm"><br/>
+        최소주문금액: <input name="minOrderAmount" type="text" class="form-control-sm"><br/>
+        최대할인금액: <input name="maxDiscountAmount" type="text" class="form-control-sm"><br/>
+        <button class="createCancelBtn" onclick="createCancel()">취소</button>
+        <button class="createBtn" onclick="create()">등록</button>
+
+    </div>
+    <div>
+        <div class="titleContainer">
+            <h2>쿠폰 정책</h2>
+            <div class="topButtonContainer">
+                <button class="btn btn-primary showModalBtn" onclick="showModal()">정책 등록</button>
+                <button class="btn btn-danger selectDeleteBtn" onclick="deleteSelectedContainers()">선택 삭제</button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mainContainer">
+            <div class="policyListContainer">
+                <div th:each="policy : ${couponPolicyList}" class="row policyContainer"
+                     th:id="${policy.couponPolicyId}">
+                    <div class="col-md-1 checkboxContainer">
+                        <input type="checkbox" th:id="${policy.couponPolicyId}">
+                    </div>
+                    <div class="col-md-8 policyContentContainer">
+                        할인방식 <select name="discountType" class="form-select-sm" disabled>
+                        <option th:text="${policy.discountType.name() == 'COST' ? '금액할인': '비율할인'}" selected hidden></option>
+                        <option value="cost">금액할인</option>
+                        <option value="rate">비율할인</option>
+                    </select><br/>
+                        할인금액: <input type="text" name="discountCost" class="form-control-sm" readonly
+                                     th:value="${policy.discountCost}"><br/>
+                        최소주문금액: <input type="text" class="form-control-sm" name="minOrderCost" readonly
+                                       th:value="${policy.minOrderCost}"><br/>
+                        최대할인금액: <input type="text" class="form-control-sm" name="maxDiscountCost" readonly
+                                       th:value="${policy.maxDiscountCost}">
+                    </div>
+                    <div class="col-md-3 policyButtonContainer">
+                        <button class="btn btn-success editBtn" onclick="toggleFields(event)">수정</button>
+                        <br/>
+                        <button class="btn btn-danger deleteBtn" onclick="deletePolicy(event)">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

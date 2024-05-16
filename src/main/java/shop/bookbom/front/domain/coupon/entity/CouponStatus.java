@@ -1,4 +1,4 @@
-package shop.bookbom.front.domain.membercoupon.dto;
+package shop.bookbom.front.domain.coupon.entity;
 
 import lombok.Getter;
 

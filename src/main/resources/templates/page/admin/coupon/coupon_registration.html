@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>쿠폰 등록</title>
+</head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/coupon_registration.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/coupon_registration.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="titleContainer">
+            <h2>쿠폰 등록</h2>
+        </div>
+    </div>
+    <div class="contentContainer">
+        <div class="mainContainer">
+            <div class="couponSelectContainer">
+                <select class="couponSelect" onchange="selected(this)">
+                    <option value="general">일반 쿠폰</option>
+                    <option value="book">도서 쿠폰</option>
+                    <option value="category">카테고리 쿠폰</option>
+                </select>
+            </div>
+            <div class="generalCouponContainer couponContainer">
+                <div class="generalCouponTitle">
+                    <h4>일반 쿠폰 등록</h4>
+                </div>
+                <div class="generalInputContainer">
+                    <input type="text" class="couponName" placeholder="쿠폰 이름"/> <br>
+                    <input type="text" class="couponPolicyId" placeholder="쿠폰 정책 번호"/> <br>
+                    유효기간<input type="date" class="couponPeriod"/>
+                </div>
+                <div class="buttonContainer">
+                    <button class="btn btn-success RegisteredBtn" onclick="addCoupon(event)">등록</button>
+                </div>
+            </div>
+
+            <div class="bookCouponContainer couponContainer">
+                <div class="bookCouponTitle">
+                    <h4>도서 쿠폰 등록</h4>
+                </div>
+                <div class="bookInputContainer">
+                    <input type="text" class="couponName" placeholder="쿠폰 이름"/><br>
+                    <input type="text" class="couponPolicyId" placeholder="쿠폰 정책 번호"/><br>
+                    유효기간<input type="date" class="couponPeriod"/><br>
+                    <input type="text" class="bookId" placeholder="도서 번호"/>
+                </div>
+                <div class="buttonContainer">
+                    <button class="btn btn-success RegisteredBtn" onclick="addCoupon(event)">등록</button>
+                </div>
+            </div>
+
+            <div class="categoryCouponContainer couponContainer">
+                <div class="categoryCouponTitle">
+                    <h4>카테고리 쿠폰 등록</h4>
+                </div>
+                <div class="categoryInputContainer">
+                    <input type="text" class="couponName" placeholder="쿠폰 이름"/><br>
+                    <input type="text" class="couponPolicyId" placeholder="쿠폰 정책 번호"/><br>
+                    유효기간<input type="date" class="couponPeriod"/><br>
+                    <input type="text" class="categoryId" placeholder="카테고리 번호"/>
+                </div>
+                <div class="buttonContainer">
+                    <button class="btn btn-success RegisteredBtn" onclick="addCoupon(event)">등록</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

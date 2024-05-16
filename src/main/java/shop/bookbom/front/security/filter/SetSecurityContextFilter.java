@@ -40,7 +40,6 @@ public class SetSecurityContextFilter extends OncePerRequestFilter {
             return;
         }
         if (!doesRequestMatches(request)) {
-            log.info(request.getRequestURI());
             String accessToken = getToken("accessToken");
 
             if (!jwtConfig.validateToken(accessToken)) {
@@ -53,7 +52,6 @@ public class SetSecurityContextFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext()
                     .setAuthentication(a);
 
-            log.info(String.valueOf(SecurityContextHolder.getContext().getAuthentication()));
         }
         filterChain.doFilter(request, response);
     }

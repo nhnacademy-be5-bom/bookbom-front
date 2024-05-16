@@ -34,7 +34,6 @@
             <h2>쿠폰 정책</h2>
             <div class="topButtonContainer">
                 <button class="btn btn-primary showModalBtn" onclick="showModal()">정책 등록</button>
-                <button class="btn btn-danger selectDeleteBtn" onclick="deleteSelectedContainers()">선택 삭제</button>
             </div>
         </div>
     </div>
@@ -47,11 +46,11 @@
                         <input type="checkbox" th:id="${policy.couponPolicyId}">
                     </div>
                     <div class="col-md-8 policyContentContainer">
-                        할인방식 <select name="discountType" class="form-select-sm" disabled>
+                        <select name="discountType" class="form-select-sm" disabled>
                         <option th:text="${policy.discountType.name() == 'COST' ? '금액할인': '비율할인'}" selected hidden></option>
                         <option value="cost">금액할인</option>
                         <option value="rate">비율할인</option>
-                    </select><br/>
+                        </select><br/>
                         할인금액: <input type="text" name="discountCost" class="form-control-sm" readonly
                                      th:value="${policy.discountCost}"><br/>
                         최소주문금액: <input type="text" class="form-control-sm" name="minOrderCost" readonly

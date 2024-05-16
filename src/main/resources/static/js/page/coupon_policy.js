@@ -1,6 +1,6 @@
 //수정과 완료 버튼 toggle
 function toggleFields(event) {
-    var button = event.target
+    var button = event.target;
     var container = button.closest('.policyContainer');
     var selects = container.querySelectorAll('select');
     var inputs = container.querySelectorAll('input[type="text"]');
@@ -17,23 +17,28 @@ function toggleFields(event) {
     if (button.innerText.trim() === "완료") {
         completeEditing(button);
     }
-
     button.innerText = buttonText === "수정" ? "완료" : "수정";
 }
 
 //수정 요청
 function completeEditing(button) {
-    var couponPolicyId = button.parentNode.parentNode.id;
-    var discountType = document.querySelector('.policyContainer select[name="discountType"]').value.toUpperCase();
-    var discountAmount = document.querySelector('.policyContainer input[name="discountCost"]').value;
-    var minOrderAmount = document.querySelector('.policyContainer input[name="minOrderCost"]').value;
-    var maxDiscountAmount = document.querySelector('.policyContainer input[name="maxDiscountCost"]').value;
+    var container = button.parentNode.parentNode;
+    var couponPolicyId = container.id;
+
+    var discountType = container.children[1].children[0].value.toUpperCase();
+    var discountAmount = container.children[1].children[2].value;
+    var minOrderAmount = container.children[1].children[4].value;
+    var maxDiscountAmount = container.children[1].children[6].value;
+
+    if (discountType === '' || discountAmount === '' || minOrderAmount === '') {
+        alert("쿠폰 정책 발급에 필요한 값을 모두 입력해주세요.");
+        return;
+    }
 
     if (discountType === '비율할인' && (Number(discountAmount) <= 0 || Number(discountAmount) > 100)) { //할인 비율이 1~100%를 벗어난 경우
         alert("할인 비율은 1~100사이의 값을 입력해주세요.");
         return;
     }
-
 
     if (discountType === '금액할인' && discountAmount <= 0) { //할인 금액이 0이거나 음수인 경우
         alert("올바른 할인 금액을 입력해주세요.");
@@ -51,7 +56,7 @@ function completeEditing(button) {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            couponPolicyId: couponPolicyId,
+            couponPolicyId: Number.parseInt(couponPolicyId),
             discountType: (discountType === '금액할인' ? 'COST' : 'RATE'),
             discountCost: discountAmount,
             minOrderCost: minOrderAmount,
@@ -66,35 +71,6 @@ function completeEditing(button) {
         }
     }).catch(error => {
         console.error("요청을 보내는 중 오류가 발생했습니다:", error);
-    });
-}
-
-//선택 정책 삭제
-function deleteSelectedContainers() {
-    var containers = document.querySelectorAll('.policyContainer');
-    containers.forEach(function (container) {
-        var checkbox = container.querySelector('input[type="checkbox"]');
-        if (checkbox.checked) {
-            var checkedId = checkbox.id;
-            console.log(checkedId);
-            fetch('/admin/couponPolicy', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    couponPolicyId: checkedId
-                }),
-            }).then(response => {
-                return response.json();
-            }).then(data => {
-                if (data.header.resultMessage == "SUCCESS") {
-                    container.remove();
-                } else {
-                    alert("정책 삭제 실패. 관리자에게 문의하세요.");
-                }
-            })
-        }
     });
 }
 
@@ -177,7 +153,7 @@ function deletePolicy(event) {
                 location.reload();
                 alert("정책 삭제 완료");
             } else {
-                alert("정책 삭제 실패");
+                alert("정책을 사용중인 쿠폰이 있어 삭제가 불가합니다.");
             }
         });
     }

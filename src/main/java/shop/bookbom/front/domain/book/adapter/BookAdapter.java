@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import shop.bookbom.front.common.CommonPage;
 import shop.bookbom.front.common.CommonResponse;
+import shop.bookbom.front.common.exception.RestTemplateException;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.dto.request.BookUpdateRequest;
 import shop.bookbom.front.domain.book.dto.response.BookDetailResponse;
@@ -51,6 +52,10 @@ public class BookAdapter {
             CATEGORY_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
     };
 
+    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookSearchResponse>>>
+            ENTIRE_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
+    };
+
     @Value("${bookbom.gateway-url}")
     private String gatewayUrl;
 
@@ -64,9 +69,11 @@ public class BookAdapter {
 
         CommonResponse<BookDetailResponse> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_DETAIL_RESPONSE).getBody();
-        if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response.getResult();
     }
@@ -81,9 +88,11 @@ public class BookAdapter {
 
         CommonResponse<BookUpdateResponse> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, BOOK_UPDATE_RESPONSE).getBody();
-        if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response.getResult();
     }
@@ -102,9 +111,11 @@ public class BookAdapter {
 
         CommonResponse<CommonPage<BookSearchResponse>> response =
                 restTemplate.exchange(url, HttpMethod.GET, requestEntity, CATEGORY_BOOKS_RESPONSE).getBody();
-        if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response.getResult();
     }
@@ -140,9 +151,11 @@ public class BookAdapter {
         CommonResponse<Void> response =
                 multipartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
 
-        if (response == null || !(response.getHeader().isSuccessful())) {
-            // todo 예외처리
-            throw new RuntimeException();
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response;
     }
@@ -180,9 +193,34 @@ public class BookAdapter {
                 multipartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
 
         if (response == null) {
-            // todo 예외처리
-            throw new RuntimeException();
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
         }
         return response;
+    }
+
+    public Page<BookSearchResponse> getAllBooks(Pageable pageable, String searchCondition) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/all")
+                .queryParam("page", pageable.getPageNumber())
+                .queryParam("size", pageable.getPageSize())
+                .queryParam("searchCondition", searchCondition)
+                .toUriString();
+
+        CommonResponse<CommonPage<BookSearchResponse>> response =
+                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ENTIRE_BOOKS_RESPONSE).getBody();
+
+        if (response == null) {
+            throw new RestTemplateException();
+        }
+        if (!response.getHeader().isSuccessful()) {
+            throw new RestTemplateException(response.getHeader().getResultMessage());
+        }
+        return response.getResult();
     }
 }

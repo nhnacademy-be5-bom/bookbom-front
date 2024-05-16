@@ -150,21 +150,23 @@ function setStars() {
 }
 
 function setIndex() {
-    let indexString = document.getElementById("indexPtag").textContent;
+    if (document.getElementById("indexPtag") !== null) {
+        let indexString = document.getElementById("indexPtag").textContent;
 
-    if (indexString.includes("<toc>")) {
-        indexString = removeHtmlTags(indexString);
-        const indexArray = indexString.split("/");
+        if (indexString.includes("<toc>")) {
+            indexString = removeHtmlTags(indexString);
+            const indexArray = indexString.split("/");
 
-        for (let step in indexArray) {
-            const newPtag = document.createElement('p');
-            newPtag.textContent = indexArray[step];
+            for (let step in indexArray) {
+                const newPtag = document.createElement('p');
+                newPtag.textContent = indexArray[step];
 
-            document.getElementById("indexPtag").parentNode.appendChild(newPtag);
+                document.getElementById("indexPtag").parentNode.appendChild(newPtag);
+            }
         }
-    }
 
-    document.getElementById("indexPtag").remove();
+        document.getElementById("indexPtag").remove();
+    }
 }
 
 function removeHtmlTags(string) {
@@ -177,6 +179,6 @@ function removeHtmlTags(string) {
         .replaceAll("&lt;BR&gt;", "/")
         .replaceAll("&lt;B&gt;", "/")
         .replaceAll("&lt;/B&gt;", "/")
-    
+
     return string;
 }

@@ -3,6 +3,7 @@ package shop.bookbom.front.domain.user.controller;
 import java.time.LocalDate;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.service.UserService;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class UserController {
@@ -85,4 +88,29 @@ public class UserController {
     public String signUpSuccess() {
         return "page/user/sign-up-success";
     }
+
+    @GetMapping("/users/update-private")
+    public String setPassword(@ModelAttribute("setPasswordRequest") SetPasswordRequest setPasswordRequest) {
+        return "page/user/set-password";
+    }
+
+    @PostMapping("/users/update-private")
+    public String doSetPassword(@ModelAttribute("setPasswordRequest") @Valid SetPasswordRequest setPasswordRequest,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "page/user/set-password";
+        }
+        if (!setPasswordRequest.getPassword().equals(setPasswordRequest.getConfirmPassword())) {
+            bindingResult.rejectValue("confirmPassword", "error.confirmPassword", "입력한 비밀번호가 같지 않습니다.");
+            return "page/user/set-password";
+        }
+        try {
+            userService.setPassword(setPasswordRequest);
+        } catch (Exception e) {
+            bindingResult.rejectValue("prePassword", "error.prePassword", "현재 비밀번호가 일치하지 않습니다");
+            return "page/user/set-password";
+        }
+        return "redirect:/users/my-page";
+    }
+
 }

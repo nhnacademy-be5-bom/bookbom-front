@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
@@ -27,4 +28,6 @@ public interface UserAdapter {
      * @return 닉네임 사용 가능 여부
      */
     SignupCheckResponse checkNicknameCanUse(String nickname);
+
+    void setPassword(SetPasswordRequest setPasswordRequest);
 }

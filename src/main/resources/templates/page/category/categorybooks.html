@@ -13,6 +13,7 @@
 <!-- 메인 페이지 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:src="@{/js/page/category/categorybooks.js}"></script>
+    <script th:src="@{/js/page/search.js}"></script>
 </th:block>
 
 <!-- Content -->
@@ -60,8 +61,8 @@
                 </ul>
                 <div class="d-flex">
                     <button type="button" class="btn btn-outline-secondary select-all">전체선택</button>
-                    <button type="button" class="btn btn-outline-secondary">장바구니</button>
-                    <button type="button" class="btn btn-outline-secondary">바로구매</button>
+                    <button type="button" class="btn btn-outline-secondary cart-all">장바구니</button>
+                    <button class="btn btn-outline-secondary order-all" type="button">바로구매</button>
                     <button type="button" class="btn btn-outline-secondary">좋아요</button>
                 </div>
                 <form class="d-flex">
@@ -110,22 +111,27 @@
                         <!-- 카드 내용 -->
                         <div class="row g-0">
                             <div class="col-md-1 custom-checkbox">
-                                <label th:for="${'bookCheckbox' + bookStat.index}"></label>
-                                <input type="checkbox" class="book-checkbox" th:id="${'bookCheckbox' + bookStat.index}">
+                                <label th:for="${'bookCheckbox' + book.id}"></label>
+                                <input class="book-checkbox" th:data-id="${book.id}" th:id="${'bookCheckbox' + book.id}"
+                                       type="checkbox">
                             </div>
                             <!-- 이미지 -->
                             <div class="col-md-3">
                                 <a th:href="@{/books/detail/{bookId}(bookId=${book.getId()})}">
-                                    <img th:src="${!#strings.equals(book.thumbnail, 'NONE') } ? ${book.thumbnail} : '/images/no-image.jpg'"
-                                         class="card-img-top img-fluid rounded-start"
-                                         alt="...">
+                                    <img th:if="${book.thumbnail != null and book.thumbnail != 'NONE'}"
+                                         th:src="${book.thumbnail}"
+                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
+
+                                    <img th:src="@{/images/no-image.jpg}"
+                                         th:unless="${book.thumbnail != null and book.thumbnail != 'NONE'}"
+                                         class="card-img-top img-fluid rounded-start book-thumbnail" alt="...">
                                 </a>
                             </div>
                             <!-- 도서 정보 -->
                             <div class="col-md-6">
                                 <div class="card-body">
                                     <a th:href="@{/books/detail/{bookId}(bookId=${book.getId()})}">
-                                        <h5 class="card-title" th:text="${book.title}">
+                                        <h5 class="card-title book-title" th:text="${book.title}">
                                             오늘부터 나를 고쳐 쓰기로 했다 - 다시 태어나지 않고도 삶을 바꾸는 매일의 작은 습관들
                                         </h5>
                                     </a>
@@ -140,9 +146,14 @@
                                        th:text="${book.publisherName} + ' · ' + ${#temporals.format(book.pubDate, 'yyyy. MM. dd')}">
                                         부키 · <span>2024. 04. 01</span>
                                     </p>
-                                    <p class="card-text"><span class="fw-bold" th:text="${book.discountPrice} + '원'">12,000</span>
-                                        <span class="text-muted original-price"
-                                              th:text="${book.price} + '원'">15,000</span></p>
+                                    <p class="card-text">
+                                        <span class="fw-bold book-discount-cost" th:text="${book.discountPrice} + '원'">
+                                            12,000
+                                        </span>
+                                        <span class="text-muted original-price book-cost"
+                                              th:text="${book.price} + '원'">15,000
+                                        </span>
+                                    </p>
                                     <p class="card-text"><span th:text="${book.reviewRating}">4.8</span> /
                                         <span>리뷰(<span th:text="${book.reviewCount}">123</span>)개</span></p>
                                 </div>
@@ -155,6 +166,7 @@
                                                     type="button">-
                                             </button>
                                             <input type="text" class="form-control quantity-input" placeholder=""
+                                                   th:data-item="${book.id}"
                                                    id="quantity${bookStat.index}"
                                                    value=1>
                                             <button class="btn btn-outline-secondary quantity-increase quantity-button"
@@ -163,9 +175,10 @@
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-12 btn-div">
-                                        <button type="button" class="btn btn-primary custom-btn custom-primary">구매하기
+                                        <button class="btn btn-primary custom-btn custom-primary order-one"
+                                                type="button">구매하기
                                         </button>
-                                        <button type="button" class="btn btn-success custom-btn">장바구니</button>
+                                        <button type="button" class="btn btn-success custom-btn cart-btn">장바구니</button>
                                         <button type="button" class="btn btn-secondary custom-btn">좋아요</button>
                                     </div>
                                 </div>
@@ -199,6 +212,39 @@
                 </ul>
             </nav>
 
+        </div>
+    </div>
+
+    <div class="modal" tabindex="-1" id="successModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>장바구니 담기에 성공하였습니다!<br>장바구니로 이동할까요?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니요</button>
+                    <button type="button" class="btn btn-success" id="goToCart">예</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="orderModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <p>선택하신 상품을 주문하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">아니요</button>
+                    <button class="btn btn-success" id="goOrder" type="button">예</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -67,8 +67,9 @@
                     배송중
                 </div>
                 <div class="col-md-1 d-flex flex-column">
-                    <button class="btn btn-outline-secondary btn-sm mb-1"
-                            th:if="${order.status.equals('완료')}">반품 신청
+                    <button class="btn btn-outline-secondary btn-sm mb-1 review"
+                            th:data-book-id="${book.id}" th:if="${order.status.equals('완료')} and ${user.role.equals('ROLE_MEMBER')}
+                    and ${order.orderDate.isAfter(T(java.time.LocalDateTime).now().minusWeeks(2))}">리뷰 쓰기
                     </button>
                 </div>
             </div>
@@ -88,7 +89,6 @@
         <div class="card-body">
             <div>
                 <span th:text="${order.recipientName}">홍길동</span> / <span th:text="${order.recipientPhoneNumber}">010-1234-5678</span>
-                <button class="btn btn-outline-secondary btn-sm">변경</button>
             </div>
             <div>[<span th:text="${order.recipientAddress.zipCode}">54140</span>] <span
                     th:text="${order.recipientAddress.address}">서울특별시 어딘가 123번지</span> <span
@@ -150,6 +150,31 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" id="orderId" th:value="${order.id}">
     </div>
-    <input type="hidden" id="orderId" th:value="${order.id}">
+
+    <div aria-hidden="true" aria-labelledby="reviewModalLabel" class="modal fade" id="reviewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">리뷰 작성</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <input id="bookIdField" type="hidden">
+                    <div class="mb-3">
+                        <label class="form-label" for="reviewType">리뷰 유형 선택</label>
+                        <select class="form-select" id="reviewType">
+                            <option value="text">일반 리뷰(300P)</option>
+                            <option value="photo">사진 리뷰(500P)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" type="button">닫기</button>
+                    <button class="btn btn-primary write-review" type="button">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

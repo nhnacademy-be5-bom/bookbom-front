@@ -44,19 +44,31 @@
             <tr>
                 <td th:class="${userRank.getUserrank() == 'STANDARD' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(0).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(0).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(0).getEarnPoint() + (userRank.getRanks().get(0).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'ROYAL' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(1).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(1).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(1).getEarnPoint() + (userRank.getRanks().get(1).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'GOLD' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(2).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(2).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(2).getEarnPoint() + (userRank.getRanks().get(2).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
                 </td>
                 <td th:class="${userRank.getUserrank() == 'PLATINUM' ? 'myRank' : ''}">
                     <span class="pay">결제 시</span><br>
-                    <b>결제 금액의 <span class="percentage" th:text="${userRank.getRanks().get(3).getPointRate().getEarnPoint()} + '%'"></span> 적립</b>
+                    <b>
+                        <span th:if="${userRank.getRanks().get(3).getEarnType() != T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST}">결제 금액의</span>
+                        <span class="percentage" th:text="${userRank.getRanks().get(3).getEarnPoint() + (userRank.getRanks().get(3).getEarnType() == T(shop.bookbom.front.domain.pointrate.dto.EarnPointType).COST ? '원' : '%')}"></span> 적립
+                    </b>
                 </td>
             </tr>
         </table>

@@ -129,7 +129,6 @@ public class UserController {
         model.addAttribute("userRank", userService.getUserRank());
         return "page/user/my-rank";
     }
-    
     @GetMapping("/users/withdraw")
     public String getDeletePage() {
         return "page/withdraw/delete-user";

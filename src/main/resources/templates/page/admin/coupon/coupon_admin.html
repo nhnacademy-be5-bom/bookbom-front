@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/admin_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>쿠폰 목록</title>
+</head>
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/admin_coupon.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/admin_coupon.js}"></script>
+</th:block>
+<body>
+<div layout:fragment="content">
+    <div>
+        <div class="titleContainer">
+            <h2>쿠폰 목록</h2>
+            <div class="couponSelectContainer">
+                <select id="showCouponSelect" class="couponSelect" onchange="selected(this)">
+                    <option value="general" th:selected="${selectType == 'general'}">일반 쿠폰</option>
+                    <option value="book" th:selected="${selectType.equals('book')}">도서 쿠폰</option>
+                    <option value="category" th:selected="${selectType.equals('category')}">카테고리 쿠폰</option>
+                </select>
+            </div>
+            <div class="topButtonContainer">
+                <button class="btn btn-primary couponIssueBtn" onclick="issueCoupon(this)">쿠폰 발급</a></button>
+                <button class="btn btn-primary couponRegistBtn"><a href="/admin/coupons/register">쿠폰 등록</a></button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="mainContainer">
+            <div class="policyListContainer">
+                <div th:each="info : ${couponInfoList}" class="row policyContainer"
+                     th:id="${info.id}">
+                    <div class="col-md-1 checkboxContainer">
+                        <input type="checkbox" th:id="${info.id}">
+                    </div>
+                    <div class="col-md-8 policyContentContainer">
+                        이름 <input type="text" class="form-control-sm" readonly th:value="${info.name}"><br/>
+                        할인방식 <label class="form-control-sm" th:text="${info.discountType.name()}"></label><br/>
+                        할인금액/할인율 <label class="form-control-sm" th:text="${info.discountCost}"></label><br/>
+                        최소주문금액 <label class="form-control-sm" th:text="${info.minOrderCost}"></label><br/>
+                        최대할인금액 <label class="form-control-sm" th:text="${info.maxDiscountCost}"></label><br/>
+                        적용대상 <label class="form-control-sm"
+                                    th:text="${info.type.name().equals('BOOK') ? info.title : (info.type.name().equals('CATEGORY') ? info.categoryName : '전체')}"></label><br/>
+                    </div>
+                    <div class="col-md-3 policyButtonContainer">
+<!--                        <button class="btn btn-success couponEditBtn">수정</button>-->
+<!--                        <br/>-->
+                        <button class="btn btn-danger couponDeleteBtn">삭제</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,31 @@
+.titleContainer {
+    margin: 2rem;
+    padding: 0 5rem;
+}
+
+.bookCouponContainer {
+    display: none;
+}
+
+.categoryCouponContainer {
+    display: none;
+}
+
+.mainContainer {
+    background: #e0e0e5;
+    padding: 5rem 7rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+.contentContainer {
+    text-align: center;
+}
+
+.couponSelectContainer {
+    margin-bottom: 2rem;
+}
+
+.couponContainer input {
+    margin: 1rem;
+}

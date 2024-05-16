@@ -14,6 +14,7 @@ import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
+import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
 import shop.bookbom.front.domain.user.service.UserService;
 
 @Service
@@ -45,6 +46,11 @@ public class UserServiceImpl implements UserService {
         return userAdapter.getUserInfo();
     }
 
+    @Override
+    public UserRankResponse getUserRank(){
+        return userAdapter.getUserRank();
+    }
+    
     @Override
     public void deleteUser(WithDrawDTO withDrawDTO) {
         userAdapter.deleteUser(withDrawDTO);

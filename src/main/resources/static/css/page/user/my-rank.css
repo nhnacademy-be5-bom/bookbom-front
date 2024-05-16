@@ -1,0 +1,97 @@
+.nickname {
+    font-weight: bold;
+}
+.rank {
+    color: rgb(38, 71, 157);
+    font-weight: bold;
+}
+.userBox {
+    text-align: center;
+    background-color: #ededed;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    font-size: 1.3em;
+    padding: 30px;
+}
+.STANDARD {
+    background-image: url("/images/standard.png");
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 70px;
+    background-size: 50px;
+    margin: auto;
+    display: block;
+}
+.ROYAL {
+    background-image: url("/images/royal.png");
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 70px;
+    background-size: 50px;
+    margin: auto;
+    display: block;
+}
+.GOLD {
+    background-image: url("/images/gold.png");
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 70px;
+    background-size: 50px;
+    margin: auto;
+    display: block;
+}
+.PLATINUM {
+    background-image: url("/images/platinum.png");
+    background-repeat: no-repeat;
+    width: 50px;
+    height: 70px;
+    background-size: 50px;
+    margin: auto;
+    display: block;
+}
+.month {
+    color: grey;
+}
+table, td {
+    border: 1px solid lightgray;
+    border-top : 1px solid black;
+    text-align: center;
+    padding: 20px;
+}
+table {
+    margin-top: 30px;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.8em;
+}
+.pay {
+    color: grey;
+}
+.percentage {
+    color: rgb(142, 1, 213);
+}
+.plus {
+    background-image: url("/images/plus.png");
+    background-repeat: no-repeat;
+    width: 0.8em;
+    height: 0.8em;
+    background-size: 0.8em;
+    margin: auto;
+    display: block;
+}
+.plus {
+    margin-bottom: 2px;
+    width: 0.8em;
+    height: 0.8em;
+    display: inline-block;
+}
+.myRank {
+    background-color: #ece9e9;
+}
+.myRankName {
+    color: rgb(38, 71, 157);
+    font-size: 1.2em;
+}
+.rankName {
+    font-size: 1.2em;
+}

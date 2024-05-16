@@ -124,6 +124,12 @@ public class UserController {
         return "redirect:/users/my-page";
     }
 
+    @GetMapping("/users/my-rank")
+    public String myRank(Model model) {
+        model.addAttribute("userRank", userService.getUserRank());
+        return "page/user/my-rank";
+    }
+    
     @GetMapping("/users/withdraw")
     public String getDeletePage() {
         return "page/withdraw/delete-user";

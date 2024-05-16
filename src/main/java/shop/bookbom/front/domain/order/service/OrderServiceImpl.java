@@ -9,13 +9,16 @@ import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.order.adapter.OrderAdapter;
 import shop.bookbom.front.domain.order.dto.request.BeforeOrderRequestList;
 import shop.bookbom.front.domain.order.dto.request.OpenOrderRequest;
+import shop.bookbom.front.domain.order.dto.request.OrderRequest;
 import shop.bookbom.front.domain.order.dto.request.OrderStatusUpdateRequest;
 import shop.bookbom.front.domain.order.dto.request.WrapperSelectRequest;
 import shop.bookbom.front.domain.order.dto.response.BeforeOrderResponse;
+import shop.bookbom.front.domain.order.dto.response.OpenWrapperSelectResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderDetailResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
+import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -33,14 +36,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public WrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest) {
+    public OpenWrapperSelectResponse selectWrapper(WrapperSelectRequest wrapperSelectRequest) {
         return orderAdapter.wrapperSelect(wrapperSelectRequest);
+    }
 
+    @Override
+    public WrapperSelectResponse selectWrapperForMember(WrapperSelectRequest wrapperSelectRequest) {
+        return orderAdapter.wrapperSelectForMember(wrapperSelectRequest);
     }
 
     @Override
     public OrderResponse submitOrder(OpenOrderRequest openOrderRequest) {
         return orderAdapter.submitOrder(openOrderRequest);
+    }
+
+    @Override
+    public OrderResponse submitMemberOrder(OrderRequest orderRequest) {
+        return orderAdapter.submitMemberOrder(orderRequest);
     }
 
     @Override
@@ -53,5 +65,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public CommonResponse<Void> updateOrderStatus(OrderStatusUpdateRequest request) {
         return orderAdapter.updateOrderStatus(request);
+    }
+
+    @Override
+    public OrderIdResponse processFreePayment(String orderNumber) {
+        return orderAdapter.processFreePayment(orderNumber);
     }
 }

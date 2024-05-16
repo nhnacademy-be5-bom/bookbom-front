@@ -23,12 +23,14 @@
                th:text="${err}">전체 오류 메시지</p>
         </div>
         <input id="emailCanUse" th:field="*{emailCanUse}" type="hidden">
+        <input id="nicknameCanUse" th:field="*{nicknameCanUse}" type="hidden">
         <div>
             <label class="form-label" for="email">이메일</label>
             <div class="d-flex">
                 <input class="form-control" id="email" th:errorclass="field-error" th:field="*{email}"
                        type="text">
-                <button class="btn btn-outline-secondary mx-4 col-md-2" onclick="checkEmail()" type="button">중복체크
+                <button class="btn btn-outline-secondary mx-4 col-md-2" id="emailCheckBtn" onclick="checkEmail()"
+                        type="button">중복체크
                 </button>
             </div>
             <div class="field-error" th:errors="*{email}"></div>
@@ -55,7 +57,14 @@
         </div>
         <div>
             <label class="form-label" for="nickname">닉네임</label>
-            <input class="form-control" id="nickname" th:errorclass="field-error" th:field="*{nickname}" type="text">
+            <div class="d-flex">
+                <input class="form-control" id="nickname" th:errorclass="field-error" th:field="*{nickname}"
+                       type="text">
+                <button class="btn btn-outline-secondary mx-4 col-md-2"
+                        id="nicknameCheckBtn"
+                        onclick="checkNickname()" type="button">중복체크
+                </button>
+            </div>
             <div class="field-error" th:errors="*{nickname}"></div>
         </div>
         <div>

@@ -21,9 +21,10 @@ public class SignUpRequest {
     private String email;
 
     private boolean emailCanUse;
+    private boolean nicknameCanUse;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
-    @Size(min = 8, message = "비밀번호는 최소 8자 이상이어야 합니다.")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,20}$", message = "비밀번호는 최소 8자 이상이어야 하며, 특수문자를 포함해야 합니다.")
     private String password;
 
     @NotBlank(message = "비밀번호 확인을 입력하세요.")
@@ -40,6 +41,7 @@ public class SignUpRequest {
     private String phoneNumber;
 
     @NotEmpty(message = "닉네임을 입력해주세요.")
+    @Size(min = 2, message = "닉네임은 최소 2자 이상이어야 합니다.")
     private String nickname;
 
     @NotEmpty(message = "주소 찾기를 진행해주세요.")

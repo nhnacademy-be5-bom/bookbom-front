@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/review.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/review.js}"></script>
+</th:block>
+
+<div class="container mt-5" layout:fragment="content">
+    <h1 class="mb-4">리뷰 작성</h1>
+    <form action="/reviews" enctype="multipart/form-data" id="reviewForm" method="POST" th:object="${reviewForm}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error" th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">전체 오류 메시지</p>
+        </div>
+        <input name="bookId" th:value="${bookId}" type="hidden">
+        <input name="orderId" th:value="${orderId}" type="hidden">
+        <input name="type" th:value="${type}" type="hidden">
+        <div class="mb-3" th:if="${type.equals('photo')}">
+            <label class="form-label" for="image">첨부파일 / 최대 용량 2MB</label>
+            <input class="form-control" id="image" name="image" type="file">
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="rating">별점</label>
+            <div class="rating" id="rating">
+                <input id="star5" name="rating" type="radio" value="5"><label for="star5">&#9733;</label>
+                <input id="star4" name="rating" type="radio" value="4"><label for="star4">&#9733;</label>
+                <input id="star3" name="rating" type="radio" value="3"><label for="star3">&#9733;</label>
+                <input id="star2" name="rating" type="radio" value="2"><label for="star2">&#9733;</label>
+                <input id="star1" name="rating" type="radio" value="1"><label for="star1">&#9733;</label>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="review">내용</label>
+            <textarea class="form-control" id="review" name="content" required rows="5"></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit">제출하기</button>
+    </form>
+</div>
+</html>

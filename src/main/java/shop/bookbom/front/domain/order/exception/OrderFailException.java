@@ -7,4 +7,8 @@ public class OrderFailException extends BaseException {
     public OrderFailException() {
         super(ErrorCode.ORDER_IS_FAILED);
     }
+
+    public OrderFailException(String message) {
+        super(ErrorCode.ORDER_IS_FAILED, message);
+    }
 }

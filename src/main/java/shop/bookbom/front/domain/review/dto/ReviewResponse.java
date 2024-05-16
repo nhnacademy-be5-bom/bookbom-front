@@ -1,4 +1,4 @@
-package shop.bookbom.front.review.dto;
+package shop.bookbom.front.domain.review.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

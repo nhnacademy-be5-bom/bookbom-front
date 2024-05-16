@@ -154,6 +154,11 @@ public class OrderController {
 
         return "redirect:/payment-method";
     }
+
+    @GetMapping("/order/cancel")
+    public String orderCancel() {
+        return "page/order/cancel";
+    }
 }
 
 

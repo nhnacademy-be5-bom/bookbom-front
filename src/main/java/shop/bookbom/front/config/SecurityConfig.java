@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout(logout -> logout
                         .deleteCookies("accessToken")
                         .deleteCookies("refreshToken")
+                        .deleteCookies("cart")
                         .clearAuthentication(true)
                         .logoutSuccessUrl("/")
                         .permitAll())

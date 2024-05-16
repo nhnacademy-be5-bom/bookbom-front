@@ -24,6 +24,7 @@ import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
+import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
 
 
 @Slf4j
@@ -40,6 +41,9 @@ public class UserAdapterImpl implements UserAdapter {
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<SignupCheckResponse>> SIGNUP_CHECK_RESPONSE =
+            new ParameterizedTypeReference<>() {
+            };
+    private static final ParameterizedTypeReference<CommonResponse<UserRankResponse>> USER_RANK_INFO =
             new ParameterizedTypeReference<>() {
             };
     private static final ParameterizedTypeReference<CommonResponse<Void>> COMMON_RESPONSE =
@@ -173,6 +177,27 @@ public class UserAdapterImpl implements UserAdapter {
         }
     }
 
+    @Override
+    public UserRankResponse getUserRank(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
+
+        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/users/my-rank")
+                .toUriString();
+
+        CommonResponse<UserRankResponse> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                requestEntity,
+                USER_RANK_INFO).getBody();
+        if (response == null || !response.getHeader().isSuccessful()) {
+            log.error("[UserAdapter] errorMessage : {}", response.getHeader().getResultMessage());
+            throw new RestTemplateException();
+        }
+        return response.getResult();
+    }
+  
     @Override
     public void deleteUser(WithDrawDTO withDrawDTO) {
         HttpHeaders httpHeaders = new HttpHeaders();

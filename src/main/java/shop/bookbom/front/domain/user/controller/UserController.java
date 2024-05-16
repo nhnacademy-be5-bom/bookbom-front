@@ -97,6 +97,12 @@ public class UserController {
         return "page/user/sign-up-success";
     }
 
+    @GetMapping("/users/my-rank")
+    public String myRank(Model model) {
+        model.addAttribute("userRank", userService.getUserRank());
+        return "page/user/my-rank";
+    }
+  
     @GetMapping("/users/withdraw")
     public String getDeletePage() {
         return "page/withdraw/delete-user";

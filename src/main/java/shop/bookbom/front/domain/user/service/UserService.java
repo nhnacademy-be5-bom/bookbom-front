@@ -8,6 +8,7 @@ import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
+import shop.bookbom.front.domain.user.dto.response.UserRankResponse;
 
 public interface UserService {
     /**
@@ -24,6 +25,11 @@ public interface UserService {
      */
     UserInfoResponse getUserInfo();
 
+    /**
+     * 회원 등급을 조회하는 메서드입니다.
+     */
+    UserRankResponse getUserRank();
+  
     void deleteUser(WithDrawDTO withDrawDTO);
   
     /**

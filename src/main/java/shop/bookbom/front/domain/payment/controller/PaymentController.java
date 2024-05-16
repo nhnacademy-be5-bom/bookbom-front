@@ -56,16 +56,22 @@ public class PaymentController {
 
         Long orderId = paymentService.getPaymentConfirm(paymentRequest).getOrderId();
         redirectAttributes.addAttribute("orderId", orderId);
+        redirectAttributes.addAttribute("isFree", false);
 
         return "redirect:/payment-complete";
     }
 
     //주문 완료 페이지
     @GetMapping("/payment-complete")
-    public String showOrderComplete(@RequestParam("orderId") Long orderId
+    public String showOrderComplete(@RequestParam("orderId") Long orderId, @RequestParam("isFree") boolean isFree
             , Model model) {
-
-        PaymentSuccessResponse paymentResponse = paymentService.orderComplete(orderId);
+        PaymentSuccessResponse paymentResponse = null;
+        if (isFree) {
+            paymentResponse = paymentService.orderFreeComplete(orderId);
+        } else {
+            paymentResponse = paymentService.orderComplete(orderId);
+        }
+        model.addAttribute("orderId", orderId);
         model.addAttribute("orderNumber", paymentResponse.getOrderNumber());
         model.addAttribute("orderInfo", paymentResponse.getOrderInfo());
         model.addAttribute("totalCount", paymentResponse.getTotalCount());

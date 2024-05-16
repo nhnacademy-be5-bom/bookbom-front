@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
 import shop.bookbom.front.domain.user.dto.response.UserInfoResponse;
 
@@ -24,6 +25,8 @@ public interface UserService {
      */
     UserInfoResponse getUserInfo();
 
+    void deleteUser(WithDrawDTO withDrawDTO);
+  
     /**
      * 닉네임 중복 체크하는 메서드입니다.
      *

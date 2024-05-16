@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="~{layouts/default_layout}"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{/css/page/user/address.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{/js/page/user/address.js}"></script>
+</th:block>
+
+<!-- Content -->
+<div class="d-flex flex-column align-items-center" layout:fragment="content">
+    <span class="fw-bold fs-2">나의 주소록</span>
+    <div class="card mt-3 col-md-6">
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between" th:each="address : ${addresses}">
+                <div class="d-flex flex-column">
+            <span>
+                <span class="fw-bold" th:text="${address.nickname}"></span>
+                <span class="mx-2" th:if="${address.defaultAddress}">(기본 배송지)</span>
+            </span>
+                    <span th:text="${address.zipCode}"></span>
+                    <span th:text="${address.address}"></span>
+                    <span th:text="${address.addressDetail}"></span>
+                </div>
+                <div class="d-flex flex-column mx-2">
+                    <form id="defaultAddressForm" method="post"
+                          th:action="@{'/users/address/default/' + ${address.id}}">
+                        <button class="btn btn-outline-primary default-address-btn justify-content-center"
+                                th:if="${!address.defaultAddress}"
+                                type="submit">기본 배송지 등록
+                        </button>
+                    </form>
+                    <div class="d-flex justify-content-end align-items-center mt-2">
+                        <form id="deleteAddressForm" th:action="@{'/users/address/delete/' + ${address.id}}"
+                              th:if="${addresses.size() != 1}" th:method="delete">
+                            <button class="btn btn-danger mx-2" type="submit">삭제</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div class="d-flex justify-content-center mt-3">
+            <a class="btn btn-primary col-md-3" href="/users/address/add">주소 등록</a>
+        </div>
+    </div>
+</div>
+</html>

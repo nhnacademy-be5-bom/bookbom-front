@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
@@ -113,4 +114,14 @@ public class UserController {
         return "redirect:/users/my-page";
     }
 
+    @GetMapping("/users/withdraw")
+    public String getDeletePage() {
+        return "page/withdraw/delete-user";
+    }
+
+    @PostMapping("/users/withdraw")
+    public String deleteUser(@ModelAttribute WithDrawDTO withDrawDTO) {
+        userService.deleteUser(withDrawDTO);
+        return "page/main";
+    }
 }

@@ -2,6 +2,7 @@ package shop.bookbom.front.domain.user.adapter;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
 import shop.bookbom.front.domain.user.dto.OrderDateCondition;
 import shop.bookbom.front.domain.user.dto.SignUpDto;
@@ -21,6 +22,7 @@ public interface UserAdapter {
      */
     UserInfoResponse getUserInfo();
 
+    void deleteUser(WithDrawDTO withDrawDTO);
     /**
      * 닉네임 중복 체크하는 메서드입니다.
      *

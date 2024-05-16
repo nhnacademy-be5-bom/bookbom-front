@@ -1,22 +1,16 @@
 package shop.bookbom.front.domain.book.adapter;
 
 import java.io.IOException;
-import java.util.Arrays;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.FormHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.ResourceHttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -46,6 +40,7 @@ import shop.bookbom.front.domain.book.dto.response.BookUpdateResponse;
 @RequiredArgsConstructor
 public class BookAdapter {
     private final RestTemplate restTemplate;
+    private final RestTemplate multipartRestTemplate;
     private static final ParameterizedTypeReference<CommonResponse<BookDetailResponse>>
             BOOK_DETAIL_RESPONSE = new ParameterizedTypeReference<>() {
     };
@@ -54,10 +49,6 @@ public class BookAdapter {
     };
     private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookSearchResponse>>>
             CATEGORY_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
-    };
-
-    private static final ParameterizedTypeReference<CommonResponse<CommonPage<BookSearchResponse>>>
-            ENTIRE_BOOKS_RESPONSE = new ParameterizedTypeReference<>() {
     };
 
     @Value("${bookbom.gateway-url}")
@@ -120,7 +111,6 @@ public class BookAdapter {
 
     public CommonResponse<Void> save(MultipartFile file, BookAddRequest bookAddRequest)
             throws IOException {
-        RestTemplate multiPartRestTemplate = getMultiPartRestTemplate();
 
         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
             @Override
@@ -148,7 +138,7 @@ public class BookAdapter {
                 new HttpEntity<>(map, httpHeadersForFile);
 
         CommonResponse<Void> response =
-                multiPartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
+                multipartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
 
         if (response == null || !(response.getHeader().isSuccessful())) {
             // todo 예외처리
@@ -160,8 +150,6 @@ public class BookAdapter {
     public CommonResponse<Void> update(MultipartFile file,
                                        BookUpdateRequest bookUpdateRequest,
                                        Long bookId) throws IOException {
-
-        RestTemplate multiPartRestTemplate = getMultiPartRestTemplate();
 
         ByteArrayResource fileResource = new ByteArrayResource(file.getBytes()) {
             @Override
@@ -189,43 +177,12 @@ public class BookAdapter {
                 new HttpEntity<>(map, httpHeadersForFile);
 
         CommonResponse<Void> response =
-                multiPartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
+                multipartRestTemplate.exchange(url, HttpMethod.PUT, mapHttpEntity, CommonResponse.class).getBody();
 
         if (response == null) {
             // todo 예외처리
             throw new RuntimeException();
         }
         return response;
-    }
-
-    public Page<BookSearchResponse> getAllBooks(Pageable pageable, String searchCondition) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
-
-        String url = UriComponentsBuilder.fromHttpUrl(gatewayUrl + "/shop/admin/books/all")
-                .queryParam("page", pageable.getPageNumber())
-                .queryParam("size", pageable.getPageSize())
-                .queryParam("searchCondition", searchCondition)
-                .toUriString();
-
-        CommonResponse<CommonPage<BookSearchResponse>> response =
-                restTemplate.exchange(url, HttpMethod.GET, requestEntity, ENTIRE_BOOKS_RESPONSE).getBody();
-
-        if (response == null || !response.getHeader().isSuccessful()) {
-            // todo 예외처리
-            throw new RuntimeException();
-        }
-        return response.getResult();
-    }
-
-    private static RestTemplate getMultiPartRestTemplate() {
-        HttpMessageConverter<Object> jackson = new MappingJackson2HttpMessageConverter();
-        HttpMessageConverter<Resource> resource = new ResourceHttpMessageConverter();
-        FormHttpMessageConverter formHttpMessageConverter = new FormHttpMessageConverter();
-        formHttpMessageConverter.addPartConverter(jackson);
-        formHttpMessageConverter.addPartConverter(resource);
-
-        return new RestTemplate(Arrays.asList(jackson, resource, formHttpMessageConverter));
     }
 }

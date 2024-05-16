@@ -22,8 +22,16 @@
         <p class="lead text-gray-800 mb-5" th:text="${message}">에러가 발생했습니다.</p>
         <p class="text-gray-500 mb-0" th:text="${errorCode}">It looks like you found a glitch in the matrix...</p>
         <a href="/">← 메인 페이지로 이동</a>
+        <div>
+            <button class="btn btn-outline-secondary" onclick="goBack()">뒤로가기</button>
+        </div>
     </div>
 </div>
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
 </body>
 </html>
 

@@ -30,9 +30,9 @@
 <div layout:fragment="content">
     <section class="py-5">
         <div class="container">
-            <div class="row gx-5">
+            <div class="row gx-5 justify-content-center">
                 <aside class="col-lg-6">
-                    <div class="border rounded-4 mb-3 d-flex justify-content-center">
+                    <div class="border rounded-4 mb-3 d-flex">
                         <a style="width: 60%; height: auto;" data-fslightbox="mygalley" class="rounded-4"
                            data-type="image">
                             <img style="width: 100%; height: auto; margin: auto;" class="rounded-4 fit"
@@ -130,7 +130,7 @@
     <!-- content -->
 
     <section class="bg-light border-top py-4">
-        <div class="container">
+        <div class="container justify-content-center">
             <div class="row gx-4">
                 <div class="col-lg-8 mb-4">
                     <div class="border rounded-2 px-3 py-2 bg-white">
@@ -189,6 +189,64 @@
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="review">
+        <div class="container">
+            <h2 class="mb-4">리뷰 <span th:text="'(' + ${reviews.totalElements} + ')'">(3)</span></h2>
+            <div class="row flex-column my-3" th:if="${reviews != null}">
+                <div class="col-lg-6 mb-4" th:each="review : ${reviews.content}">
+                    <div class="card">
+                        <div class="card-header">
+                            <h6 class="card-title" th:text="'닉네임 : ' + ${review.nickname}">닉네임</h6>
+                            <div class="text-muted"
+                                 th:text="'작성일 : ' +  ${#temporals.format(review.createdAt, 'yyyy.MM.dd HH:mm')}">작성일:
+                                2024-05-15
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- 사진 리뷰인 경우 -->
+                            <div class="mb-3" th:if="${review.images != null}">
+                                <img alt="사진 리뷰" class="img-fluid mx-2" th:each="image : ${review.images}"
+                                     th:src="${image}">
+                            </div>
+                            <!-- 별점 -->
+                            <div class="text-primary mb-3">
+                                <i th:class="${star <= review.rate} ? 'fas fa-star' : 'far fa-star'"
+                                   th:each="star : ${#numbers.sequence(1, 5)}"></i>
+                            </div>
+
+                            <!-- 리뷰 내용 -->
+                            <p class="card-text" th:text="${review.content}">리뷰 내용이 여기에 표시됩니다.</p>
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Page navigation" th:if="${reviews.totalElements > 0}">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" th:classappend="${reviews.number == 0} ? 'disabled'">
+                            <a aria-label="Previous"
+                               class="page-link"
+                               th:href="@{/books/detail/{id}(id=${bookDetail.id}, page=${reviews.number - 1}, size=${reviews.pageable.pageSize})}">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${pageNum == reviews.number} ? 'active'"
+                            th:each="pageNum : ${#numbers.sequence(0, reviews.totalPages - 1)}">
+                            <a class="page-link"
+                               th:href="@{/books/detail/{id}(id=${bookDetail.id}, page=${pageNum}, size=${reviews.pageable.pageSize})}"
+                               th:text="${pageNum + 1}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${reviews.number + 1 == reviews.totalPages} ? 'disabled'">
+                            <a aria-label="Next"
+                               class="page-link"
+                               th:href="@{/books/detail/{id}(id=${bookDetail.id}, page=${reviews.number + 1}, size=${reviews.pageable.pageSize})}">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </section>

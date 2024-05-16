@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import shop.bookbom.front.domain.order.dto.response.OrderInfoResponse;
+import shop.bookbom.front.domain.user.dto.request.SetPasswordRequest;
 import shop.bookbom.front.domain.user.dto.request.SignUpRequest;
 import shop.bookbom.front.domain.user.dto.request.WithDrawDTO;
 import shop.bookbom.front.domain.user.dto.response.SignupCheckResponse;
@@ -39,4 +40,6 @@ public interface UserService {
      * @return 닉네임 사용 가능 여부
      */
     SignupCheckResponse checkNicknameCanUse(String nickname);
+  
+    void setPassword(SetPasswordRequest setPasswordRequest);
 }

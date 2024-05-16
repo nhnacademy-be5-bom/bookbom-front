@@ -5,20 +5,26 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.bookbom.front.common.CommonResponse;
 import shop.bookbom.front.domain.book.dto.request.BookAddRequest;
 import shop.bookbom.front.domain.book.dto.request.BookUpdateRequest;
+import shop.bookbom.front.domain.book.dto.response.BookSearchResponse;
 import shop.bookbom.front.domain.book.dto.response.BookUpdateResponse;
 import shop.bookbom.front.domain.book.service.BookService;
 import shop.bookbom.front.domain.category.dto.CategoryDTO;
@@ -57,6 +63,29 @@ public class AdminBookController {
     @GetMapping("/addbook/result")
     public String addBookResultPage() {
         return "page/book/result/addbook-result";
+    }
+
+    @GetMapping("/updatebook")
+    public String bookListPage(@PageableDefault(size = 15) Pageable pageable,
+                               @RequestParam(required = false) String keyword,
+                               Model model) {
+
+        String searchCondition = "NONE";
+
+        if (StringUtils.hasText(keyword)) {
+            searchCondition = keyword;
+        }
+
+        Page<BookSearchResponse> bookResponse = bookService.getAllBooks(pageable, searchCondition);
+
+        model.addAttribute("books", bookResponse.getContent());
+        model.addAttribute("currentPage", bookResponse.getNumber());
+        model.addAttribute("pageSize", bookResponse.getPageable().getPageSize());
+        model.addAttribute("totalPages", bookResponse.getTotalPages());
+        model.addAttribute("totalItems", bookResponse.getTotalElements());
+        model.addAttribute("size", bookResponse.getSize());
+
+        return "page/admin/book-list";
     }
 
     @GetMapping("/updatebook/{bookId}")

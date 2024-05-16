@@ -94,3 +94,31 @@ function removeHtmlTags(string) {
 
     return string;
 }
+
+document.querySelectorAll('.order-one').forEach(button => {
+    button.addEventListener('click', function () {
+
+        const form = document.createElement('form');
+        form.method = 'post';
+        form.action = '/order/wrapper';
+
+        const quantityInput = this.closest('.quantity-and-buttons').querySelector('.quantity-input');
+        const quantity = parseInt(quantityInput.value);
+        const bookId = this.closest('.border-bottom').querySelector('.book-checkbox').id.replace('bookCheckbox', '');
+
+        const bookIdInput = document.createElement('input');
+        bookIdInput.type = 'hidden';
+        bookIdInput.name = `beforeOrderRequests[0].bookId`;
+        bookIdInput.value = bookId;
+        form.appendChild(bookIdInput);
+
+        const quantityInputHidden = document.createElement('input');
+        quantityInputHidden.type = 'hidden';
+        quantityInputHidden.name = `beforeOrderRequests[0].quantity`;
+        quantityInputHidden.value = quantity;
+        form.appendChild(quantityInputHidden);
+
+        document.body.appendChild(form);
+        form.submit();
+    });
+});

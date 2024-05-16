@@ -18,29 +18,32 @@ import shop.bookbom.front.domain.book.dto.response.BookUpdateResponse;
 @Service
 @RequiredArgsConstructor
 public class BookService {
-    private final BookAdapter bookRestTemplateAdapter;
+    private final BookAdapter bookAdapter;
 
     public CommonResponse<Void> addBook(MultipartFile file, BookAddRequest bookAddRequest) throws IOException {
-        return bookRestTemplateAdapter.save(file, bookAddRequest);
+        return bookAdapter.save(file, bookAddRequest);
     }
 
     public BookDetailResponse getBook(Long bookId) {
-        return bookRestTemplateAdapter.getBookDetail(bookId);
+        return bookAdapter.getBookDetail(bookId);
     }
 
     public BookUpdateResponse getBookUpdateInfo(Long bookId) {
-        return bookRestTemplateAdapter.getBookUpdate(bookId);
+        return bookAdapter.getBookUpdate(bookId);
     }
 
     public Page<BookSearchResponse> getBooksByCategoryId(Long categoryId,
                                                          Pageable pageable,
                                                          String sortCondition) {
-        return bookRestTemplateAdapter.getByCategoryId(categoryId, pageable, sortCondition);
+        return bookAdapter.getByCategoryId(categoryId, pageable, sortCondition);
     }
 
     public CommonResponse<Void> updateBook(MultipartFile file, BookUpdateRequest bookUpdateRequest, Long bookId)
             throws IOException {
-        return bookRestTemplateAdapter.update(file, bookUpdateRequest, bookId);
+        return bookAdapter.update(file, bookUpdateRequest, bookId);
     }
 
+    public Page<BookSearchResponse> getAllBooks(Pageable pageable, String searchCondition) {
+        return bookAdapter.getAllBooks(pageable, searchCondition);
+    }
 }

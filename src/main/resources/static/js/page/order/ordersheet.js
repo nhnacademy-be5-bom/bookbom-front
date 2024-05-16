@@ -166,7 +166,8 @@ function validateEmail() {
         emailErrorSpan.innerText = '';
         emailInput.style.border = '';
         emailErrorSpan.style.display = 'none'; // 에러 메시지 숨기기
-        fetch('/users/check-email?email=' + encodeURIComponent(email))
+
+        fetch('/check-email?email=' + encodeURIComponent(email))
             .then(response => response.json())
             .then(data => {
                 if (!data.result.canUse) {
@@ -183,9 +184,9 @@ function validateEmail() {
             })
             .catch(error => {
                 // console.error('Error:', error);
-                idErrorSpan.innerText = '서버 오류가 발생했습니다. 관리자에게 문의 주세요.';
-                idInput.style.border = '1px solid red';
-                idErrorSpan.style.display = 'inline'; // 에러 메시지 표시
+                emailErrorSpan.innerText = '서버 오류가 발생했습니다. 관리자에게 문의 주세요.';
+                emailInput.style.border = '1px solid red';
+                emailErrorSpan.style.display = 'inline'; // 에러 메시지 표시
                 return true;
             });
         return true;

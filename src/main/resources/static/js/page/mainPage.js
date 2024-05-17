@@ -94,3 +94,25 @@ document.addEventListener('DOMContentLoaded', function () {
         },
     });
 });
+
+function addWish(btn){
+    var bookId = btn.parentNode.childNodes[1].getAttribute('data-book-id');
+    var bookList = [];
+    bookList.push(parseInt(bookId));
+
+    fetch(`/wish`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(bookList)
+    }).then(response => {
+        if (response.ok) {
+            alert("좋아요 추가 완료되었습니다.");
+        } else {
+            console.error("좋아요 취소 중 오류가 발생했습니다.");
+        }
+    }).catch(error => {
+        console.error("요청을 보내는 중 오류가 발생했습니다:", error);
+    });
+}

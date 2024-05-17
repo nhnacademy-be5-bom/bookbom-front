@@ -161,9 +161,12 @@ public class OrderController {
     }
 
     @GetMapping("/order/cancel")
-    public String orderCancel() {
+    public String orderCancel(@RequestParam("id") String orderId, Model model) {
+        model.addAttribute("orderId", orderId);
         return "page/order/cancel";
     }
+
+
 }
 
 

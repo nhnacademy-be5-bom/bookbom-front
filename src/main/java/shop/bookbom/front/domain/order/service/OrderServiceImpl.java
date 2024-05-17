@@ -19,6 +19,7 @@ import shop.bookbom.front.domain.order.dto.response.OrderManagementResponse;
 import shop.bookbom.front.domain.order.dto.response.OrderResponse;
 import shop.bookbom.front.domain.order.dto.response.WrapperSelectResponse;
 import shop.bookbom.front.domain.payment.dto.OrderIdResponse;
+import shop.bookbom.front.domain.payment.dto.response.PaymentCancelResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +71,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderIdResponse processFreePayment(String orderNumber) {
         return orderAdapter.processFreePayment(orderNumber);
+    }
+
+    @Override
+    public PaymentCancelResponse cancelOrder(Long orderId, String cancelReason) {
+        return orderAdapter.cancelOrder(orderId, cancelReason);
     }
 }

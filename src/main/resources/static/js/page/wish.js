@@ -22,3 +22,23 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 });
+
+function wishCancel(btn){
+    let wishId = parseInt(btn.parentNode.parentNode.id);
+    console.log(wishId)
+
+    fetch(`/wish/${wishId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            location.reload();
+        } else {
+            console.error("좋아요 취소 중 오류가 발생했습니다.");
+        }
+    }).catch(error => {
+        console.error("요청을 보내는 중 오류가 발생했습니다:", error);
+    });
+}

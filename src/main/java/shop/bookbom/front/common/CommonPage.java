@@ -1,15 +1,18 @@
 package shop.bookbom.front.common;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-public class CommonPage<T> extends PageImpl<T> {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CommonPage<T> extends PageImpl<T> implements Serializable {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public CommonPage(
             @JsonProperty("content") List<T> content,
